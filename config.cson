@@ -1,0 +1,59 @@
+"*":
+  "exception-reporting":
+    userId: "359fa170-0ce0-f4aa-a096-47c353f8f84e"
+  welcome:
+    showOnStartup: false
+  core:
+    excludeVcsIgnoredPaths: false
+    disabledPackages: [
+      "Tern"
+      "task-list"
+      "symbols-view"
+    ]
+    themes: [
+      "atom-material-ui"
+      "atom-material-syntax"
+    ]
+  editor:
+    invisibles: {}
+    fontFamily: "Fira Mono for Powerline"
+    showIndentGuide: true
+    tabLength: 4
+    softWrap: true
+    fontSize: 18
+  linter:
+    showErrorPanel: false
+  "atom-ternjs": {}
+  "vim-mode": {}
+  "autocomplete-plus": {}
+  "language-babel": {}
+  emmet: {}
+  "merge-conflicts": {}
+  "color-picker":
+    preferredFormat: "HEX"
+  "apathy-theme":
+    customInactiveOverlayColor:
+      red: 50
+      green: 48
+      blue: 52
+      alpha: 1
+  "tree-view": {}
+  "atom-beautify":
+    _analyticsUserId: "786e320c-bad5-4d0c-9a87-912abab6cff3"
+  "todo-show":
+    ignoreThesePaths: [
+      "*/node_modules/"
+      "*/bower_components"
+      "*/platforms/"
+      "*/plugins/"
+      "*/bower_modules/"
+      "*/.venv/"
+      "*/static/"
+    ]
+  "autocomplete-python":
+    extraPaths: "$PROJECT/api/.venv/lib/python2.7/site-packages;"
+    pythonPath: "/usr/bin/python"
+  "php-debug":
+    ServerPort: 9000
+  "atom-ctags":
+    cmdArgs: "--exclude=**/.git --exclude=**/.node_modules --exclude=**/vendor --exclude=**/plugins --exclude=**/packages --exclude=**/.venv --exclude=**/.vagrant"
