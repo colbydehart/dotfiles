@@ -16,7 +16,6 @@
     ]
   editor:
     invisibles: {}
-    fontFamily: "Fira Mono for Powerline"
     showIndentGuide: true
     tabLength: 4
     softWrap: true
