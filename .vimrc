@@ -2,7 +2,7 @@
 "=================================================
 set encoding=utf-8              "UTF8
 set t_Co=256                    "Colors
-colo wombat                     "Colorscheme
+colo sourcerer                     "Colorscheme
 set ruler                       "Show the line and column in bottom right
 set mouse=a                     "Use the mouse for resizing windows
 set number                      "Show line numbers
@@ -52,8 +52,8 @@ nnoremap L gt
 " Zeal lookup mapping to 'gz'
 :nnoremap gz :silent !zeal --query <cWORD> <CR><CR>
 
-" remap autocompletes
 nmap <leader>n :NERDTreeToggle<CR>
+nmap <C-p> :Unite file_rec<CR>
 "====================FUNCTIONS======================
 "=================================================
 "Local Vimrc
@@ -91,6 +91,7 @@ autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=235
 
 " Searching/Navigation
 NeoBundle 'scrooloose/nerdtree'
+NeoBundle 'Shougo/unite.vim'
 "
 " Small utility plugins
 NeoBundle 'Lokaltog/vim-easymotion'
