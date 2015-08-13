@@ -2,7 +2,7 @@
 "=================================================
 set encoding=utf-8              "UTF8
 set t_Co=256                    "Colors
-colo sourcerer                     "Colorscheme
+colo sorcerer                   "Colorscheme
 set ruler                       "Show the line and column in bottom right
 set mouse=a                     "Use the mouse for resizing windows
 set number                      "Show line numbers

@@ -12,7 +12,7 @@
     ]
     themes: [
       "atom-material-ui"
-      "atom-material-syntax"
+      "batman-syntax"
     ]
   editor:
     invisibles: {}

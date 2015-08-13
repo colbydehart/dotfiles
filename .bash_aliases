@@ -11,3 +11,4 @@ alias ga="git add -p"
 alias gc="git commit -m $*"
 
 alias xclip="xclip -selection c"
+alias ack=ack-grep
