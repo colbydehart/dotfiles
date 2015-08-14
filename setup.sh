@@ -7,8 +7,8 @@ curl --location https://deb.nodesource.com/setup | sudo bash -
 
 echo "Installing apt-get packages"
 sudo apt-get update
-sudo apt-get install -y google-chrome-unstable vim atom nautilus-dropbox
-sudo apt-get install -y git python-dev virtualbox vagrant curl nodejs ctags
+sudo apt-get install -y vim atom nautilus-dropbox
+sudo apt-get install -y git python-dev curl nodejs ctags
 sudo apt-get install -y python-pip
 
 echo "Installing Node stuff"

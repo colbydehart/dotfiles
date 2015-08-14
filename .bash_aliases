@@ -12,3 +12,4 @@ alias gc="git commit -m $*"
 
 alias xclip="xclip -selection c"
 alias ack=ack-grep
+alias python=python3

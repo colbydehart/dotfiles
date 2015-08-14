@@ -11,7 +11,6 @@
       "symbols-view"
     ]
     themes: [
-      "atom-material-ui"
       "batman-syntax"
     ]
   editor:
@@ -50,8 +49,9 @@
       "*/static/"
     ]
   "autocomplete-python":
-    extraPaths: "$PROJECT/api/.venv/lib/python2.7/site-packages;"
-    pythonPath: "/usr/bin/python"
+    pythonPath: "/usr/bin/python3.4"
+    extraPaths: "$PROJECT/.venv/lib/python3.4/site-packages"
+    caseInsensitiveCompletion: false
   "php-debug":
     ServerPort: 9000
   "atom-ctags":
