@@ -52,6 +52,7 @@
     pythonPath: "/usr/bin/python3.4"
     extraPaths: "$PROJECT/.venv/lib/python3.4/site-packages"
     caseInsensitiveCompletion: false
+    addDotAfterModule: true
   "php-debug":
     ServerPort: 9000
   "atom-ctags":
