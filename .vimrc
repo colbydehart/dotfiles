@@ -53,13 +53,17 @@ nnoremap L gt
 :nnoremap gz :silent !zeal --query <cWORD> <CR><CR>
 
 nmap <leader>n :NERDTreeToggle<CR>
-nmap <C-p> :Unite file_rec<CR>
 "====================FUNCTIONS======================
 "=================================================
 "Local Vimrc
 if filereadable("./.lvimrc")
     execute "source ./.lvimrc"
 endif
+"====================IGNORE======================
+"=================================================
+set wildignore+=*.pyc
+set wildignore+=*/node_modules/*
+set wildignore+=.git
 "====================PLUGINS======================
 "=================================================
 "Set up NeoBundle stuff
@@ -91,7 +95,8 @@ autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=235
 
 " Searching/Navigation
 NeoBundle 'scrooloose/nerdtree'
-NeoBundle 'Shougo/unite.vim'
+let NERDTreeIgnore = ['\.pyc$']
+NeoBundle 'kien/ctrlp.vim'
 "
 " Small utility plugins
 NeoBundle 'Lokaltog/vim-easymotion'
@@ -102,17 +107,21 @@ map  n <Plug>(easymotion-next)
 map  N <Plug>(easymotion-prev)
 :let g:EasyMotion_keys='arstdhneioqwfpgjluy;zxcvbkm'
 NeoBundle 'christoomey/vim-tmux-navigator'
-
 NeoBundle 'Raimondi/delimitMate'
+
+" Apparently a shrine to tpope
 NeoBundle 'tpope/vim-surround'
 NeoBundle 'tpope/vim-commentary'
 NeoBundle 'tpope/vim-repeat'
 NeoBundle 'tpope/vim-dispatch'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'tpope/vim-abolish'
+NeoBundle 'mileszs/ack.vim'
 
 " Additional Syntax
+NeoBundle 'ekalinin/Dockerfile.vim'
 au BufRead *.md set filetype=markdown
+au BufRead *.twig set filetype=html
 
 "Completions for filetypes
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
@@ -121,6 +130,21 @@ autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
+" Massive autocomplete
+NeoBundle 'Valloric/YouCompleteMe'
+let g:ycm_autoclose_preview_window_after_completion=1
+nnoremap <leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
+" Snippets
+NeoBundle 'SirVer/ultisnips'
+" Syntax linting
+NeoBundle 'scrooloose/syntastic'
+
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+let g:syntastic_javascript_checkers = ["eslint"]
+let g:syntastic_php_checkers = ["php"]
+let g:syntastic_python_checkers = ["flake8"]
 
 call neobundle#end()
 

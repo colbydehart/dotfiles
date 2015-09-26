@@ -12,4 +12,5 @@ alias gc="git commit -m $*"
 
 alias xclip="xclip -selection c"
 alias ack=ack-grep
-alias python=python3
+alias cl=clear
+alias pydb="python3 -S /usr/bin/py3_dbgp -d localhost:9000 $1"
