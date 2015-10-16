@@ -2,9 +2,10 @@
 "=================================================
 set encoding=utf-8              "UTF8
 set t_Co=256                    "Colors
-colo wombat                     "Colorscheme
+colo xoria256                   "Colorscheme
+set guifont=PT\ Mono:h18        "Beautiful beautiful fonts
 set ruler                       "Show the line and column in bottom right
-set clipboard=unnamedplus       "Use X11 clipboard for yanks and puts
+set clipboard=unnamed           "Use X11 clipboard for yanks and puts
 set mouse=a                     "Use the mouse for resizing windows
 set number                      "Show line numbers
 set ls=2                        "Show status line
@@ -18,20 +19,47 @@ set smartindent                 "Automatically indent
 set nobackup                    "No backups!
 set visualbell                  "No sounds!
 set noswapfile                  "No swaps!
+set wildmenu                    "Tab autocomplete commands
+
+if &term =~ '^screen'
+    " tmux knows the extended mouse mode
+    set ttymouse=xterm2
+endif
 
 :let mapleader = ","            "Leader is comma
 "Changes parenthesis matching colors
-hi MatchParen cterm=bold ctermbg=none ctermfg=magenta    
+hi MatchParen gui=bold cterm=bold ctermbg=none ctermfg=magenta guibg=#00ff99 guifg=#000000
 "folding settings
 set foldenable
 set foldmethod=indent
 set foldlevelstart=20
 
+"====================FUNCTION======================
+"=================================================
+au BufRead todo.md exe "call Todo()"
+function Todo()
+    set foldlevel=0
+    nmap <leader>c :s/^\[\s/[x/<CR>
+    nmap <leader>i :s/^\[x/[ /<CR>
+    nmap <leader>t :s/^/[ ] /<CR>
+endfunction
+
+" The Silver Searcher
+if executable('ag')
+  " Use ag over grep
+  set grepprg=ag\ --nogroup\ --nocolor
+
+  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+
+  " ag is fast enough that CtrlP doesn't need to cache
+  let g:ctrlp_use_caching = 0
+endif
 "====================IGNORE======================
 "=================================================
 set wildignore+=*.pyc
-set wildignore+=**/node_modules
-set wildignore+=**/bower_components
+set wildignore+=*/node_modules/*
+set wildignore+=*/bower_components/*
 set wildignore+=.git
 set wildignore+=.venv
 "====================PLUGINS======================
@@ -67,27 +95,37 @@ let g:indent_guides_enable_on_vim_startup = 1
 let g:indent_guides_start_level = 2
 let g:indent_guides_guide_size = 1
 let g:indent_guides_auto_colors = 0
-autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=red   ctermbg=233
-autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=235
+autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=#555555 ctermbg=233
+autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=#666666 ctermbg=235
 
 
 " Searching/Navigation
 NeoBundle 'scrooloose/nerdtree'
+let g:NERDTreeRespectWildIgnore=1
 NeoBundle 'kien/ctrlp.vim'
 NeoBundle 'majutsushi/tagbar'
 
 " Small utility plugins
 NeoBundle 'Lokaltog/vim-easymotion'
+hi EasyMotionTarget ctermbg=cyan ctermfg=black
+hi EasyMotionShade  ctermbg=cyan ctermfg=black
+hi EasyMotionTarget2First ctermbg=cyan ctermfg=yellow
+hi EasyMotionTarget2Second ctermbg=lightblue ctermfg=yellow
+
 map <Leader> <Plug>(easymotion-prefix)
 map / <Plug>(easymotion-sn)
 omap / <Plug>(easymotion-tn)
 map  n <Plug>(easymotion-next)
 map  N <Plug>(easymotion-prev)
 :let g:EasyMotion_keys='arstdhneioqwfpgjluy;zxcvbkm'
+hi link EasyMotionTarget Cursor
 NeoBundle 'christoomey/vim-tmux-navigator'
 NeoBundle 'Raimondi/delimitMate'
-NeoBundle 'xolox/vim-session'
 NeoBundle 'xolox/vim-misc'
+NeoBundle 'xolox/vim-session'
+let g:session_autosave='no'
+let g:session_autoload='no'
+NeoBundle 'rizzatti/dash.vim'
 
 " Apparently a shrine to tpope
 NeoBundle 'tpope/vim-surround'
@@ -100,23 +138,32 @@ NeoBundle 'mileszs/ack.vim'
 
 " Additional Syntax
 NeoBundle 'ekalinin/Dockerfile.vim'
-au BufRead *.md set filetype=markdown
 au BufRead *.twig set filetype=html
+au BufRead *.md set filetype=markdown
+NeoBundle 'nelstrom/vim-markdown-folding'
+let g:markdown_fold_style='nested'
 
-
-" Autocompletes
-imap <C-@> <C-x><C-o><C-p>
-autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 " Enable omnicompletion
+NeoBundle 'Valloric/YouCompleteMe'
+NeoBundle 'ervandew/supertab'
+let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+let g:SuperTabDefaultCompletionType='<C-n>'
 NeoBundle 'mattn/emmet-vim'
-NeoBundle 'davidhalter/jedi-vim'
+NeoBundle 'xsbeats/vim-blade'
+NeoBundle 'rodjek/vim-puppet'
 NeoBundle 'elixir-lang/vim-elixir'
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-" autocmd FileType python setlocal omnifunc=jedi#completions
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-autocmd FileType php setlocal omnifunc=phpcomplete#CompletePHP
+NeoBundle 'shawncplus/phpcomplete.vim'
+set ofu=syntaxcomplete#Complete
+autocmd FileType php set omnifunc=phpcomplete#CompletePHP
+autocmd FileType phtml set omnifunc=phpcomplete#CompletePHP
+autocmd FileType python set omnifunc=pythoncomplete#Complete
+autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType html,markdown set omnifunc=htmlcomplete#CompleteTags
+autocmd FileType css set omnifunc=csscomplete#CompleteCSS
+autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
+autocmd FileType c set omnifunc=ccomplete#Complete
+autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 " Snippets
 NeoBundle 'SirVer/ultisnips'
 let g:UltiSnipsExpandTrigger="<tab>"
@@ -162,8 +209,8 @@ map <C-l> <C-W>l
 nnoremap H gT
 nnoremap L gt
 
-" Zeal lookup mapping to 'gz'
-:nnoremap gz :silent !zeal --query <cWORD> <CR><CR>
+" Dash lookup mapping to 'gd'
+:nnoremap gd :Dash<CR>
 
 nmap <leader>n :NERDTreeToggle<CR>
 nmap <leader>a :TagbarToggle<CR>

@@ -1,4 +1,2 @@
 --recurse=yes
 --exclude=.git
--f tags
---verbose=no
