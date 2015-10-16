@@ -64,33 +64,18 @@ set wildignore+=.git
 set wildignore+=.venv
 "====================PLUGINS======================
 "=================================================
-"Set up NeoBundle stuff
-if 0 | endif
+"Set up Plugin stuff
+set nocompatible              " be iMproved, required
+filetype off                  " required
 
-if has('vim_starting')
-  if &compatible
-    set nocompatible               " Be iMproved
-  endif
-
-  set runtimepath+=~/.vim/bundle/neobundle.vim/
-endif
-call neobundle#begin(expand('~/.vim/bundle/'))
-NeoBundleFetch 'Shougo/neobundle.vim'
-NeoBundle 'Shougo/vimproc.vim', {
-\ 'build' : {
-\     'windows' : 'tools\\update-dll-mingw',
-\     'cygwin' : 'make -f make_cygwin.mak',
-\     'mac' : 'make -f make_mac.mak',
-\     'linux' : 'make',
-\     'unix' : 'gmake',
-\    },
-\ }
-
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+Plugin 'VundleVim/Vundle.vim'
 " Indentation && gutter plugins 
-NeoBundle 'myusuf3/numbers.vim'
+Plugin 'myusuf3/numbers.vim'
 let g:numbers_exclude = ['nerdtree']
 "Sets my pretty indentation bars and their colors
-NeoBundle 'nathanaelkane/vim-indent-guides'
+Plugin 'nathanaelkane/vim-indent-guides'
 let g:indent_guides_enable_on_vim_startup = 1
 let g:indent_guides_start_level = 2
 let g:indent_guides_guide_size = 1
@@ -100,13 +85,13 @@ autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=#666666 ctermbg=235
 
 
 " Searching/Navigation
-NeoBundle 'scrooloose/nerdtree'
+Plugin 'scrooloose/nerdtree'
 let g:NERDTreeRespectWildIgnore=1
-NeoBundle 'kien/ctrlp.vim'
-NeoBundle 'majutsushi/tagbar'
+Plugin 'kien/ctrlp.vim'
+Plugin 'majutsushi/tagbar'
 
 " Small utility plugins
-NeoBundle 'Lokaltog/vim-easymotion'
+Plugin 'Lokaltog/vim-easymotion'
 hi EasyMotionTarget ctermbg=cyan ctermfg=black
 hi EasyMotionShade  ctermbg=cyan ctermfg=black
 hi EasyMotionTarget2First ctermbg=cyan ctermfg=yellow
@@ -119,41 +104,41 @@ map  n <Plug>(easymotion-next)
 map  N <Plug>(easymotion-prev)
 :let g:EasyMotion_keys='arstdhneioqwfpgjluy;zxcvbkm'
 hi link EasyMotionTarget Cursor
-NeoBundle 'christoomey/vim-tmux-navigator'
-NeoBundle 'Raimondi/delimitMate'
-NeoBundle 'xolox/vim-misc'
-NeoBundle 'xolox/vim-session'
+Plugin 'christoomey/vim-tmux-navigator'
+Plugin 'Raimondi/delimitMate'
+Plugin 'xolox/vim-misc'
+Plugin 'xolox/vim-session'
 let g:session_autosave='no'
 let g:session_autoload='no'
-NeoBundle 'rizzatti/dash.vim'
+Plugin 'rizzatti/dash.vim'
 
 " Apparently a shrine to tpope
-NeoBundle 'tpope/vim-surround'
-NeoBundle 'tpope/vim-commentary'
-NeoBundle 'tpope/vim-repeat'
-NeoBundle 'tpope/vim-dispatch'
-NeoBundle 'tpope/vim-fugitive'
-NeoBundle 'tpope/vim-abolish'
-NeoBundle 'mileszs/ack.vim'
+Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-commentary'
+Plugin 'tpope/vim-repeat'
+Plugin 'tpope/vim-dispatch'
+Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-abolish'
+Plugin 'mileszs/ack.vim'
 
 " Additional Syntax
-NeoBundle 'ekalinin/Dockerfile.vim'
+Plugin 'ekalinin/Dockerfile.vim'
 au BufRead *.twig set filetype=html
 au BufRead *.md set filetype=markdown
-NeoBundle 'nelstrom/vim-markdown-folding'
+Plugin 'nelstrom/vim-markdown-folding'
 let g:markdown_fold_style='nested'
 
 " Enable omnicompletion
-NeoBundle 'Valloric/YouCompleteMe'
-NeoBundle 'ervandew/supertab'
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'ervandew/supertab'
 let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
 let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
 let g:SuperTabDefaultCompletionType='<C-n>'
-NeoBundle 'mattn/emmet-vim'
-NeoBundle 'xsbeats/vim-blade'
-NeoBundle 'rodjek/vim-puppet'
-NeoBundle 'elixir-lang/vim-elixir'
-NeoBundle 'shawncplus/phpcomplete.vim'
+Plugin 'mattn/emmet-vim'
+Plugin 'xsbeats/vim-blade'
+Plugin 'rodjek/vim-puppet'
+Plugin 'elixir-lang/vim-elixir'
+Plugin 'shawncplus/phpcomplete.vim'
 set ofu=syntaxcomplete#Complete
 autocmd FileType php set omnifunc=phpcomplete#CompletePHP
 autocmd FileType phtml set omnifunc=phpcomplete#CompletePHP
@@ -165,28 +150,25 @@ autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
 autocmd FileType c set omnifunc=ccomplete#Complete
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 " Snippets
-NeoBundle 'SirVer/ultisnips'
+Plugin 'SirVer/ultisnips'
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsEditSplit="vertical"
 " Syntax linting
-NeoBundle 'scrooloose/syntastic'
+Plugin 'scrooloose/syntastic'
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_javascript_checkers = ["eslint"]
 let g:syntastic_php_checkers = ["php"]
 let g:syntastic_python_checkers = ["flake8"]
 " Debug
-NeoBundle 'joonty/vdebug'
+Plugin 'joonty/vdebug'
 let g:vdebug_options = {}
 let g:vdebug_options["port"] = 9000
 let g:vdebug_options["break_on_open"] = 0
+call vundle#end()            " required
 
-call neobundle#end()
-
-filetype plugin indent on
+filetype plugin indent on    " required
 syntax on
-
-NeoBundleCheck
 "====================KEYMAPPING===================
 "=================================================
 "Remapping for moving lines with gj or gk
