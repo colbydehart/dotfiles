@@ -70,7 +70,6 @@ filetype off                  " required
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
-Plugin 'Shougo/vimproc.vim'
 " Indentation && gutter plugins 
 Plugin 'myusuf3/numbers.vim'
 let g:numbers_exclude = ['nerdtree']
@@ -113,13 +112,12 @@ let g:session_autoload='no'
 Plugin 'rizzatti/dash.vim'
 
 " Apparently a shrine to tpope
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-commentary'
-Plugin 'tpope/vim-repeat'
-Plugin 'tpope/vim-dispatch'
-Plugin 'tpope/vim-fugitive'
-Plugin 'tpope/vim-abolish'
-Plugin 'mileszs/ack.vim'
+Plugin 'tpope/vim-surround' " Change surroundings like '' () 
+Plugin 'tpope/vim-fugitive' " Amazing git wrapper
+Plugin 'tpope/vim-commentary' " Automatically comment with gcc
+Plugin 'tpope/vim-repeat' " let . repeat apply to weird stuff
+Plugin 'tpope/vim-abolish' " Does a bunch of weird substitution stuff.
+Plugin 'tpope/vim-dispatch' " I don't even know, dispatches stuff?
 
 " Additional Syntax
 Plugin 'ekalinin/Dockerfile.vim'
@@ -128,18 +126,16 @@ au BufRead *.twig set filetype=html
 au BufRead *.md set filetype=markdown
 Plugin 'nelstrom/vim-markdown-folding'
 let g:markdown_fold_style='nested'
-
-" Enable omnicompletion
-Plugin 'ervandew/supertab'
-Plugin 'klen/python-mode'
-Plugin 'm2mdas/phpcomplete-extended'
-let g:SuperTabDefaultCompletionType = '<C-Tab>'
-Plugin 'mattn/emmet-vim'
 Plugin 'xsbeats/vim-blade'
 Plugin 'rodjek/vim-puppet'
 Plugin 'elixir-lang/vim-elixir'
 Plugin 'shawncplus/phpcomplete.vim'
-Plu<t_ü>    
+Plugin 'klen/python-mode'
+
+" Enable omnicompletion
+Plugin 'ervandew/supertab.git'
+let g:SuperTabDefaultCompletionType = "context"
+Plugin 'mattn/emmet-vim'
 autocmd FileType php set omnifunc=phpcomplete#CompletePHP
 autocmd FileType python set omnifunc=pythoncomplete#Complete
 autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
