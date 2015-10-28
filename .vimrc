@@ -70,6 +70,7 @@ filetype off                  " required
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
+Plugin 'Shougo/vimproc.vim'
 " Indentation && gutter plugins 
 Plugin 'myusuf3/numbers.vim'
 let g:numbers_exclude = ['nerdtree']
@@ -122,6 +123,7 @@ Plugin 'mileszs/ack.vim'
 
 " Additional Syntax
 Plugin 'ekalinin/Dockerfile.vim'
+Plugin 'pearofducks/ansible-vim'
 au BufRead *.twig set filetype=html
 au BufRead *.md set filetype=markdown
 Plugin 'nelstrom/vim-markdown-folding'
