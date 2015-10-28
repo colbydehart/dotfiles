@@ -130,7 +130,7 @@ Plugin 'xsbeats/vim-blade'
 Plugin 'rodjek/vim-puppet'
 Plugin 'elixir-lang/vim-elixir'
 Plugin 'shawncplus/phpcomplete.vim'
-Plugin 'klen/python-mode'
+Plugin 'davidhalter/jedi-vim'
 
 " Enable omnicompletion
 Plugin 'ervandew/supertab.git'
@@ -166,6 +166,8 @@ filetype plugin indent on    " required
 syntax on
 "====================KEYMAPPING===================
 "=================================================
+"Autocomplete
+imap <C-Space> <C-x><C-o>
 "Remapping for moving lines with gj or gk
 nnoremap gj :m .+1<CR>
 nnoremap gk :m .-2<CR>
