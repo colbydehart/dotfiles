@@ -73,6 +73,8 @@ Plugin 'VundleVim/Vundle.vim'
 " Indentation && gutter plugins 
 Plugin 'myusuf3/numbers.vim'
 let g:numbers_exclude = ['nerdtree']
+Plugin 'luochen1990/rainbow'
+let g:rainbow_active = 1
 "Sets my pretty indentation bars and their colors
 Plugin 'nathanaelkane/vim-indent-guides'
 let g:indent_guides_enable_on_vim_startup = 1
