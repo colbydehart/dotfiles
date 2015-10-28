@@ -5,7 +5,6 @@ set t_Co=256                    "Colors
 colo xoria256                   "Colorscheme
 set guifont=PT\ Mono:h18        "Beautiful beautiful fonts
 set ruler                       "Show the line and column in bottom right
-set clipboard=unnamed           "Use X11 clipboard for yanks and puts
 set mouse=a                     "Use the mouse for resizing windows
 set number                      "Show line numbers
 set ls=2                        "Show status line
@@ -129,19 +128,17 @@ Plugin 'nelstrom/vim-markdown-folding'
 let g:markdown_fold_style='nested'
 
 " Enable omnicompletion
-Plugin 'Valloric/YouCompleteMe'
 Plugin 'ervandew/supertab'
-let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
-let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
-let g:SuperTabDefaultCompletionType='<C-n>'
+Plugin 'klen/python-mode'
+Plugin 'm2mdas/phpcomplete-extended'
+let g:SuperTabDefaultCompletionType = '<C-Tab>'
 Plugin 'mattn/emmet-vim'
 Plugin 'xsbeats/vim-blade'
 Plugin 'rodjek/vim-puppet'
 Plugin 'elixir-lang/vim-elixir'
 Plugin 'shawncplus/phpcomplete.vim'
-set ofu=syntaxcomplete#Complete
+Plu<t_ü>    
 autocmd FileType php set omnifunc=phpcomplete#CompletePHP
-autocmd FileType phtml set omnifunc=phpcomplete#CompletePHP
 autocmd FileType python set omnifunc=pythoncomplete#Complete
 autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType html,markdown set omnifunc=htmlcomplete#CompleteTags
