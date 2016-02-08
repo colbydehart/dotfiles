@@ -14,9 +14,9 @@ alias xclip="xclip -selection c"
 alias cl=clear
 
 # Use vim 7.4
-alias vim="nvim"
 alias la='ls -la'
 # git grep
 alias gag="git --no-pager grep --heading --break --line-number"
 
 alias haz="http icanhazip.com"
+alias myip="ifconfig | grep en0 -A 3 | grep \"inet \" | cut -d \" \" -f 2 | pbcopy"

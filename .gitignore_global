@@ -51,6 +51,7 @@ Session.vim
 .envrc
 *.sublime-project
 node_modules
+.vagrant
 
 # Elixir
 #############
@@ -64,6 +65,8 @@ _build
 
 # Emacs
 #############
+.#*
+.tern-port
 GTAGS
 GRTAGS
 GPATH

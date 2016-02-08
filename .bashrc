@@ -1,15 +1,17 @@
-
 . ~/.bash_aliases
 . ~/.git-prompt.sh
 
-export EDITOR="vim"
+export EDITOR="emacs"
 export ANDROID_HOME=/usr/local/opt/android-sdk
 export WORKON_HOME=~/envs
-# export NVIM_TUI_ENABLE_TRUE_COLOR=1
+export GTAGSLABEL="ctags"
+export GTAGSCONF=~/.globalrc
 
 export PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
-
-. /usr/local/bin/virtualenvwrapper.sh
+# Elixir mix autocomplete
+. ~/.mix_ac.sh
+# virtual envs for python
+# . /usr/local/bin/virtualenvwrapper.sh
 
 #borrowed from Jason Meyers who borrowed from MITSUHIKO
 MY_DEFAULT_COLOR="[97m"
@@ -24,12 +26,6 @@ export MY_BASEPROMPT='\e${MY_DEFAULT_COLOR}\u\
 export PS1="${MY_BASEPROMPT}
 $ "
 
-# Kill em all
-# [[ $TERM != "screen" ]] && exec tmux attach -d
-
-# fix for neovim
-# infocmp $TERM | sed 's/kbs=^[hH]/kbs=\\177/' > $TERM.ti
-# tic $TERM.ti
-export PYTHONPATH=/lib/python2.7/site-packages/
+# export PYTHONPATH=/lib/python2.7/site-packages/
 
 eval "$(direnv hook bash)"
