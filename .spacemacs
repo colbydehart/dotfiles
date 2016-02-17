@@ -37,17 +37,18 @@ values."
      (shell :variables
             shell-default-height 30
             shell-default-position 'bottom)
-     eyebrowse
+     spacemacs-layouts
      colors
+     rcirc
      restclient
      dash
      (syntax-checking :variables
         syntax-checking-enable-tooltips nil)
      elixir
      php
-     debug
      html
      javascript
+     react
      python
      django
      csharp
@@ -98,13 +99,13 @@ values."
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(zenburn
-                         whiteboard)
+                         spacmacs-light)
    ;; If non nil the cursor color matches the state color.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
    ;; size to make separators look not too crappy.
    dotspacemacs-default-font '("Fira Code"
-                               :size 18
+                               :size 16
                                :weight normal
                                :width normal
                                :powerline-scale 1.1)
@@ -167,7 +168,7 @@ values."
    ;; If non nil the frame is maximized when Emacs starts up.
    ;; Takes effect only if `dotspacemacs-fullscreen-at-startup' is nil.
    ;; (default nil) (Emacs 24.4+ only)
-   dotspacemacs-maximized-at-startup t
+   dotspacemacs-maximized-at-startup nil
    ;; A value from the range (0..100), in increasing opacity, which describes
    ;; the transparency level of a frame when it's active or selected.
    ;; Transparency can be toggled through `toggle-transparency'. (default 90)
@@ -214,15 +215,13 @@ user code."
 layers configuration. You are free to put any user code."
   (setq paradox-github-token "1d7fd548d6b5cd42ca849bc452482911b634e0f5")
   (setq org-capture-templates
-        '(("t" "Todo" entry (file+headline "~/org/gtd.org" "Inbox")
+        '(("t" "Todo" entry (file+headline "~/org/gtd.org" "inbox")
            "* TODO %?\n %F")
           ("j" "Journal" entry (file+datetree "~/org/journal.org")
            "* %?\nEntered on %U %i")))
   (set-default-font "Fira Code")
   (mac-auto-operator-composition-mode)
   ;; keybindings
-  (define-key evil-normal-state-map (kbd "H") 'eyebrowse-last-window-config)
-  (define-key evil-normal-state-map (kbd "L") 'eyebrowse-next-window-config)
   (define-key evil-normal-state-map (kbd "g r") 'helm-gtags-find-rtag)
   (evil-leader/set-key "aa" 'org-capture)
 )
@@ -242,17 +241,11 @@ layers configuration. You are free to put any user code."
  '(flycheck-disabled-checkers (quote (drupal-phpcs)))
  '(flycheck-phpcs-standard "PSR2")
  '(js2-basic-offset 2)
+ '(json-reformat:indent-width 2)
  '(omnisharp-server-executable-path "~/.omnisharp")
  '(org-agenda-files
    (quote
     ("/Users/colby/org/gtd.org" "/Users/colby/org/misc.org" "/Users/colby/org/journal.org")))
  '(org-default-notes-file "~/org/gtd.org")
  '(projectile-tags-command "ctags \"%s\" %s"))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:foreground "#DCDCCC" :background "#3F3F3F"))))
- '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
- '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil)))))
+(custom-set-faces )

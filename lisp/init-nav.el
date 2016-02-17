@@ -1,5 +1,6 @@
 (use-package helm
   :config
+  (global-set-key (kbd "M-x") 'helm-M-x)
   (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action))
   (define-key helm-map (kbd "C-h")  nil)
   (define-key helm-map (kbd "C-h")  'open-file-in-split)
@@ -14,7 +15,6 @@
 (use-package helm-ag)
 (use-package neotree
   :init
-  (setq projectile-switch-project-action 'neotree-projectile-action)
   (evil-define-key 'normal neotree-mode-map
     "o" 'neotree-enter
     "-" 'neotree-enter-horizontal-split
@@ -37,5 +37,6 @@
 (use-package ggtags
   :init
   (define-key evil-normal-state-map (kbd "g d") 'ggtags-find-tag-dwim))
+(use-package vagrant-tramp)
 
 (provide 'init-nav)

@@ -38,4 +38,17 @@ Don't mess with special buffers."
     (unless (or (eql buffer (current-buffer)) (not (buffer-file-name buffer)))
       (kill-buffer buffer))))
 
+(defun toggle-maximize-buffer ()
+  "Toggle current buffer as maximized"
+  (interactive)
+  (if (and (= 1 (length (window-list)))
+           (assoc'_ register-alist))
+      (jump-to-register '_)
+    (progn
+      (window-configuration-to-register '_)
+      (delete-other-windows))))
+
+(global-set-key (kbd "C-x 0") 'toggle-maximize-buffer)
+
+
 (provide 'init-fun)
