@@ -13,6 +13,7 @@
 (use-package helm-projectile 
   :config (helm-projectile-on))
 (use-package helm-ag)
+(use-package dash-at-point)
 (use-package neotree
   :init
   (evil-define-key 'normal neotree-mode-map
@@ -22,21 +23,38 @@
 (use-package ace-jump-mode)
 (use-package iedit)
 (use-package evil-iedit-state)
-(use-package company
-  :init
-  (setq company-idle-delay 0)
-  :config
-  (define-key company-active-map (kbd "\C-n") 'company-select-next)
-  (define-key company-active-map (kbd "\C-p") 'company-select-previous)
-  (define-key company-active-map (kbd "\C-d") 'company-show-doc-buffer)
-  (define-key company-active-map (kbd "<tab>") 'company-complete)
-  (global-company-mode))
-(use-package helm-company)
 (use-package magit)
-(use-package evil-magit)
-(use-package ggtags
-  :init
-  (define-key evil-normal-state-map (kbd "g d") 'ggtags-find-tag-dwim))
-(use-package vagrant-tramp)
+(use-package evil-magit :config (add-hook 'magit-mode-hook 'evil-local-mode))
+;; Add d to magit ediff
+;; http://stackoverflow.com/questions/9656311/conflict-resolution-with-emacs-ediff-how-can-i-take-the-changes-of-both-version
+(defun ediff-copy-both-to-C ()
+  (interactive)
+  (ediff-copy-diff ediff-current-difference nil 'C nil
+                   (concat
+                    (ediff-get-region-contents ediff-current-difference 'A ediff-control-buffer)
+                    (ediff-get-region-contents ediff-current-difference 'B ediff-control-buffer))))
+(defun add-d-to-ediff-mode-map () (define-key ediff-mode-map "d" 'ediff-copy-both-to-C))
+(add-hook 'ediff-keymap-setup-hook 'add-d-to-ediff-mode-map)
 
+(use-package vagrant-tramp)
+(use-package flycheck :config (add-hook 'prog-mode-hook 'flycheck-mode))
+(setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc))
+(use-package yasnippet
+  :config
+  (yas-global-mode 1)
+  (evil-define-key 'insert 'prog-mode-map (kbd "C-SPC") 'company-yasnippet))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;AUTO COMPLETE;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package company
+  :config
+  (setq company-idle-delay 0.1)
+  (setq company-dabbrev-downcase nil)
+  (add-hook 'after-init-hook 'global-company-mode))
+(use-package helm-company
+  :config
+  (define-key company-mode-map (kbd "C-;") 'helm-company)
+  (define-key company-active-map (kbd "C-;") 'helm-company))
+(use-package company-quickhelp :init (add-hook 'company-mode-hook 'company-quickhelp-mode))
+(use-package ggtags)
 (provide 'init-nav)

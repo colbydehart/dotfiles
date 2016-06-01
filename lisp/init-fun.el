@@ -30,6 +30,13 @@
      (elscreen-create)
      (find-file file))))
 
+(defun open-term-split ()
+  (interactive)
+  (split-window-vertically)
+  (windmove-down)
+  (shrink-window (/ (window-height (next-window)) 2))
+  (term "/bin/bash"))
+
 (defun kill-other-buffers ()
   "Kill all buffers but the current one.
 Don't mess with special buffers."
@@ -47,8 +54,6 @@ Don't mess with special buffers."
     (progn
       (window-configuration-to-register '_)
       (delete-other-windows))))
-
-(global-set-key (kbd "C-x 0") 'toggle-maximize-buffer)
 
 
 (provide 'init-fun)

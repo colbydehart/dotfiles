@@ -11,63 +11,52 @@
   (setq org-use-fast-todo-selection t)
   :config 
   (set-face-attribute 'org-column nil :foreground "#666666"))
-
 ;; Evil org stuff, I don't really like evil-org package
-(add-hook
- 'org-mode-hook
- (lambda ()
-   (evil-leader/set-key
-     "a"  'org-agenda)
-   (evil-leader/set-key-for-mode 'org-mode
-     "mt"  'org-show-todo-tree
-     "ml"  'evil-org-open-links
-     "mo"  'evil-org-recompute-clocks)
-   (evil-define-key 'normal org-agenda-mode-map
-     "e" 'org-agenda-set-effort
-     "t" 'org-agenda-todo
-     "c" 'org-agenda-columns
-     "i" 'org-agenda-clock-in
-     "o" 'org-agenda-clock-out
-     "q" 'org-agenda-quit)
-   (evil-define-key 'normal org-mode-map
-     "$" 'org-archive-subtree
-     "^" 'org-beginning-of-line
-     "gl" 'org-agenda-open-link
-     "O" 'org-insert-heading
-     "o" 'org-insert-heading-after-current
-     "H" 'org-shiftleft
-     "J" 'org-shiftdown
-     "K" 'org-shiftup
-     "L" 'org-shiftright
-     "<" 'org-metaleft
-     ">" 'org-metaright
-     "t" 'org-todo
-     (kbd "<tab>") 'org-cycle
-     (kbd "M-h") 'elscreen-previous
-     (kbd "M-l") 'evil-tabs-goto-tab)
-   (evil-define-key 'insert org-mode-map
-     (kbd "M-l") 'org-metaright
-     (kbd "M-h") 'org-metaleft)
-   (which-key-declare-prefixes "SPC m" "Org")))
-                           
-
+(leader-for-mode 'org-mode
+    "t"  'org-show-todo-tree
+    "l"  'evil-org-open-links
+    "j" (lambda () (interactive) (find-file "~/org/journal.org"))
+    "o"  'evil-org-recompute-clocks)
+(evil-define-key 'normal org-agenda-mode-map
+    "e" 'org-agenda-set-effort
+    "t" 'org-agenda-todo
+    "c" 'org-agenda-columns
+    "i" 'org-agenda-clock-in
+    "m" 'org-agenda-month-view
+    "o" 'org-agenda-clock-out
+    "q" 'org-agenda-quit)
+(evil-define-key 'normal org-mode-map
+    "$" 'org-archive-subtree
+    "^" 'org-beginning-of-line
+    "gl" 'org-open-at-point
+    "O" 'org-insert-heading
+    "o" 'org-insert-heading-after-current
+    "H" 'org-shiftleft
+    "J" 'org-shiftdown
+    "K" 'org-shiftup
+    "L" 'org-shiftright
+    "<" 'org-metaleft
+    ">" 'org-metaright
+    "t" 'org-todo
+    "q" 'org-set-tags-command
+    (kbd "<tab>") 'org-cycle
+    (kbd "M-h") 'elscreen-previous
+    (kbd "M-l") 'evil-tabs-goto-tab)
+(evil-define-key 'insert org-mode-map
+    (kbd "M-l") 'org-metaright
+    (kbd "M-h") 'org-metaleft)
+;; Beautiful bullets
 (use-package org-bullets
   :defer t
   :init
   (add-hook 'org-mode-hook 'org-bullets-mode)
   (setq org-bullets-bullet-list '("☯" "♫" "♜"  "⚡" "☢")))
-
-(use-package org-pomodoro
-  :defer t
-  :init (setq org-pomodoro-audio-player "/usr/bin/afplay"))
-
 ;; Templates for org-capture
 (setq org-capture-templates
         '(("t" "Todo" entry (file+headline "~/org/gtd.org" "Tasks")
            "* TODO %^{Brief Description} %^g\n    Added: %U %F")
           ("j" "Journal" entry (file+datetree "~/org/journal.org")
            "* %? %^g\nEntered on %U %i")))
-
 ;; Custom agenda commands
 (setq org-agenda-custom-commands
       '(
@@ -77,12 +66,12 @@
          ((agenda)
           (tags-todo "office")
           (tags-todo "laptop")
+          (tags-todo "home")
           (tags-todo "read")))
         ("d" "Daily Action List"
-         (
-          (agenda "" ((org-agenda-ndays 1)
+         ((agenda "" ((org-agenda-ndays 1)
                       (org-agenda-sorting-strategy
                        (quote ((agenda time-up priority-down tag-up) )))
                       (org-deadline-warning-days 0)))))))
-        
 (provide 'init-org)
+

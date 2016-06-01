@@ -1,17 +1,19 @@
-(use-package php-mode
-  :mode ("\\.php\\'" . php-mode))
-(use-package php-extras
-  :defer t)
-(use-package geben
-  :defer t
-  :init
-  (add-hook 'php-mode-hook (lambda () (which-key-declare-prefixes "SPC m" "Php")))
-  (evil-leader/set-key-for-mode 'php-mode
-    "mdd" 'geben
-    "mdx" 'geben-end
-    "mdn" 'geben-step-over
-    "mdb" 'geben-set-breakpoint-line
-    "mdu" 'geben-unset-breakpoint-line
-    "mdc" 'geben-run))
+(leader-for-mode 'php-mode
+		 "d" 'ggtags-find-definition
+		 "r" 'ggtags-find-tag-dwim
+		 "t" 'ggtags-remake-tags)
+
+(use-package php-mode :mode ("\\.php\\'" . php-mode))
+(add-hook
+   'php-mode-hook
+   (lambda ()
+     (ggtags-mode 1)
+     (setq flycheck-phpcs-standard "PSR2")
+     (setq-local helm-dash-docsets '("PHP"))))
+
+;; quick arrow inserts
+(evil-define-key 'insert php-mode-map
+  (kbd "C--") (lambda () (interactive)
+		(insert "->")))
 
 (provide 'init-php)
