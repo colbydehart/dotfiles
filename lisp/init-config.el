@@ -11,6 +11,7 @@
       ;; No bell!
       visible-bell 1
       ;; Don't hide with M-h on mac
+      mac-pass-command-to-system nil
       ;; faster tramp with ssh
       tramp-default-method "ssh"
       ;; set backup and autosave directory
@@ -43,9 +44,8 @@
 (use-package yaml-mode :defer t)
 (use-package ansible :defer t)
 ;; cool theme
-(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
-(use-package color-theme-sanityinc-tomorrow)
-(load-theme 'sanityinc-tomorrow-eighties t)
+(add-to-list 'custom-theme-load-path "~/.emacs.d/lisp/themes/")
+(load-theme 'ample t)
 ;; nice term colors
 (ansi-color-for-comint-mode-on)
 ;; tight mode line
@@ -53,8 +53,11 @@
   :config
   (setq sml/no-confirm-load-theme t)
   (sml/setup))
+(use-package nyan-mode
+  :config (nyan-mode))
 ;; dope font
-(set-frame-font "Anonymice Powerline 16")
+(set-default-font "mononoki 16")
+
 ;; GLOBAL KEYBINDINGS
 ;; ------------------
 (global-set-key (kbd "C-c k") 'kill-other-buffers)

@@ -3,20 +3,32 @@
       rcirc-default-full-name "Cool Boy"
       rcirc-server-alist
       '(("irc.freenode.net"
-         :channels ("#emacs" "#python" "#elixir-lang"))
-        ("irc.snoonet.org"
-         :channels ("#StreetFighter"))))
+         :channels ("#ruby" "#javascript" "#python" "#elixir-lang"))
+        ))
 ;; Functions
-(defun helm-rcirc-channel-source ()
+(defun rcirc-channels ()
   (remove-if-not
    (lambda (x) (string-match "@irc" x)) (helm-buffer-list)))
+
+(defun format-channel (channel)
+  (string-match "[^#@]+" channel)
+  (match-string 0 channel))
+
 (defun helm-rcirc-channels ()
+  (mapcar (lambda (x) (cons (format-channel x) x)) (rcirc-channels)))
+(helm-rcirc-channels)
+
+(defvar helm-source-rcirc
+  '((name . "rcirc")
+    (fuzzy-match)
+    (candidates . helm-rcirc-channels)
+    (action .  (lambda (buf) (switch-to-buffer buf)))))
+
+(defun helm-rcirc ()
   (interactive)
   (helm :buffer "*helm: IRC Channels (rcirc)*"
-        :sources (helm-build-sync-source "rcirc"
-                   :candidates (helm-rcirc-channel-source)
-                   :action (lambda (x) (switch-to-buffer x))
-                   :fuzzy-match t)))
+        :sources '(helm-source-rcirc)))
+
 ;; Keybindings
 (evil-define-key 'emacs rcirc-mode-map
   (kbd "C-h") 'windmove-left

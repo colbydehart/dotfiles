@@ -1,6 +1,8 @@
 ;; (leader-for-mode 'js2-mode)
-(setq-default js2-basic-offset 4
-              sgml-basic-offset 4
+(setq-default js2-basic-offset 2
+              sgml-basic-offset 2
+              js-indent-level 2
+              json-reformat:indent-width 2
               js2-bounce-indent-p t)
 
 (use-package tern :defer t)
@@ -21,7 +23,9 @@
                              (flycheck-add-mode 'javascript-eslint 'js2-mode)
                              (emmet-mode 1)
                              (tern-mode 1))))
-(use-package json-mode :defer t)
+(use-package json-mode
+  :defer t
+  :config (setq js-indent-level 2))
 
 
 (provide 'init-javascript)

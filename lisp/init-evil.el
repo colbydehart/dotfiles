@@ -43,6 +43,8 @@
     "f" 'helm-find-files
     "ha" 'helm-apropos
     "hh" 'dash-at-point
+    "hk" 'describe-key
+    "hv" 'describe-variable
     "i" 'evil-iedit-state/iedit-mode
     "k" 'evil-tab-sensitive-quit
     "mk" 'bookmark-delete
@@ -62,6 +64,7 @@
     "sv" 'split-window-horizontally
     "t" 'open-term-split
     "w" 'save-buffer
+    "x" 'dired-jump
     "yf" 'yas-visit-snippet-file
     "yy" 'yas-new-snippet
     ";" 'neotree-toggle
@@ -83,16 +86,9 @@
     (define-key (symbol-value leadermap) (kbd key) def)
     (setq key (pop bindings) def (pop bindings))))
 
-(use-package bind-map
-  :config (cool/leader-init))
-
-
-(use-package evil-surround
-  :config (global-evil-surround-mode 1))
-
-(use-package evil-commentary
-  :ensure t
-  :config (evil-commentary-mode))
+(use-package bind-map :config (cool/leader-init))
+(use-package evil-surround :config (global-evil-surround-mode 1))
+(use-package evil-commentary :config (evil-commentary-mode))
 
 ;; Shell stuff
 (add-hook 'term-mode-hook
@@ -107,5 +103,23 @@
 	    (define-key term-raw-map (kbd "C-j") 'evil-window-down)
 	    (define-key term-raw-map (kbd "C-k") 'evil-window-up)
 	    (define-key term-raw-map (kbd "C-l") 'evil-window-right)))
+
+;;;;;;;;;;;;;DIRED;;;;;;;;;;;;;;;;
+(add-hook 'dired-mode-hook 'evil-mode)
+(defun cool/dired-up-directory ()
+  "Take dired up one directory, but behave like dired-find-alternate-file"
+  (interactive)
+  (let ((old (current-buffer)))
+    (dired-up-directory)
+    (kill-buffer old)))
+
+(evil-define-key 'normal dired-mode-map
+  "h" 'cool/dired-up-directory
+  "l" 'dired-find-alternate-file
+  "v" 'dired-toggle-marks
+  "c" 'dired-create-directory
+  "n" 'evil-search-next
+  "N" 'evil-search-previous
+  "q" 'kill-this-buffer)
 
 (provide 'init-evil)

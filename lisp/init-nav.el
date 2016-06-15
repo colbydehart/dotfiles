@@ -23,7 +23,14 @@
 (use-package ace-jump-mode)
 (use-package iedit)
 (use-package evil-iedit-state)
-(use-package magit)
+(defun nyan-run ()
+  "animate then stop nyan cat"
+  (interactive)
+  (nyan-start-animation)
+  (run-with-timer 5 nil 'nyan-stop-animation))
+(use-package magit
+  :config (add-hook 'magit-refresh-buffer-hook 'nyan-run))
+
 (use-package evil-magit :config (add-hook 'magit-mode-hook 'evil-local-mode))
 ;; Add d to magit ediff
 ;; http://stackoverflow.com/questions/9656311/conflict-resolution-with-emacs-ediff-how-can-i-take-the-changes-of-both-version
@@ -43,6 +50,22 @@
   :config
   (yas-global-mode 1)
   (evil-define-key 'insert 'prog-mode-map (kbd "C-SPC") 'company-yasnippet))
+;;;;;;;;;;;;;DIRED;;;;;;;;;;;;;;;;
+(defun cool/dired-up-directory ()
+  "Take dired up one directory, but behave like dired-find-alternate-file"
+  (interactive)
+  (let ((old (current-buffer)))
+    (dired-up-directory)
+    (kill-buffer old)))
+
+(evil-define-key 'normal dired-mode-map
+  "h" 'cool/dired-up-directory
+  "l" 'dired-find-alternate-file
+  "v" 'dired-toggle-marks
+  "c" 'dired-create-directory
+  "n" 'evil-search-next
+  "N" 'evil-search-previous
+  "q" 'kill-this-buffer)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;AUTO COMPLETE;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -57,4 +80,5 @@
   (define-key company-active-map (kbd "C-;") 'helm-company))
 (use-package company-quickhelp :init (add-hook 'company-mode-hook 'company-quickhelp-mode))
 (use-package ggtags)
+
 (provide 'init-nav)

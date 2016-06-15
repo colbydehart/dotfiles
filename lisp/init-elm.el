@@ -1,5 +1,4 @@
 (use-package elm-mode
-  :defer t
   :mode "\\.elm$"
   :init
   (add-hook 'elm-mode-hook (lambda ()
