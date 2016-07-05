@@ -15,7 +15,7 @@
   :init
   (add-to-list 'interpreter-mode-alist '("node" . js2–mode))
   (add-hook 'js2-mode-hook (lambda ()
-                             (setq-local dash–at-point-docset "javascript")
+                             (setq-local dash–at-point-docset "js")
                              (js2-mode-hide-warnings-and-errors)
                              (c-set-offset 'case-label '+)
                              (flycheck-mode 1)

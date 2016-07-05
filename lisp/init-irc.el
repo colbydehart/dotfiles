@@ -3,7 +3,7 @@
       rcirc-default-full-name "Cool Boy"
       rcirc-server-alist
       '(("irc.freenode.net"
-         :channels ("#ruby" "#javascript" "#python" "#elixir-lang"))
+         :channels ("#ruby" "#javascript" "#rust" "rust-beginners" "#clojure" "#elixir-lang" "#clojure-beginners"))
         ))
 ;; Functions
 (defun rcirc-channels ()

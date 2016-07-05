@@ -1,12 +1,22 @@
+(defun cool/cider-quit ()
+  (interactive)
+  (setq current-prefix-arg '(10))
+  (cider-quit))
+
 (which-key-declare-prefixes-for-mode 'clojure-mode
-  ",c" "Cider")
-(leader-for-mode 'clojure-mode
-                 "b" 'cider-eval-buffer
-                 "cc" 'cider-jack-in
-                 "ck" 'cider-load-buffer
+  ",e" "Eval"
+  ",t" "Tests")
+(leader-for-mode 'clojure-mode 
+                 "c" 'cider-jack-in
+                 "b" 'cider-load-buffer
                  "d" 'cider-doc
+                 "eb" 'cider-eval-buffer
+                 "er" 'cider-eval-region
                  "l" 'cider-eval-last-sexp
-                 "n" 'cider-repl-set-ns)
+                 "n" 'cider-repl-set-ns
+                 "q" 'cool/cider-quit
+                 "r" 'cider-refresh
+                 "tt" 'cider-test-run-project-tests)
 
 (use-package clojure-mode :defer t)
 (use-package cider
@@ -18,5 +28,7 @@
   (define-key cider-repl-mode-map (kbd "C-l") 'windmove-right)
   (define-key cider-repl-mode-map (kbd "M-h") 'elscreen-previous)
   (define-key cider-repl-mode-map (kbd "M-l") 'evil-tabs-goto-tab))
+
+(add-hook 'clojure-mode-hook (lambda () (setq-local dash–at-point-docset "clj")))
 
 (provide 'init-clojure)

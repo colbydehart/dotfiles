@@ -7,5 +7,5 @@
    'rust-mode-hook
    (lambda ()
      (racer-mode 1)
-     (setq-local helm-dash-docsets "Rust"))))
+     (setq-local helm-dash-docsets "rust"))))
 (provide 'init-rust)

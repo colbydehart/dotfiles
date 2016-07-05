@@ -8,6 +8,7 @@
 		 "tt" 'rspec-toggle-spec-and-target
 		 "ta" 'rspec-verify-all)
 (use-package rspec-mode :defer t)
+(use-package ruby-end :defer t)
 (use-package projectile-rails :defer t)
 (use-package flymake-ruby :defer t)
 (use-package ruby-electric :defer t)
@@ -20,11 +21,12 @@
 
 
 (defun cool/ruby-hook ()
-   (robe-mode)
-   (rspec-mode)
-   (ruby-electric-mode)
-   (projectile-rails-mode)
-   (flymake-ruby-load))
+  (setq-local dash–at-point-docset "ruby")
+  (robe-mode)
+  (rspec-mode)
+  (ruby-electric-mode)
+  (projectile-rails-mode)
+  (flymake-ruby-load))
 
 (add-hook 'enh-ruby-mode-hook 'cool/ruby-hook)
 (provide 'init-ruby)

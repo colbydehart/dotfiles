@@ -13,6 +13,8 @@
   (define-key evil-normal-state-map (kbd "C-k") 'evil-window-up)
   (define-key evil-normal-state-map (kbd "C-l") 'evil-window-right))
 
+
+
 (use-package evil-tabs
   :ensure t
   :config
@@ -42,10 +44,11 @@
     "c" 'org-capture
     "f" 'helm-find-files
     "ha" 'helm-apropos
+    "hf" 'describe-function
     "hh" 'dash-at-point
     "hk" 'describe-key
     "hv" 'describe-variable
-    "i" 'evil-iedit-state/iedit-mode
+    "i" 'helm-imenu
     "k" 'evil-tab-sensitive-quit
     "mk" 'bookmark-delete
     "mc" 'bookmark-set
@@ -62,7 +65,8 @@
     "p;" 'neotree-projectile-action
     "sh" 'split-window-vertically
     "sv" 'split-window-horizontally
-    "t" 'open-term-split
+    "t" 'open-term-split 
+    "v" 'evil-iedit-state/iedit-mode
     "w" 'save-buffer
     "x" 'dired-jump
     "yf" 'yas-visit-snippet-file
@@ -90,19 +94,28 @@
 (use-package evil-surround :config (global-evil-surround-mode 1))
 (use-package evil-commentary :config (evil-commentary-mode))
 
-;; Shell stuff
+;;;;;;;;;;;;;;;;;;;TERM;;;;;;;;;;;;;;;;;
+(use-package multi-term
+  :config
+  (defun term-send-tab ()
+    (interactive)
+    (term-send-raw-string "\t"))
+  (add-to-list 'term-bind-key-alist '("C-y" . term-paste))
+  (add-to-list 'term-bind-key-alist '("C-o" . multi-term-prev))
+  (add-to-list 'term-bind-key-alist '("C-i" . multi-term-next))
+  (add-to-list 'term-bind-key-alist '("C-h" . evil-window-left))
+  (add-to-list 'term-bind-key-alist '("C-j" . evil-window-down))
+  (add-to-list 'term-bind-key-alist '("C-k" . evil-window-up))
+  (add-to-list 'term-bind-key-alist '("C-l" . evil-window-right))
+  (add-to-list 'term-bind-key-alist '("<tab>" . term-send-tab))
+  (add-to-list 'term-bind-key-alist '("M-x" . helm-M-x)))
+
 (add-hook 'term-mode-hook
-	  (lambda ()
+          (lambda ()
             (yas-minor-mode -1)
 	    (evil-mode)
 	    (evil-emacs-state 1)
-            (linum-mode -1)
-	    (define-key term-raw-map (kbd "M-x") 'helm-M-x)
-	    (define-key term-raw-map (kbd "C-y") 'term-paste)
-	    (define-key term-raw-map (kbd "C-h") 'evil-window-left)
-	    (define-key term-raw-map (kbd "C-j") 'evil-window-down)
-	    (define-key term-raw-map (kbd "C-k") 'evil-window-up)
-	    (define-key term-raw-map (kbd "C-l") 'evil-window-right)))
+            (linum-mode -1)))
 
 ;;;;;;;;;;;;;DIRED;;;;;;;;;;;;;;;;
 (add-hook 'dired-mode-hook 'evil-mode)
@@ -114,6 +127,7 @@
     (kill-buffer old)))
 
 (evil-define-key 'normal dired-mode-map
+  (kbd "TAB") (lambda () (interactive) (term-send-raw-string "\t"))
   "h" 'cool/dired-up-directory
   "l" 'dired-find-alternate-file
   "v" 'dired-toggle-marks

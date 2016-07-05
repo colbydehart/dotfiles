@@ -9,6 +9,13 @@
      (windmove-down)
      (find-file file))))
 
+(defun open-term-split ()
+  (interactive)
+  (split-window-vertically)
+  (windmove-down)
+  (shrink-window (/ (window-height (next-window)) 2))
+  (multi-term-next))
+
 (defun open-file-in-vsplit ()
   (interactive)
   "opens  in a new horizontal split"
@@ -29,13 +36,6 @@
 	 (setq file (buffer-file-name file)))
      (elscreen-create)
      (find-file file))))
-
-(defun open-term-split ()
-  (interactive)
-  (split-window-vertically)
-  (windmove-down)
-  (shrink-window (/ (window-height (next-window)) 2))
-  (term "/bin/bash"))
 
 (defun kill-other-buffers ()
   "Kill all buffers but the current one.

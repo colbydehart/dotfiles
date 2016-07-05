@@ -15,5 +15,10 @@ LP_PS1_POSTFIX="🙇 \n" source ~/liquidprompt/liquidprompt
 
 eval "$(direnv hook bash)"
 
+#Android stuff
+export ANDROID_HOME="/Users/colbydehart/Library/Android/sdk"
+
 #Update PATH
 export PATH=$PATH:$HOME/.cargo/bin
+export PATH="$PATH:./node_modules/.bin"
+export PATH="$PATH:/Users/colbydehart/Library/Android/sdk/tools:/Users/colbydehart/Library/Android/sdk/platform-tools"

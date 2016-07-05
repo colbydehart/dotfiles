@@ -24,12 +24,21 @@
   :init
   (setq alchemist-hooks-test-on-save t
 	alchemist-project-compile-when-needed t))
+(use-package ruby-end
+  :defer t
+  :init)
 
-(add-hook
- 'elixir-mode-hook
- (lambda ()
-   (company-quickhelp-mode nil)
+(defun cool/elixir-hook ()
+  (sp-with-modes '(elixir-mode)
+    (sp-local-pair "fn" "end"
+                   :when '(("SPC" "RET"))
+                   :actions '(insert navigate)))
    (alchemist-mode)
-   (setq-local dash–at-point-docset "elixir")))
+   (setq-local dash–at-point-docset "ex")
+   (set (make-variable-buffer-local 'ruby-end-expand-keywords-before-re) "\\(?:^\\|\\s-+\\)\\(?:do\\)")
+   (set (make-variable-buffer-local 'ruby-end-check-statement-modifiers) nil)
+   (ruby-end-mode +1))
+
+(add-hook 'elixir-mode-hook 'cool/elixir-hook)
 
 (provide 'init-elixir)

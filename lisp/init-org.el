@@ -64,9 +64,10 @@
          ((tags "project")))
         ("h" "Work and Home Lists"
          ((agenda)
-          (tags-todo "office")
-          (tags-todo "laptop")
           (tags-todo "home")
+          (tags-todo "laptop")
+          (tags-todo "project")
+          (tags-todo "office")
           (tags-todo "read")))
         ("d" "Daily Action List"
          ((agenda "" ((org-agenda-ndays 1)

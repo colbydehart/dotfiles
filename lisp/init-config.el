@@ -22,16 +22,33 @@
 (add-hook 'prog-mode-hook 'show-paren-mode)
 ;; Line numbers
 (add-hook 'prog-mode-hook 'linum-mode)
+(add-hook 'prog-mode-hook 'column-number-mode)
 ;; function hinting
 (add-hook 'prog-mode-hook 'turn-on-eldoc-mode)
 ;; Code folding
 (add-hook 'prog-mode-hook (lambda () (ignore-errors (hs-minor-mode))))
-;; Auto match pairs
-(electric-pair-mode 1)
 ;; show prefix key options in minibuffer
 (use-package which-key :config (which-key-mode))
 ;; Don't lose track of my indentation
 (use-package indent-guide :config (add-hook 'prog-mode-hook 'indent-guide-mode))
+;; Auto pair parens
+(use-package evil-cleverparens
+  :config
+  (add-hook 'prog-mode-hook 'evil-cleverparens-mode)
+  (evil-define-key 'insert evil-cleverparens-mode-map
+    (kbd "C-)") 'sp-forward-slurp-sexp
+    (kbd "C-(") 'sp-forward-barf-sexp
+    (kbd "C-}") 'sp-backward-barf-sexp
+    (kbd "C-{") 'sp-backward-slurp-sexp)
+  (dolist (state '(normal operator visual))
+    (evil-define-key state evil-cleverparens-mode-map
+      (kbd "M-h") 'elscreen-previous
+      (kbd "M-l") 'evil-tabs-goto-tab)))
+(use-package smartparens
+  :config
+  (require 'smartparens-config)
+  (add-hook 'prog-mode-hook 'turn-on-smartparens-mode)
+  (add-hook 'prog-mode-hook 'show-paren-mode))
 ;; Don't lose track of nested parens
 (use-package rainbow-delimiters :config (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 ;; Rest client for http requests
@@ -63,6 +80,7 @@
 (global-set-key (kbd "C-c k") 'kill-other-buffers)
 (global-set-key (kbd "C-c C-k") 'kill-buffer)
 (global-set-key (kbd "C-x 0") 'toggle-maximize-buffer)
+(global-set-key (kbd "TAB") nil)
 ;; I HATE THIS KEYBINDING
 (global-set-key (kbd "M-t") nil)
 

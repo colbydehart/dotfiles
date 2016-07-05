@@ -16,10 +16,11 @@
 (use-package dash-at-point)
 (use-package neotree
   :init
+  (setq neo-show-hidden-files t)
   (evil-define-key 'normal neotree-mode-map
     "o" 'neotree-enter
-    "-" 'neotree-enter-horizontal-split
-    "|" 'neotree-enter-vertical-split))
+    "C-h" 'neotree-enter-horizontal-split
+    "C-v" 'neotree-enter-vertical-split))
 (use-package ace-jump-mode)
 (use-package iedit)
 (use-package evil-iedit-state)
@@ -78,7 +79,6 @@
   :config
   (define-key company-mode-map (kbd "C-;") 'helm-company)
   (define-key company-active-map (kbd "C-;") 'helm-company))
-(use-package company-quickhelp :init (add-hook 'company-mode-hook 'company-quickhelp-mode))
 (use-package ggtags)
 
 (provide 'init-nav)
