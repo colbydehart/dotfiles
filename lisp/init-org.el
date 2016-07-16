@@ -53,7 +53,7 @@
   (setq org-bullets-bullet-list '("☯" "♫" "♜"  "⚡" "☢")))
 ;; Templates for org-capture
 (setq org-capture-templates
-        '(("t" "Todo" entry (file+headline "~/org/gtd.org" "Tasks")
+        '(("t" "Todo" entry (file+headline "~/org/gtd.org" "tasks")
            "* TODO %^{Brief Description} %^g\n    Added: %U %F")
           ("j" "Journal" entry (file+datetree "~/org/journal.org")
            "* %? %^g\nEntered on %U %i")))
@@ -64,10 +64,10 @@
          ((tags "project")))
         ("h" "Work and Home Lists"
          ((agenda)
+          (tags-todo "office")
           (tags-todo "home")
           (tags-todo "laptop")
           (tags-todo "project")
-          (tags-todo "office")
           (tags-todo "read")))
         ("d" "Daily Action List"
          ((agenda "" ((org-agenda-ndays 1)

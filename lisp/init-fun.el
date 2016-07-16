@@ -55,5 +55,10 @@ Don't mess with special buffers."
       (window-configuration-to-register '_)
       (delete-other-windows))))
 
+(defun turn-on-emacs-state ()
+	"turns on evil-emacs-state"
+	(evil-emacs-state t))
+
+
 
 (provide 'init-fun)

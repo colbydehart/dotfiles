@@ -4,8 +4,12 @@
 (scroll-bar-mode -1)
 ;; No time to type yes
 (fset 'yes-or-no-p 'y-or-n-p)
-;; No tabs!
-(setq-default indent-tabs-mode nil)
+;; YES TABS!!!
+(setq-default indent-tabs-mode t)
+(setq-default tab-width 2)
+(setq-default evil-shift-width 2)
+(setq-default require-final-newline nil)
+(add-hook 'prog-mode-hook (lambda () (setq require-final-newline nil)))
 ;; No splash screen
 (setq inhibit-splash-screen t
       ;; No bell!
@@ -32,23 +36,7 @@
 ;; Don't lose track of my indentation
 (use-package indent-guide :config (add-hook 'prog-mode-hook 'indent-guide-mode))
 ;; Auto pair parens
-(use-package evil-cleverparens
-  :config
-  (add-hook 'prog-mode-hook 'evil-cleverparens-mode)
-  (evil-define-key 'insert evil-cleverparens-mode-map
-    (kbd "C-)") 'sp-forward-slurp-sexp
-    (kbd "C-(") 'sp-forward-barf-sexp
-    (kbd "C-}") 'sp-backward-barf-sexp
-    (kbd "C-{") 'sp-backward-slurp-sexp)
-  (dolist (state '(normal operator visual))
-    (evil-define-key state evil-cleverparens-mode-map
-      (kbd "M-h") 'elscreen-previous
-      (kbd "M-l") 'evil-tabs-goto-tab)))
-(use-package smartparens
-  :config
-  (require 'smartparens-config)
-  (add-hook 'prog-mode-hook 'turn-on-smartparens-mode)
-  (add-hook 'prog-mode-hook 'show-paren-mode))
+(add-hook 'prog-mode-hook 'electric-pair-mode)
 ;; Don't lose track of nested parens
 (use-package rainbow-delimiters :config (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 ;; Rest client for http requests
@@ -60,6 +48,7 @@
   :config (setq-default tab-width 4))
 (use-package yaml-mode :defer t)
 (use-package ansible :defer t)
+(use-package dockerfile-mode :defer t)
 ;; cool theme
 (add-to-list 'custom-theme-load-path "~/.emacs.d/lisp/themes/")
 (load-theme 'ample t)
@@ -73,7 +62,7 @@
 (use-package nyan-mode
   :config (nyan-mode))
 ;; dope font
-(set-default-font "mononoki 16")
+(set-default-font "mononoki 18")
 
 ;; GLOBAL KEYBINDINGS
 ;; ------------------
