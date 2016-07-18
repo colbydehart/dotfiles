@@ -1,6 +1,6 @@
 ;; (leader-for-mode 'js2-mode)
 (setq-default js2-bounce-indent-p t
-							js2-basic-offset 2)
+              js2-basic-offset 2)
 
 (use-package tern :defer t)
 (use-package company-tern :config (add-to-list 'company-backends 'company-tern))

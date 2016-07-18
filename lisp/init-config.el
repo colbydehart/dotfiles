@@ -1,15 +1,18 @@
+;; per environment config
+(setq cool/use-tabs nil
+      cool/final-newline t)
 ;; No nothin', no how.
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
 ;; No time to type yes
 (fset 'yes-or-no-p 'y-or-n-p)
-;; YES TABS!!!
-(setq-default indent-tabs-mode t)
+;; Use tabs or dont
+(setq-default indent-tabs-mode cool/use-tabs)
 (setq-default tab-width 2)
 (setq-default evil-shift-width 2)
-(setq-default require-final-newline nil)
-(add-hook 'prog-mode-hook (lambda () (setq require-final-newline nil)))
+(setq-default require-final-newline cool/final-newline)
+(add-hook 'prog-mode-hook (lambda () (setq require-final-newline cool/final-newline)))
 ;; No splash screen
 (setq inhibit-splash-screen t
       ;; No bell!
