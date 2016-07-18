@@ -43,6 +43,7 @@
     "b" 'helm-mini
     "c" 'org-capture
     "f" 'helm-find-files
+    "g" 'magit-status
     "ha" 'helm-apropos
     "hf" 'describe-function
     "hh" 'dash-at-point
@@ -61,7 +62,6 @@
     "pp" 'helm-projectile-switch-project
     "pf" 'helm-projectile-find-file
     "pt" 'projectile-regenerate-tags
-    "pg" 'magit-status
     "p;" 'neotree-projectile-action
     "sh" 'split-window-vertically
     "sv" 'split-window-horizontally

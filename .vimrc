@@ -1,7 +1,7 @@
 "====================GENERAL====================== 
 "=================================================
 set number
-colo base
+colo desert
 set mouse=a
 set nobackup                    "No backups!
 set visualbell                  "No sounds!
