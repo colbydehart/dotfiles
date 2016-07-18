@@ -14,6 +14,7 @@
 (require 'init-python)
 (require 'init-rust)
 (require 'init-javascript)
+(require 'init-typescript)
 (require 'init-lisp)
 (require 'init-ruby)
 (require 'init-clojure)
