@@ -1,3 +1,10 @@
+(defun cool/lisp-hook ()
+  (turn-on-smartparens-strict-mode)
+  (prettify-symbols-mode)
+  (turn-on-smartparens-mode)
+  (show-paren-mode)
+  (evil-cleverparens-mode))
+
 (which-key-declare-prefixes-for-mode 'emacs-lisp-mode
   "s" "splice")
 (leader-for-mode 'emacs-lisp-mode
@@ -7,6 +14,7 @@
 (use-package smartparens
 	:defer t
 	:config
+  (require 'smartparens-config)
   (evil-define-key 'insert evil-cleverparens-mode-map
     (kbd "C-)") 'sp-forward-slurp-sexp
     (kbd "C-(") 'sp-forward-barf-sexp
@@ -19,20 +27,15 @@
 
 (use-package evil-cleverparens :defer t)
 
-(defun cool/lisp-hook ()
-  (turn-on-smartparens-strict-mode)
-  (prettify-symbols-mode)
-  (require 'smartparens-config)
-  (turn-on-smartparens-mode)
-  (show-paren-mode)
-  (evil-cleverparens-mode))
-  
-(add-hook 'emacs-lisp-mode-hook       'cool/lisp-hook)
-(add-hook 'eval-expression-minibuffer-setup-hook 'cool/lisp-hook)
-(add-hook 'ielm-mode-hook             'cool/lisp-hook)
-(add-hook 'clojure-mode-hook             'cool/lisp-hook)
-(add-hook 'lisp-mode-hook             'cool/lisp-hook)
-(add-hook 'lisp-interaction-mode-hook 'cool/lisp-hook)
-(add-hook 'scheme-mode-hook           'cool/lisp-hook)
+(dolist
+    (hook
+     '(emacs-lisp-mode-hook
+       eval-expression-minibuffer-setup-hook
+       ielm-mode-hook
+       clojure-mode-hook
+       lisp-mode-hook
+       lisp-interaction-mode-hook
+       scheme-mode-hook))
+  (add-hook hook 'cool/lisp-hook))
 
 (provide 'init-lisp)

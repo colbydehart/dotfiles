@@ -1,6 +1,7 @@
 (leader-for-mode 'web-mode
   "m" 'web-mode-tag-match
   "z" 'web-mode-fold-or-unfold)
+
 (use-package web-mode
   :mode ("\\.html\\'"
          "\\.tpl\\.php\\'"

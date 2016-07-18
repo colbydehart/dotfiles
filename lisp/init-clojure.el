@@ -1,3 +1,6 @@
+(defun cool/clojure-hook ()
+  (setq-local dash-at-point-docset "clj"))
+
 (defun cool/cider-quit ()
   (interactive)
   (setq current-prefix-arg '(10))
@@ -29,6 +32,5 @@
   (define-key cider-repl-mode-map (kbd "M-h") 'elscreen-previous)
   (define-key cider-repl-mode-map (kbd "M-l") 'evil-tabs-goto-tab))
 
-(add-hook 'clojure-mode-hook (lambda () (setq-local dash–at-point-docset "clj")))
-
+(add-hook 'clojure-mode-hook 'cool/clojure-hook) 
 (provide 'init-clojure)

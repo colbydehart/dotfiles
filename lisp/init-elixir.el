@@ -1,6 +1,22 @@
-(which-key-declare-prefixes-for-mode 'elixir-mode ",p" "Phoenix")
-(which-key-declare-prefixes-for-mode 'elixir-mode ",t" "Test")
-(which-key-declare-prefixes-for-mode 'elixir-mode ",e" "Eval")
+(defun cool/elixir-hook ()
+  (sp-with-modes '(elixir-mode)
+    (sp-local-pair "fn" "end"
+                   :when '(("SPC" "RET"))
+                   :actions '(insert navigate)))
+   (alchemist-mode)
+   (setq-local dash–at-point-docset "ex")
+   (set
+    (make-variable-buffer-local 'ruby-end-expand-keywords-before-re)
+    "\\(?:^\\|\\s-+\\)\\(?:do\\)")
+   (set
+    (make-variable-buffer-local 'ruby-end-check-statement-modifiers)
+    nil)
+   (ruby-end-mode +1))
+
+(which-key-declare-prefixes-for-mode 'elixir-mode
+  ",p" "Phoenix"
+  ",t" "Test"
+  ",e" "Eval")
 (leader-for-mode 'elixir-mode
                  "c" 'alchemist-mix-compile
                  "x" 'alchemist-mix
@@ -20,25 +36,11 @@
                  "pw" 'alchemist-phoenix-find-web)
 
 (use-package elixir-mode :defer t)
+(use-package ruby-end :defer t)
 (use-package alchemist :defer t
   :init
   (setq alchemist-hooks-test-on-save t
-	alchemist-project-compile-when-needed t))
-(use-package ruby-end
-  :defer t
-  :init)
-
-(defun cool/elixir-hook ()
-  (sp-with-modes '(elixir-mode)
-    (sp-local-pair "fn" "end"
-                   :when '(("SPC" "RET"))
-                   :actions '(insert navigate)))
-   (alchemist-mode)
-   (setq-local dash–at-point-docset "ex")
-   (set (make-variable-buffer-local 'ruby-end-expand-keywords-before-re) "\\(?:^\\|\\s-+\\)\\(?:do\\)")
-   (set (make-variable-buffer-local 'ruby-end-check-statement-modifiers) nil)
-   (ruby-end-mode +1))
+        alchemist-project-compile-when-needed t))
 
 (add-hook 'elixir-mode-hook 'cool/elixir-hook)
-
 (provide 'init-elixir)
