@@ -64,8 +64,9 @@
   (sml/setup))
 (use-package nyan-mode
   :config (nyan-mode))
-;; dope font
-(set-default-font "mononoki 18")
+;; dope font 
+(mac-auto-operator-composition-mode t)
+(set-default-font "Fira Code 18")
 
 ;; GLOBAL KEYBINDINGS
 ;; ------------------
