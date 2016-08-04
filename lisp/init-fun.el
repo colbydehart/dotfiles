@@ -29,13 +29,13 @@
 
 (defun open-file-in-screen ()
   (interactive)
-  "opens  in a new horizontal split"
+  "opens in a new tab"
   (helm-quit-and-execute-action
-   (lambda (file)
-     (if (bufferp file)
-	 (setq file (buffer-file-name file)))
-     (elscreen-create)
-     (find-file file))))
+	 (lambda (file)
+		 (if (bufferp file)
+				 (setq file (buffer-file-name file)))
+		 (elscreen-create)
+		 (find-file file))))
 
 (defun kill-other-buffers ()
   "Kill all buffers but the current one.
@@ -59,6 +59,11 @@ Don't mess with special buffers."
 	"turns on evil-emacs-state"
 	(evil-emacs-state t))
 
-
+(defun open-browser-in-tab (term)
+	"opens a w3m browser in a new tab"
+	(interactive
+	 (list (read-string "Enter search term: " nil nil)))
+	(elscreen-create)
+	(w3m-search-new-session "google" term))
 
 (provide 'init-fun)

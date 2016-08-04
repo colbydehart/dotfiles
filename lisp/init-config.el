@@ -1,6 +1,6 @@
 ;; per environment config
-(setq cool/use-tabs nil
-      cool/final-newline t)
+(setq cool/use-tabs t
+      cool/final-newline nil)
 ;; No nothin', no how.
 (tool-bar-mode -1)
 (menu-bar-mode -1)
@@ -45,6 +45,12 @@
 ;; Rest client for http requests
 (use-package restclient
   :init (add-hook 'restclient-mode-hook (lambda () (setq tab-width 2))))
+;; Web browser
+(use-package w3m :init
+  (setq )
+	(setq browse-url-browser-function 'w3m-goto-url-new-session)
+	(add-hook 'w3m-mode-hook 'w3m-lnum-mode)
+	(add-hook 'w3m-mode-hook 'evil-emacs-state))
 ;; Misc. language modes
 (use-package puppet-mode :defer t)
 (use-package toml-mode :defer t
@@ -52,6 +58,8 @@
 (use-package yaml-mode :defer t)
 (use-package ansible :defer t)
 (use-package dockerfile-mode :defer t)
+(use-package docker
+  :config (docker-global-mode))
 ;; cool theme
 (add-to-list 'custom-theme-load-path "~/.emacs.d/lisp/themes/")
 (load-theme 'ample t)

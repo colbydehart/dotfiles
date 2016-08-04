@@ -13,8 +13,6 @@
   (define-key evil-normal-state-map (kbd "C-k") 'evil-window-up)
   (define-key evil-normal-state-map (kbd "C-l") 'evil-window-right))
 
-
-
 (use-package evil-tabs
   :ensure t
   :config
@@ -35,7 +33,7 @@
     "SPC h" "Help"
     "SPC m" "Bookmark"
     "SPC o" "Org"
-    "SPC y" "Yasnippe"
+    "SPC y" "Yasnippet"
     "SPC oo" "gtd file"
     "SPC oo" "journal file")
   (bind-map-set-keys leader-map
@@ -71,6 +69,7 @@
     "x" 'dired-jump
     "yf" 'yas-visit-snippet-file
     "yy" 'yas-new-snippet
+    "z" `open-browser-in-tab
     ";" 'neotree-toggle
     ":" 'helm-M-x
     "/" 'helm-projectile-ag
@@ -82,10 +81,10 @@
   (setq leadermap (make-symbol (concat (symbol-name mode) "-leader")))
   (eval
    `(bind-map ,leadermap
-     :major-modes (,mode)
-     :keys ("M-m")
-     :evil-keys (",")
-     :evil-states (normal motion visual)))
+      :major-modes (,mode)
+      :keys ("M-m")
+      :evil-keys (",")
+      :evil-states (normal motion visual)))
   (while key
     (define-key (symbol-value leadermap) (kbd key) def)
     (setq key (pop bindings) def (pop bindings))))
@@ -113,8 +112,8 @@
 (add-hook 'term-mode-hook
           (lambda ()
             (yas-minor-mode -1)
-	    (evil-mode)
-	    (evil-emacs-state 1)
+            (evil-mode)
+            (evil-emacs-state 1)
             (linum-mode -1)))
 
 ;;;;;;;;;;;;;DIRED;;;;;;;;;;;;;;;;

@@ -1,4 +1,5 @@
 (defun cool/lisp-hook ()
+	(setq indent-tabs-mode nil)
   (turn-on-smartparens-strict-mode)
   (prettify-symbols-mode)
   (turn-on-smartparens-mode)
@@ -8,8 +9,8 @@
 (which-key-declare-prefixes-for-mode 'emacs-lisp-mode
   "s" "splice")
 (leader-for-mode 'emacs-lisp-mode
-                 "e" 'eval-buffer
-                 "r" 'eval-region)
+								 "e" 'eval-buffer
+								 "r" 'eval-region)
 
 (use-package smartparens
 	:defer t

@@ -3,22 +3,26 @@
 (load-file "~/secrets.el")
 (require 'cl)
 (require 'init-package)
-(require 'init-config)
 (require 'init-fun)
 (require 'init-evil)
-(require 'init-elixir)
-(require 'init-lisp)
-(require 'init-clojure)
-(require 'init-javascript)
-(require 'init-python)
-(require 'init-typescript)
-(require 'init-ruby)
-(require 'init-elm)
-(require 'init-rust)
+(require 'init-config)
 (require 'init-nav)
+
+(require 'init-lisp)
 (require 'init-irc)
 (require 'init-org)
 (require 'init-web)
+
+(require 'init-elixir)
+(require 'init-javascript)
+(require 'init-clojure)
+(require 'init-rust)
+
+(require 'init-ruby)
+(require 'init-python)
+(require 'init-typescript)
+(require 'init-elm)
+(require 'init-csharp)
 
 
 (custom-set-variables

@@ -7,6 +7,8 @@
   (append flycheck-disabled-checkers '(json-jsonlist))
   (flycheck-add-mode 'javascript-eslint 'js2-mode)
   (emmet-mode 1)
+  (setq emmet-expand-jsx-className? t)
+  (setq emmet-preferences)
   (tern-mode 1))
 
 (dolist (mode '(js2-mode js2-jsx-mode))
@@ -21,16 +23,16 @@
 (use-package js2-mode
   :defer t
   :mode
-  ("\\.js\\'" . js2-mode)
-  ("\\.jsx\\'" . js2-jsx-mode)
+  ("\\.jsx?\\'" . js2-jsx-mode)
   :init
   (setq-default js2-bounce-indent-p t
-                js2-basic-offset 2)
+                js2-basic-offset 2
+								js2-indent-switch-body t)
   (add-to-list 'interpreter-mode-alist '("node" . js2–mode)))
 (use-package js-doc :defer t)
 (use-package json-mode
   :defer t
   :config (setq js-indent-level 2))
 
-(add-hook 'js2-mode-hook 'cool/js-hook)
+(add-hook 'js2-jsx-mode-hook 'cool/js-hook)
 (provide 'init-javascript)
