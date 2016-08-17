@@ -1,6 +1,6 @@
 ;; per environment config
-(setq cool/use-tabs t
-      cool/final-newline nil)
+(setq cool/use-tabs nil
+      cool/final-newline t)
 ;; No nothin', no how.
 (tool-bar-mode -1)
 (menu-bar-mode -1)
@@ -33,11 +33,14 @@
 ;; function hinting
 (add-hook 'prog-mode-hook 'turn-on-eldoc-mode)
 ;; Code folding
-(add-hook 'prog-mode-hook (lambda () (ignore-errors (hs-minor-mode))))
+(add-hook 'prog-mode-hook (lambda () 'ignore-errors (hs-minor-mode)))
 ;; show prefix key options in minibuffer
 (use-package which-key :config (which-key-mode))
 ;; Don't lose track of my indentation
-(use-package indent-guide :config (add-hook 'prog-mode-hook 'indent-guide-mode))
+(use-package highlight-indent-guides
+  :config
+  (setq highlight-indent-guides-method 'character)
+  (add-hook 'prog-mode-hook 'highlight-indent-guides-mode))
 ;; Auto pair parens
 (add-hook 'prog-mode-hook 'electric-pair-mode)
 ;; Don't lose track of nested parens

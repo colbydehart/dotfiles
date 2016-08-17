@@ -1,26 +1,27 @@
-n(use-package evil
+(use-package evil
   :ensure t
-  :init
-  (setq evil-want-C-u-scroll t)
-  :config
-  (evil-mode t)
-  (define-key evil-normal-state-map (kbd "RET") 'helm-M-x)
-  (define-key evil-normal-state-map (kbd "C-w o") 'toggle-maximize-buffer)
-  (define-key evil-normal-state-map (kbd "C-o") 'previous-buffer)
-  (define-key evil-normal-state-map (kbd "C-i") 'next-buffer)
-  (define-key evil-normal-state-map (kbd "C-h") 'evil-window-left)
-  (define-key evil-normal-state-map (kbd "C-j") 'evil-window-down)
-  (define-key evil-normal-state-map (kbd "C-k") 'evil-window-up)
-  (define-key evil-normal-state-map (kbd "C-l") 'evil-window-right))
+  :init (setq evil-want-C-u-scroll t)
+  :config (evil-mode t)
+  :bind (:map evil-normal-state-map
+         ("C-w o" . toggle-maximize-buffer)
+         ("C-o" . previous-buffer)
+         ("C-i" . next-buffer)
+         ("C-h" . evil-window-left)
+         ("C-j" . evil-window-down)
+         ("C-k" . evil-window-up)
+         ("C-l" . evil-window-right)
+         :map evil-insert-state-map
+         ("C-n" . evil-next-line)
+         ("C-p" . evil-previous-line)))
 
 (use-package evil-tabs
-  :ensure t
-  :config
-  (define-key evil-normal-state-map (kbd "M-h") 'elscreen-previous)
-  (define-key evil-normal-state-map (kbd "M-l") 'evil-tabs-goto-tab)
-  (define-key evil-emacs-state-map (kbd "M-h") 'elscreen-previous)
-  (define-key evil-emacs-state-map (kbd "M-l") 'evil-tabs-goto-tab)
-  (global-evil-tabs-mode t))
+  :config (global-evil-tabs-mode t)
+  :bind (:map evil-normal-state-map
+         ("M-h" . elscreen-previous)
+         ("M-l" . evil-tabs-goto-tab)
+         :map evil-emacs-state-map
+         ("M-h" . elscreen-previous)
+         ("M-l" . evil-tabs-goto-tab)))
 
 (defun cool/leader-init ()
   (bind-map leader-map
@@ -63,7 +64,7 @@ n(use-package evil
     "p;" 'neotree-projectile-action
     "sh" 'split-window-vertically
     "sv" 'split-window-horizontally
-    "t" 'open-term
+    "t" 'term
     "v" 'evil-iedit-state/iedit-mode
     "w" 'save-buffer
     "x" 'dired-jump
@@ -95,7 +96,9 @@ n(use-package evil
 
 ;;;;;;;;;;;;;;;;;;;TERM;;;;;;;;;;;;;;;;;
 
-(use-package multi-term)
+(use-package multi-term
+  :bind (:map term-raw-map
+         ("M-x" . helm-M-x)))
 (eval-after-load 'evil-vars
   '(evil-set-initial-state 'term-mode 'emacs))
 (defun term-send-tab ()
@@ -125,7 +128,6 @@ n(use-package evil
     (kill-buffer old)))
 
 (evil-define-key 'normal dired-mode-map
-  (kbd "TAB") (lambda () (interactive) (term-send-raw-string "\t"))
   "h" 'cool/dired-up-directory
   "l" 'dired-find-alternate-file
   "v" 'dired-toggle-marks
@@ -133,5 +135,6 @@ n(use-package evil
   "n" 'evil-search-next
   "N" 'evil-search-previous
   "q" 'kill-this-buffer)
+
 
 (provide 'init-evil)

@@ -45,6 +45,7 @@ syntax on
 
 " Leader bindings
 nn <leader>; :NERDTreeToggle<CR>
+nn <leader>b :CtrlPBuffer<CR>
 nn <leader>f :CtrlP<CR>
 nn <leader>k ZZ
 nn <leader>n :tabe<CR>

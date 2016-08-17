@@ -1,4 +1,11 @@
+(defun cool/cider-quit ()
+  "Quit all Cider repls"
+  (interactive)
+  (setq current-prefix-arg '(10))
+  (cider-quit))
+
 (defun open-file-in-split ()
+  "Open file from helm selection in a horizontal split"
   (interactive)
   "opens  in a new horizontal split"
   (helm-quit-and-execute-action
@@ -8,11 +15,6 @@
      (split-window-vertically)
      (windmove-down)
      (find-file file))))
-
-(defun open-term ()
-  (interactive)
-  (elscreen-create)
-  (multi-term-next))
 
 (defun open-file-in-vsplit ()
   (interactive)

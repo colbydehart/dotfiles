@@ -46,7 +46,7 @@
 
 (use-package vagrant-tramp)
 (use-package flycheck :config (add-hook 'prog-mode-hook 'flycheck-mode))
-(setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc))
+(setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc emacs-lisp))
 (use-package yasnippet
   :config
   (yas-global-mode 1)

@@ -6,8 +6,6 @@
   (show-paren-mode)
   (evil-cleverparens-mode))
 
-(which-key-declare-prefixes-for-mode 'emacs-lisp-mode
-  "s" "splice")
 (leader-for-mode 'emacs-lisp-mode
 								 "e" 'eval-buffer
 								 "r" 'eval-region)

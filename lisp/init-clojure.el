@@ -1,13 +1,9 @@
+;; Hook
 (defun cool/clojure-hook ()
   (setq cider-cljs-lein-repl "(do (use 'figwheel-sidecar.repl-api) (start-figwheel!) (cljs-repl))")
   (setq-local dash-at-point-docset "clj"))
 
-(defun cool/cider-quit ()
-  (interactive)
-  (setq current-prefix-arg '(10))
-  (cider-quit))
-
-
+;; Leader bindings
 (which-key-declare-prefixes-for-mode 'clojure-mode
   ",e" "Eval"
   ",t" "Tests")
@@ -25,17 +21,16 @@
                    "r" 'cider-refresh
                    "tt" 'cider-test-run-project-tests))
 
+;; Packages
 (use-package clojure-mode :defer t)
 (use-package cider
-  :defer t
-  :config
-  (define-key cider-repl-mode-map (kbd "C-k") 'windmove-up)
-  (define-key cider-repl-mode-map (kbd "C-h") 'windmove-left)
-  (define-key cider-repl-mode-map (kbd "C-j") 'windmove-down)
-  (define-key cider-repl-mode-map (kbd "C-l") 'windmove-right)
-  (define-key cider-repl-mode-map (kbd "M-h") 'elscreen-previous)
-  (define-key cider-repl-mode-map (kbd "M-l") 'evil-tabs-goto-tab))
+  :bind (:map cider-repl-mode-map
+              ("C-k" . windmove-up)
+              ("C-h" . windmove-left)
+              ("C-j" . windmove-up)
+              ("C-l" . windmove-right)
+              ("M-h" . elscreen-previous)
+              ("M-l" . evil-tabs-goto-tab)))
 
-(add-hook 'clojure-mode-hook 'cool/clojure-hook) 
 (add-hook 'clojure-mode-hook 'cool/clojure-hook) 
 (provide 'init-clojure)

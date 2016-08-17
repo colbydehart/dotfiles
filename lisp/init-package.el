@@ -1,15 +1,17 @@
 (package-initialize nil)
 (setq package-enable-at-startup nil)
 
-(unless (assoc-default "melpa" package-archives)
-  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t))
-(unless (assoc-default "marmalade" package-archives)
-  (add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/") t))
+(setq package-archives '(("melpa" . "https://melpa.org/packages/")
+                         ("marmalade" . "https://marmalade-repo.org/packages/")))
+
 (package-refresh-contents)
 (unless (package-installed-p 'use-package)
   (package-install 'use-package))
 (setq use-package-verbose t)
 (setq use-package-always-ensure t)
-(eval-and-compile (require 'use-package))
+(eval-when-compile (require 'use-package))
+;; Get dash here because we need it everywhere
+(use-package dash :config (dash-enable-font-lock))
+(use-package dash-functional)
 
 (provide 'init-package)
