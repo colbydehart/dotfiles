@@ -20,11 +20,16 @@
     (kbd "C-)") 'sp-forward-slurp-sexp
     (kbd "C-(") 'sp-forward-barf-sexp
     (kbd "C-}") 'sp-backward-barf-sexp
-    (kbd "C-{") 'sp-backward-slurp-sexp)
-  (dolist (state '(normal operator visual))
-    (evil-define-key state evil-cleverparens-mode-map
-      (kbd "M-h") 'elscreen-previous
-      (kbd "M-l") 'evil-tabs-goto-tab)))
+    (kbd "C-{") 'sp-backward-slurp-sexp) 
+  (evil-define-key 'normal evil-cleverparens-mode-map
+    (kbd "M-h") 'elscreen-previous
+    (kbd "M-l") 'evil-tabs-goto-tab)
+  (evil-define-key 'visual evil-cleverparens-mode-map
+    (kbd "M-h") 'elscreen-previous
+    (kbd "M-l") 'evil-tabs-goto-tab)
+  (evil-define-key 'operator evil-cleverparens-mode-map
+    (kbd "M-h") 'elscreen-previous
+    (kbd "M-l") 'evil-tabs-goto-tab))
 
 (use-package evil-cleverparens :defer t)
 

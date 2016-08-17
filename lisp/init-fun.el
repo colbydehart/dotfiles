@@ -9,11 +9,9 @@
      (windmove-down)
      (find-file file))))
 
-(defun open-term-split ()
+(defun open-term ()
   (interactive)
-  (split-window-vertically)
-  (windmove-down)
-  (shrink-window (/ (window-height (next-window)) 2))
+  (elscreen-create)
   (multi-term-next))
 
 (defun open-file-in-vsplit ()

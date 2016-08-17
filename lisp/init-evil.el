@@ -1,4 +1,4 @@
-(use-package evil
+n(use-package evil
   :ensure t
   :init
   (setq evil-want-C-u-scroll t)
@@ -63,7 +63,7 @@
     "p;" 'neotree-projectile-action
     "sh" 'split-window-vertically
     "sv" 'split-window-horizontally
-    "t" 'open-term-split 
+    "t" 'open-term
     "v" 'evil-iedit-state/iedit-mode
     "w" 'save-buffer
     "x" 'dired-jump
@@ -94,29 +94,28 @@
 (use-package evil-commentary :config (evil-commentary-mode))
 
 ;;;;;;;;;;;;;;;;;;;TERM;;;;;;;;;;;;;;;;;
-(use-package multi-term
-  :config
-  (defun term-send-tab ()
-    (interactive)
-    (term-send-raw-string "\t"))
-  (add-to-list 'term-bind-key-alist '("C-y" . term-paste))
-  (add-to-list 'term-bind-key-alist '("C-o" . multi-term-prev))
-  (add-to-list 'term-bind-key-alist '("C-i" . multi-term-next))
-  (add-to-list 'term-bind-key-alist '("C-h" . evil-window-left))
-  (add-to-list 'term-bind-key-alist '("C-j" . evil-window-down))
-  (add-to-list 'term-bind-key-alist '("C-k" . evil-window-up))
-  (add-to-list 'term-bind-key-alist '("C-l" . evil-window-right))
-  (add-to-list 'term-bind-key-alist '("<tab>" . term-send-tab))
-  (add-to-list 'term-bind-key-alist '("M-x" . helm-M-x)))
 
-(add-hook 'term-mode-hook
-          (lambda ()
-            (yas-minor-mode -1)
-            (evil-mode)
-            (evil-emacs-state 1)
-            (linum-mode -1)))
+(use-package multi-term)
+(eval-after-load 'evil-vars
+  '(evil-set-initial-state 'term-mode 'emacs))
+(defun term-send-tab ()
+  (interactive)
+  (term-send-raw-string "\t"))
+(defun cool/term-hook ()
+  "colby's term hook"
+  (yas-minor-mode nil)
+  (linum-mode nil)
+  (define-key term-raw-map (kbd "M-x") 'helm-M-x)
+  (define-key term-raw-map (kbd "<tab>") 'term-send-tab)
+  (define-key term-raw-map (kbd "C-h") 'multi-term-prev)
+  (define-key term-raw-map (kbd "C-l") 'multi-term-next)
+  (define-key term-raw-map (kbd "C-y") 'term-paste)
+  (define-key term-raw-map (kbd "M-N") 'multi-term))
+(add-hook 'term-mode-hook 'cool/term-hook)
+
 
 ;;;;;;;;;;;;;DIRED;;;;;;;;;;;;;;;;
+
 (add-hook 'dired-mode-hook 'evil-mode)
 (defun cool/dired-up-directory ()
   "Take dired up one directory, but behave like dired-find-alternate-file"
