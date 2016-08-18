@@ -1,7 +1,7 @@
 (use-package evil
   :ensure t
-  :init (setq evil-want-C-u-scroll t)
-  :config (evil-mode t)
+  :init
+  (setq evil-want-C-u-scroll t)
   :bind (:map evil-normal-state-map
          ("C-w o" . toggle-maximize-buffer)
          ("C-o" . previous-buffer)
@@ -13,9 +13,15 @@
          :map evil-insert-state-map
          ("C-n" . evil-next-line)
          ("C-p" . evil-previous-line)))
-
+(evil-mode t)
+;; Tabs
+(elscreen-start)
+(use-package elscreen-persist
+  :config
+  (elscreen-persist-mode t)
+  (setq desktop-files-not-to-save ""))
 (use-package evil-tabs
-  :config (global-evil-tabs-mode t)
+  :init (global-evil-tabs-mode t)
   :bind (:map evil-normal-state-map
          ("M-h" . elscreen-previous)
          ("M-l" . evil-tabs-goto-tab)
@@ -36,7 +42,8 @@
     "SPC o" "Org"
     "SPC y" "Yasnippet"
     "SPC oo" "gtd file"
-    "SPC oo" "journal file")
+    "SPC oo" "journal file"
+    "SPC z" "Browser")
   (bind-map-set-keys leader-map
     "a" 'org-agenda
     "b" 'helm-mini
@@ -64,14 +71,14 @@
     "p;" 'neotree-projectile-action
     "sh" 'split-window-vertically
     "sv" 'split-window-horizontally
-    "t" 'term
+    "t" 'multi-term
     "v" 'evil-iedit-state/iedit-mode
     "w" 'save-buffer
     "x" 'dired-jump
     "yf" 'yas-visit-snippet-file
     "yy" 'yas-new-snippet
-    "z" `open-browser-in-tab
-    ";" 'neotree-toggle
+    "zh" 'cool/goto-hacker-news
+    "zz" 'w3m-search
     ":" 'helm-M-x
     "/" 'helm-projectile-ag
     "<SPC>" 'ace-jump-char-mode))
@@ -98,22 +105,19 @@
 
 (use-package multi-term
   :bind (:map term-raw-map
-         ("M-x" . helm-M-x)))
+         ("M-x" . helm-M-x)
+         ("<tab>" . cool/term-send-tab)
+         ("C-h" . nil)
+         ("C-h" . multi-term-prev)
+         ("C-l" . multi-term-next)
+         ("C-y" . term-paste)
+         ("M-N" . multi-term)))
 (eval-after-load 'evil-vars
   '(evil-set-initial-state 'term-mode 'emacs))
-(defun term-send-tab ()
-  (interactive)
-  (term-send-raw-string "\t"))
 (defun cool/term-hook ()
   "colby's term hook"
   (yas-minor-mode nil)
-  (linum-mode nil)
-  (define-key term-raw-map (kbd "M-x") 'helm-M-x)
-  (define-key term-raw-map (kbd "<tab>") 'term-send-tab)
-  (define-key term-raw-map (kbd "C-h") 'multi-term-prev)
-  (define-key term-raw-map (kbd "C-l") 'multi-term-next)
-  (define-key term-raw-map (kbd "C-y") 'term-paste)
-  (define-key term-raw-map (kbd "M-N") 'multi-term))
+  (linum-mode nil))
 (add-hook 'term-mode-hook 'cool/term-hook)
 
 

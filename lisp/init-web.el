@@ -20,4 +20,7 @@
 (use-package scss-mode :defer t)
 (setq-default css-indent-offset 2)
 
+(add-hook 'scss-mode-hook 'linum-mode)
+(add-hook 'css-mode-hook 'linum-mode)
+
 (provide 'init-web)

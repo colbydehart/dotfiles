@@ -59,11 +59,12 @@ Don't mess with special buffers."
 	"turns on evil-emacs-state"
 	(evil-emacs-state t))
 
-(defun open-browser-in-tab (term)
-	"opens a w3m browser in a new tab"
-	(interactive
-	 (list (read-string "Enter search term: " nil nil)))
-	(elscreen-create)
-	(w3m-search-new-session "google" term))
+(defun cool/term-send-tab ()
+  (interactive)
+  (term-send-raw-string "\t"))
+
+(defun cool/goto-hacker-news ()
+  (interactive)
+  (w3m-goto-url "https://news.ycombinator.com/"))
 
 (provide 'init-fun)
