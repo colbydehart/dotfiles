@@ -92,7 +92,7 @@
 (use-package nyan-mode :config (nyan-mode))
 ;; dope font 
 (mac-auto-operator-composition-mode t)
-(set-default-font "Fira Code 18")
+(set-default-font "Fira Code 17")
 
 ;; GLOBAL KEYBINDINGS
 ;; ------------------

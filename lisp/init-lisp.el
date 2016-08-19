@@ -12,25 +12,18 @@
 								 "r" 'eval-region)
 
 (use-package smartparens
-	:defer t
-	:config
-  (require 'smartparens-config)
+	:config (require 'smartparens-config))
+
+(use-package evil-cleverparens
+  :config
+  (evil-define-key 'normal evil-cleverparens-mode-map
+    (kbd "M-h") 'elscreen-previous
+    (kbd "M-l") 'evil-tabs-goto-tab)
   (evil-define-key 'insert evil-cleverparens-mode-map
     (kbd "C-)") 'sp-forward-slurp-sexp
     (kbd "C-(") 'sp-forward-barf-sexp
     (kbd "C-}") 'sp-backward-barf-sexp
-    (kbd "C-{") 'sp-backward-slurp-sexp) 
-  (evil-define-key 'normal evil-cleverparens-mode-map
-    (kbd "M-h") 'elscreen-previous
-    (kbd "M-l") 'evil-tabs-goto-tab)
-  (evil-define-key 'visual evil-cleverparens-mode-map
-    (kbd "M-h") 'elscreen-previous
-    (kbd "M-l") 'evil-tabs-goto-tab)
-  (evil-define-key 'operator evil-cleverparens-mode-map
-    (kbd "M-h") 'elscreen-previous
-    (kbd "M-l") 'evil-tabs-goto-tab))
-
-(use-package evil-cleverparens :defer t)
+    (kbd "C-{") 'sp-backward-slurp-sexp))
 
 (dolist
     (hook

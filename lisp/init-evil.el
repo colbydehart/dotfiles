@@ -10,6 +10,11 @@
          ("C-j" . evil-window-down)
          ("C-k" . evil-window-up)
          ("C-l" . evil-window-right)
+         :map evil-emacs-state-map
+         ("C-h" . evil-window-left)
+         ("C-j" . evil-window-down)
+         ("C-k" . evil-window-up)
+         ("C-l" . evil-window-right)
          :map evil-insert-state-map
          ("C-n" . evil-next-line)
          ("C-p" . evil-previous-line)))
@@ -71,7 +76,7 @@
     "p;" 'neotree-projectile-action
     "sh" 'split-window-vertically
     "sv" 'split-window-horizontally
-    "t" 'multi-term
+    "t" 'multi-term-next
     "v" 'evil-iedit-state/iedit-mode
     "w" 'save-buffer
     "x" 'dired-jump
@@ -103,20 +108,20 @@
 
 ;;;;;;;;;;;;;;;;;;;TERM;;;;;;;;;;;;;;;;;
 
-(use-package multi-term
-  :bind (:map term-raw-map
-         ("M-x" . helm-M-x)
-         ("<tab>" . cool/term-send-tab)
-         ("C-h" . nil)
-         ("C-h" . multi-term-prev)
-         ("C-l" . multi-term-next)
-         ("C-y" . term-paste)
-         ("M-N" . multi-term)))
+(use-package multi-term)
 (eval-after-load 'evil-vars
   '(evil-set-initial-state 'term-mode 'emacs))
+(dolist (stats '(term-mode-map term-raw-map))
+  (evil-define-key 'emacs state
+    "M-x" 'helm-M-x
+    "<tab>" 'cool/term-send-tab
+    "C-M-p" 'multi-term-prev
+    "C-M-n" 'multi-term-next
+    "C-y" 'term-paste
+    "M-N" 'multi-term))
 (defun cool/term-hook ()
   "colby's term hook"
-  (yas-minor-mode nil)
+  (yas-minor-mode -1)
   (linum-mode nil))
 (add-hook 'term-mode-hook 'cool/term-hook)
 

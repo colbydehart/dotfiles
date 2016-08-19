@@ -2,9 +2,10 @@
       rcirc-default-user-name "coolboy"
       rcirc-default-full-name "Cool Boy"
       rcirc-server-alist
-      '(("irc.freenode.net"
-         :channels ("#ruby" "#javascript" "#rust" "rust-beginners" "#clojure" "#elixir-lang" "#clojure-beginners"))
-        ))
+      '(("irc.mozilla.org"
+         :channels ("#rust" "#rust-beginners"))
+        ("irc.freenode.net"
+         :channels ("#ruby" "##javascript" "#clojure" "#elixir-lang" "#clojure-beginners"))))
 ;; Functions
 (defun rcirc-channels ()
   (remove-if-not
@@ -35,15 +36,13 @@
   (kbd "C-l") 'windmove-right
   (kbd "C-j") 'windmove-down
   (kbd "C-k") 'windmove-up
-  (kbd "C-c b") 'helm-rcirc-channels
-
+  (kbd "C-c b") 'helm-rcirc
   (kbd "M-h") 'elscreen-previous
   (kbd "M-l") 'evil-tabs-goto-tab)
 
 (rcirc-track-minor-mode 1)
-
-(add-hook 'rcirc-mode-hook (lambda ()
-                             (evil-emacs-state 1)))
+(setq rcirc-omit-responses '("JOIN" "PART" "QUIT" "NICK" "AWAY"))
+(add-hook 'rcirc-mode-hook (lambda () (evil-emacs-state 1)))
 
 ;; /reconnect code, lifted from https://www.emacswiki.org/emacs/rcircReconnect
 (load-file "~/dotfiles/lisp/rcirc-reconnect.el")
