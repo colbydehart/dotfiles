@@ -37,7 +37,8 @@
 (use-package flycheck :config (add-hook 'prog-mode-hook 'flycheck-mode))
 (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc emacs-lisp))
 (use-package yasnippet
-  :bind (("M-<return>" . yas/expand) 
+  :bind (:map yas-minor-mode-map 
+         ("M-<return>" . yas/expand) 
          :map evil-insert-state-map
          ("C-SPC" . company-yasnippet))
   :config (yas-global-mode 1))

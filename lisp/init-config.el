@@ -67,7 +67,6 @@
 ;; Web browser
 (use-package w3m :init
   (setq )
-	(setq browse-url-browser-function 'w3m-goto-url-new-session)
 	(add-hook 'w3m-mode-hook 'w3m-lnum-mode)
 	(add-hook 'w3m-mode-hook 'evil-emacs-state))
 ;; Misc. language modes

@@ -1,3 +1,7 @@
+(defun cool/irc-hook (args)
+  "hook for irc"
+  (evil-emacs-state t))
+
 (setq rcirc-default-nick "coolboy"
       rcirc-default-user-name "coolboy"
       rcirc-default-full-name "Cool Boy"
@@ -42,6 +46,7 @@
 
 (rcirc-track-minor-mode 1)
 (setq rcirc-omit-responses '("JOIN" "PART" "QUIT" "NICK" "AWAY"))
+(add-hook 'rcirc-mode-hook 'rcirc-omit-mode)
 (add-hook 'rcirc-mode-hook (lambda () (evil-emacs-state 1)))
 
 ;; /reconnect code, lifted from https://www.emacswiki.org/emacs/rcircReconnect
