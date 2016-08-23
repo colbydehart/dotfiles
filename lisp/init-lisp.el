@@ -1,5 +1,5 @@
 (defun cool/lisp-hook ()
-	(setq indent-tabs-mode nil)
+  (setq indent-tabs-mode nil)
   (electric-pair-mode nil)
   (turn-on-smartparens-strict-mode)
   (prettify-symbols-mode)
@@ -15,15 +15,15 @@
 	:config (require 'smartparens-config))
 
 (use-package evil-cleverparens
+  :bind (:map evil-cleverparens-mode-map
+         ("C-{" . sp-backward-slurp-sexp)
+         ("C-}" . sp-backward-barf-sexp)
+         ("C-(" . sp-forward-barf-sexp)
+         ("C-)" . sp-forward-slurp-sexp))
   :config
   (evil-define-key 'normal evil-cleverparens-mode-map
     (kbd "M-h") 'elscreen-previous
-    (kbd "M-l") 'evil-tabs-goto-tab)
-  (evil-define-key 'insert evil-cleverparens-mode-map
-    (kbd "C-)") 'sp-forward-slurp-sexp
-    (kbd "C-(") 'sp-forward-barf-sexp
-    (kbd "C-}") 'sp-backward-barf-sexp
-    (kbd "C-{") 'sp-backward-slurp-sexp))
+    (kbd "M-l") 'evil-tabs-goto-tab))
 
 (dolist
     (hook

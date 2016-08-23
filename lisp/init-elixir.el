@@ -1,8 +1,4 @@
 (defun cool/elixir-hook ()
-  (sp-with-modes '(elixir-mode)
-    (sp-local-pair "fn" "end"
-                   :when '(("SPC" "RET"))
-                   :actions '(insert navigate)))
   (setq alchemist-hooks-test-on-save t
         alchemist-project-compile-when-needed t)
   (alchemist-mode)
