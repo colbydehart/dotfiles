@@ -23,6 +23,7 @@
 (require 'init-typescript)
 (require 'init-elm)
 (require 'init-csharp)
+(require 'init-fsharp)
 
 
 (custom-set-variables

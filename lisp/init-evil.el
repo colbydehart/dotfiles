@@ -111,18 +111,20 @@
 (use-package multi-term)
 (eval-after-load 'evil-vars
   '(evil-set-initial-state 'term-mode 'emacs))
+
+
 (dolist (stats '(term-mode-map term-raw-map))
   (evil-define-key 'emacs state
     "M-x" 'helm-M-x
     "<tab>" 'cool/term-send-tab
-    "C-M-p" 'multi-term-prev
-    "C-M-n" 'multi-term-next
-    "C-y" 'term-paste
-    "M-N" 'multi-term))
+    "C-y" 'term-paste))
 (defun cool/term-hook ()
   "colby's term hook"
+  (define-key term-raw-map (kbd "C-M-p") 'multi-term-prev)
+  (define-key term-raw-map (kbd "C-M-n") 'multi-term-next)
+  (define-key term-raw-map (kbd "M-N") 'multi-term)
   (yas-minor-mode -1)
-  (linum-mode nil))
+  (linum-mode -1))
 (add-hook 'term-mode-hook 'cool/term-hook)
 
 

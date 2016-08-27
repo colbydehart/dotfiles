@@ -1,5 +1,5 @@
 (defun cool/csharp-hook ()
-  (setq-local dash-at-point-docset "clj"))
+  (setq-local dash-at-point-docset "cs"))
 
 (which-key-declare-prefixes-for-mode 'csharp-mode
   ",t" "Tests")

@@ -13,7 +13,8 @@ export LPASS_AGENT_TIMEOUT=0
 export NVM_DIR="$HOME/.nvm"
 . "$(brew --prefix nvm)/nvm.sh"
 
-LP_PS1_POSTFIX="🙇 \n" source ~/liquidprompt/liquidprompt
+export LP_PS1_POSTFIX="\n🙇 "
+. ~/liquidprompt/liquidprompt
 
 eval "$(direnv hook bash)"
 

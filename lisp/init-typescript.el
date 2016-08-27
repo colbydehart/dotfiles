@@ -6,7 +6,10 @@
   (setq company-tooltip-align-annotations t)
   (setq flycheck-check-syntax-automatically '(save mode-enabled))
   (eldoc-mode +1)
-  (company-mode +1))
+  (company-mode +1)
+  (evil-define-key 'normal typescript-mode-map
+    "gr" 'tide-references
+    "gd" 'tide-jump-to-definition))
 
 (setq typescript-indent-level 2)
 (setq tide-format-options '(:insertSpaceAfterFunctionKeywordForAnonymousFunctions
@@ -18,4 +21,5 @@
 (use-package typescript-mode :mode "\\.tsx?$")
 
 (add-hook 'typescript-mode-hook 'cool/ts-hook)
+(add-hook 'tide-references-mode 'evil-emacs-state)
 (provide 'init-typescript)
