@@ -40,8 +40,8 @@
     "t" 'org-todo
     "q" 'org-set-tags-command
     (kbd "<tab>") 'org-cycle
-    (kbd "M-h") 'elscreen-previous
-    (kbd "M-l") 'evil-tabs-goto-tab)
+    (kbd "M-h") 'eyebrowse-prev-window-config
+    (kbd "M-l") 'eyebrowse-next-window-config)
 (evil-define-key 'insert org-mode-map
     (kbd "M-l") 'org-metaright
     (kbd "M-h") 'org-metaleft)

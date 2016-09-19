@@ -3,9 +3,6 @@
 
 export EDITOR=vim
 
-# Docker World
-eval `docker-machine env 2>/dev/null`
-
 # Keep logged in on lpass
 export LPASS_AGENT_TIMEOUT=0
 
@@ -13,7 +10,7 @@ export LPASS_AGENT_TIMEOUT=0
 export NVM_DIR="$HOME/.nvm"
 . "$(brew --prefix nvm)/nvm.sh"
 
-export LP_PS1_POSTFIX="\n🙇 "
+export LP_PS1_POSTFIX="\n🙇 " 
 . ~/liquidprompt/liquidprompt
 
 eval "$(direnv hook bash)"
@@ -26,4 +23,8 @@ export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 # brew completions
 if [ -f $(brew --prefix)/etc/bash_completion ]; then
 	. $(brew --prefix)/etc/bash_completion
+fi
+
+if [ -f ~/.lbashrc ]; then
+  . ~/.lbashrc
 fi

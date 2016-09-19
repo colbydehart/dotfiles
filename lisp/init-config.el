@@ -24,6 +24,9 @@
       mac-pass-command-to-system nil
       ;; faster tramp with ssh
       tramp-default-method "ssh"
+			;; cmd is meta
+			mac-option-modifier 'nil
+			mac-command-modifier 'meta
       ;; set backup and autosave directory
       auto-save-default nil
       make-backup-files nil
@@ -40,15 +43,12 @@
 ;; show prefix key options in minibuffer
 (use-package which-key :config (which-key-mode))
 ;; Don't lose track of my indentation
-(use-package highlight-indent-guides
-  :config
-  (setq highlight-indent-guides-method 'character)
-  (add-hook 'prog-mode-hook 'highlight-indent-guides-mode))
+(use-package indent-guide :config (add-hook 'prog-mode-hook 'indent-guide-mode))
 ;; Auto pair parens
 (add-hook 'prog-mode-hook 'electric-pair-mode)
 ;; Don't lose track of nested parens
 (use-package rainbow-delimiters
-  :init
+  :config
   (set-face-foreground 'rainbow-delimiters-depth-1-face "#85ecd3")
   (set-face-foreground 'rainbow-delimiters-depth-1-face "#85ecd3")
   (set-face-foreground 'rainbow-delimiters-depth-2-face "#8f85ec")
@@ -59,16 +59,13 @@
   (set-face-foreground 'rainbow-delimiters-depth-7-face "#3bb793")
   (set-face-foreground 'rainbow-delimiters-depth-8-face "#3b69b7")
   (set-face-foreground 'rainbow-delimiters-depth-9-face "#863bb7")
-  :config
   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 ;; Rest client for http requests
 (use-package restclient
   :init (add-hook 'restclient-mode-hook (lambda () (setq tab-width 2))))
 ;; Web browser
-(use-package w3m :init
-  (setq )
-	(add-hook 'w3m-mode-hook 'w3m-lnum-mode)
-	(add-hook 'w3m-mode-hook 'evil-emacs-state))
+;; (use-package epc)
+;; (require 'webkit)
 ;; Misc. language modes
 (use-package puppet-mode :defer t)
 (use-package toml-mode :defer t
@@ -79,8 +76,7 @@
 (use-package docker
   :config (docker-global-mode))
 ;; C O O O O O O O O O O O O O L~T H E E E E E E E E M E
-(use-package atom-one-dark-theme)
-(load-theme 'atom-one-dark t)
+(load-theme 'wombat t)
 ;; nice term colors
 (ansi-color-for-comint-mode-on)
 ;; tight mode line
@@ -88,10 +84,9 @@
   :config
   (setq sml/no-confirm-load-theme t)
   (sml/setup))
-(use-package nyan-mode :config (nyan-mode))
 ;; dope font 
 (mac-auto-operator-composition-mode t)
-(set-default-font "Fira Code 17")
+(set-default-font "Fira Code 14")
 
 ;; GLOBAL KEYBINDINGS
 ;; ------------------

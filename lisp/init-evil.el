@@ -19,20 +19,40 @@
          ("C-n" . evil-next-line)
          ("C-p" . evil-previous-line)))
 (evil-mode t)
-;; Tabs
-(elscreen-start)
-(use-package elscreen-persist
-  :config
-  (elscreen-persist-mode t)
-  (setq desktop-files-not-to-save ""))
-(use-package evil-tabs
-  :init (global-evil-tabs-mode t)
-  :bind (:map evil-normal-state-map
-         ("M-h" . elscreen-previous)
-         ("M-l" . evil-tabs-goto-tab)
-         :map evil-emacs-state-map
-         ("M-h" . elscreen-previous)
-         ("M-l" . evil-tabs-goto-tab)))
+;; ;; Tabs
+(use-package eyebrowse
+  :init
+  (setq eyebrowse-switch-back-and-forth t
+        eyebrowse-wrap-around t
+        eyebrowse-new-workspace t)
+  :bind
+  (:map evil-normal-state-map
+  ("M-l" . eyebrowse-next-window-config)
+  ("M-h" . eyebrowse-prev-window-config)
+  ("M-0" . eyebrowse-switch-to-window-config-0)
+  ("M-1" . eyebrowse-switch-to-window-config-1)
+  ("M-2" . eyebrowse-switch-to-window-config-2)
+  ("M-3" . eyebrowse-switch-to-window-config-3)
+  ("M-4" . eyebrowse-switch-to-window-config-4)
+  ("M-5" . eyebrowse-switch-to-window-config-5)
+  ("M-6" . eyebrowse-switch-to-window-config-6)
+  ("M-7" . eyebrowse-switch-to-window-config-7)
+  ("M-8" . eyebrowse-switch-to-window-config-8)
+  ("M-9" . eyebrowse-switch-to-window-config-9)
+  :map evil-emacs-state-map
+  ("M-l" . eyebrowse-next-window-config)
+  ("M-h" . eyebrowse-prev-window-config)
+  ("M-0" . eyebrowse-switch-to-window-config-0)
+  ("M-1" . eyebrowse-switch-to-window-config-1)
+  ("M-2" . eyebrowse-switch-to-window-config-2)
+  ("M-3" . eyebrowse-switch-to-window-config-3)
+  ("M-4" . eyebrowse-switch-to-window-config-4)
+  ("M-5" . eyebrowse-switch-to-window-config-5)
+  ("M-6" . eyebrowse-switch-to-window-config-6)
+  ("M-7" . eyebrowse-switch-to-window-config-7)
+  ("M-8" . eyebrowse-switch-to-window-config-8)
+  ("M-9" . eyebrowse-switch-to-window-config-9)))
+(eyebrowse-mode 1)
 
 (defun cool/leader-init ()
   (bind-map leader-map
@@ -61,11 +81,11 @@
     "hk" 'describe-key
     "hv" 'describe-variable
     "i" 'helm-imenu
-    "k" 'evil-tab-sensitive-quit
+    "k" 'eyebrowse-close-window-config
     "mk" 'bookmark-delete
     "mc" 'bookmark-set
     "mm" 'helm-bookmarks
-    "n" 'elscreen-create
+    "n" 'eyebrowse-create-window-config
     "oo" (lambda () (interactive) (find-file "~/org/gtd.org"))
     "oj" (lambda () (interactive) (find-file "~/org/journal.org"))
     "oa" 'org-agenda
@@ -74,12 +94,13 @@
     "pf" 'helm-projectile-find-file
     "pt" 'projectile-regenerate-tags
     "p;" 'neotree-projectile-action
-    "sh" 'split-window-vertically
-    "sv" 'split-window-horizontally
+    "sj" 'cool/split-down
+    "sl" 'cool/split-right
     "t" 'multi-term-next
     "v" 'evil-iedit-state/iedit-mode
     "w" 'save-buffer
     "x" 'dired-jump
+    "yc" 'cool/copy-file-name
     "yf" 'yas-visit-snippet-file
     "yy" 'yas-new-snippet
     "zh" 'cool/goto-hacker-news
@@ -106,46 +127,47 @@
 (use-package evil-surround :config (global-evil-surround-mode 1))
 (use-package evil-commentary :config (evil-commentary-mode))
 
-;;;;;;;;;;;;;;;;;;;TERM;;;;;;;;;;;;;;;;;
+;; ;;;;;;;;;;;;;;;;;;;TERM;;;;;;;;;;;;;;;;;
 
-(use-package multi-term)
+(use-package multi-term
+  :config
+  (add-to-list 'term-bind-key-alist '("<tab>" . cool/term-send-tab)))
 (eval-after-load 'evil-vars
   '(evil-set-initial-state 'term-mode 'emacs))
 
 
-(dolist (stats '(term-mode-map term-raw-map))
-  (evil-define-key 'emacs state
-    "M-x" 'helm-M-x
-    "<tab>" 'cool/term-send-tab
-    "C-y" 'term-paste))
-(defun cool/term-hook ()
-  "colby's term hook"
-  (define-key term-raw-map (kbd "C-M-p") 'multi-term-prev)
-  (define-key term-raw-map (kbd "C-M-n") 'multi-term-next)
-  (define-key term-raw-map (kbd "M-N") 'multi-term)
-  (yas-minor-mode -1)
-  (linum-mode -1))
-(add-hook 'term-mode-hook 'cool/term-hook)
+;; (dolist (stats '(term-mode-map term-raw-map))
+;;   (evil-define-key 'emacs state
+;;     "M-x" 'helm-M-x
+;;     "C-y" 'term-paste))
+;; (defun cool/term-hook ()
+;;   "colby's term hook"
+;;   (message "term time!")
+;;   (define-key term-raw-map (kbd "C-M-p") 'multi-term-prev)
+;;   (define-key term-raw-map (kbd "C-M-n") 'multi-term-next)
+;;   (define-key term-raw-map (kbd "M-N") 'multi-term)
+;;   (yas-minor-mode -1)
+;;   (linum-mode -1))
+;; (add-hook 'term-mode-hook 'cool/term-hook)
 
+;; ;;;;;;;;;;;;;DIRED;;;;;;;;;;;;;;;;
 
-;;;;;;;;;;;;;DIRED;;;;;;;;;;;;;;;;
+;; (add-hook 'dired-mode-hook 'evil-mode)
+;; (defun cool/dired-up-directory ()
+;;   "Take dired up one directory, but behave like dired-find-alternate-file"
+;;   (interactive)
+;;   (let ((old (current-buffer)))
+;;     (dired-up-directory)
+;;     (kill-buffer old)))
 
-(add-hook 'dired-mode-hook 'evil-mode)
-(defun cool/dired-up-directory ()
-  "Take dired up one directory, but behave like dired-find-alternate-file"
-  (interactive)
-  (let ((old (current-buffer)))
-    (dired-up-directory)
-    (kill-buffer old)))
-
-(evil-define-key 'normal dired-mode-map
-  "h" 'cool/dired-up-directory
-  "l" 'dired-find-alternate-file
-  "v" 'dired-toggle-marks
-  "c" 'dired-create-directory
-  "n" 'evil-search-next
-  "N" 'evil-search-previous
-  "q" 'kill-this-buffer)
+;; (evil-define-key 'normal dired-mode-map
+;;   "h" 'cool/dired-up-directory
+;;   "l" 'dired-find-alternate-file
+;;   "v" 'dired-toggle-marks
+;;   "c" 'dired-create-directory
+;;   "n" 'evil-search-next
+;;   "N" 'evil-search-previous
+;;   "q" 'kill-this-buffer)
 
 
 (provide 'init-evil)

@@ -27,10 +27,10 @@
   :bind (:map cider-repl-mode-map
               ("C-k" . windmove-up)
               ("C-h" . windmove-left)
-              ("C-j" . windmove-up)
+              ("C-j" . windmove-down)
               ("C-l" . windmove-right)
-              ("M-h" . elscreen-previous)
-              ("M-l" . evil-tabs-goto-tab)))
+              ("M-h" . eyebrowse-prev-window-config)
+              ("M-l" . eyebrowse-next-window-config)))
 
 (add-hook 'clojure-mode-hook 'cool/clojure-hook) 
 (provide 'init-clojure)

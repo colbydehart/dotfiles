@@ -37,6 +37,7 @@ Plug 'ctrlpvim/ctrlp.vim'
 Plug 'scrooloose/syntastic'
 Plug 'Raimondi/delimitMate'
 Plug 'tpope/vim-surround'
+Plug 'jreybert/vimagit'
 call plug#end()
 syntax on
 
@@ -47,6 +48,7 @@ syntax on
 nn <leader>; :NERDTreeToggle<CR>
 nn <leader>b :CtrlPBuffer<CR>
 nn <leader>f :CtrlP<CR>
+nn <leader>g :Magit<CR>
 nn <leader>k ZZ
 nn <leader>n :tabe<CR>
 nn <leader>v :e ~/.vimrc<CR>

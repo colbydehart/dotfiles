@@ -67,4 +67,19 @@ Don't mess with special buffers."
   (interactive)
   (w3m-goto-url "https://news.ycombinator.com/"))
 
+(defun cool/copy-file-name ()
+  (interactive)
+  (kill-new buffer-file-name)
+  (message "Copied buffer file name"))
+
+(defun cool/split-down ()
+  (interactive)
+  (split-window-vertically)
+  (windmove-down))
+
+(defun cool/split-right ()
+  (interactive)
+  (split-window-horizontally)
+  (windmove-right))
+
 (provide 'init-fun)

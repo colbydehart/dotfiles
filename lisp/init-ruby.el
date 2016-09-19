@@ -27,5 +27,5 @@
   :defer t
   :init (push 'company-robe company-backends))
 
-(add-hook 'enh-ruby-mode-hook 'cool/ruby-hook)
+(add-hook 'ruby-mode-hook 'cool/ruby-hook)
 (provide 'init-ruby)

@@ -22,8 +22,8 @@
          ("C-)" . sp-forward-slurp-sexp))
   :config
   (evil-define-key 'normal evil-cleverparens-mode-map
-    (kbd "M-h") 'elscreen-previous
-    (kbd "M-l") 'evil-tabs-goto-tab))
+    (kbd "M-h") 'eyebrowse-prev-window-config
+    (kbd "M-l") 'eyebrowse-next-window-config))
 
 (dolist
     (hook

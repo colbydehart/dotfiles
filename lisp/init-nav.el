@@ -15,12 +15,6 @@
 (use-package ace-jump-mode)
 (use-package iedit)
 (use-package evil-iedit-state)
-(defun nyan-run ()
-  "animate then stop nyan cat"
-  (interactive)
-  (nyan-start-animation)
-  (run-with-timer 5 nil 'nyan-stop-animation))
-(use-package magit :config (add-hook 'magit-refresh-buffer-hook 'nyan-run))
 (use-package evil-magit :config (add-hook 'magit-mode-hook 'evil-local-mode))
 ;; Add d to magit ediff
 ;; http://stackoverflow.com/questions/9656311/conflict-resolution-with-emacs-ediff-how-can-i-take-the-changes-of-both-version

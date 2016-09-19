@@ -41,8 +41,8 @@
   (kbd "C-j") 'windmove-down
   (kbd "C-k") 'windmove-up
   (kbd "C-c b") 'helm-rcirc
-  (kbd "M-h") 'elscreen-previous
-  (kbd "M-l") 'evil-tabs-goto-tab)
+  (kbd "M-h") 'eyebrowse-prev-window-config
+  (kbd "M-l") 'eyebrowse-next-window-config)
 
 (rcirc-track-minor-mode 1)
 (setq rcirc-omit-responses '("JOIN" "PART" "QUIT" "NICK" "AWAY"))
