@@ -3,23 +3,23 @@
   :init
   (setq evil-want-C-u-scroll t)
   :bind (:map evil-normal-state-map
-         ("C-w o" . toggle-maximize-buffer)
-         ("C-o" . previous-buffer)
-         ("C-i" . next-buffer)
-         ("C-u" . evil-scroll-page-up)
-         ("C-h" . evil-window-left)
-         ("C-j" . evil-window-down)
-         ("C-k" . evil-window-up)
-         ("C-l" . evil-window-right)
-         :map evil-emacs-state-map
-         ("C-h" . evil-window-left)
-         ("C-j" . evil-window-down)
-         ("C-k" . evil-window-up)
-         ("C-l" . evil-window-right)
-         :map evil-insert-state-map
-         ("C-u" . evil-scroll-page-up)
-         ("C-n" . evil-next-line)
-         ("C-p" . evil-previous-line)))
+              ("C-w o" . toggle-maximize-buffer)
+              ("C-o" . previous-buffer)
+              ("C-i" . next-buffer)
+              ("C-u" . evil-scroll-page-up)
+              ("C-h" . evil-window-left)
+              ("C-j" . evil-window-down)
+              ("C-k" . evil-window-up)
+              ("C-l" . evil-window-right)
+              :map evil-emacs-state-map
+              ("C-h" . evil-window-left)
+              ("C-j" . evil-window-down)
+              ("C-k" . evil-window-up)
+              ("C-l" . evil-window-right)
+              :map evil-insert-state-map
+              ("C-u" . evil-scroll-page-up)
+              ("C-n" . evil-next-line)
+              ("C-p" . evil-previous-line)))
 (evil-mode t)
 ;; Tabs
 (use-package eyebrowse
@@ -31,11 +31,11 @@
   (set-face-foreground 'eyebrowse-mode-line-active "#00ffdd")
   :bind
   (:map evil-normal-state-map
-   ("M-l" . eyebrowse-next-window-config)
-   ("M-h" . eyebrowse-prev-window-config)
-   :map evil-emacs-state-map
-   ("M-l" . eyebrowse-next-window-config)
-   ("M-h" . eyebrowse-prev-window-config)))
+        ("M-l" . eyebrowse-next-window-config)
+        ("M-h" . eyebrowse-prev-window-config)
+        :map evil-emacs-state-map
+        ("M-l" . eyebrowse-next-window-config)
+        ("M-h" . eyebrowse-prev-window-config)))
 (eyebrowse-mode 1)
 
 (defun cool/leader-init ()
@@ -111,7 +111,7 @@
 (use-package evil-surround :config (global-evil-surround-mode 1))
 (use-package evil-commentary :config (evil-commentary-mode))
 
-;; ;;;;;;;;;;;;;;;;;;;TERM;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;TERM;;;;;;;;;;;;;;;;;;;;;
 
 (use-package multi-term
   :config
@@ -120,38 +120,37 @@
   '(evil-set-initial-state 'term-mode 'emacs))
 
 
-;; (dolist (stats '(term-mode-map term-raw-map))
-;;   (evil-define-key 'emacs state
-;;     "M-x" 'helm-M-x
-;;     "C-y" 'term-paste))
-;; (defun cool/term-hook ()
-;;   "colby's term hook"
-;;   (message "term time!")
-;;   (define-key term-raw-map (kbd "C-M-p") 'multi-term-prev)
-;;   (define-key term-raw-map (kbd "C-M-n") 'multi-term-next)
-;;   (define-key term-raw-map (kbd "M-N") 'multi-term)
-;;   (yas-minor-mode -1)
-;;   (linum-mode -1))
-;; (add-hook 'term-mode-hook 'cool/term-hook)
+(dolist (stats '(term-mode-map term-raw-map))
+  (evil-define-key 'emacs state
+    "M-x" 'helm-M-x
+    "C-y" 'term-paste))
+(defun cool/term-hook ()
+  "colby's term hook"
+  (define-key term-raw-map (kbd "C-M-p") 'multi-term-prev)
+  (define-key term-raw-map (kbd "C-M-n") 'multi-term-next)
+  (define-key term-raw-map (kbd "M-N") 'multi-term)
+  (yas-minor-mode -1)
+  (linum-mode -1))
+(add-hook 'term-mode-hook 'cool/term-hook)
 
-;; ;;;;;;;;;;;;;DIRED;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;DIRED;;;;;;;;;;;;;;;;;;;;
 
-;; (add-hook 'dired-mode-hook 'evil-mode)
-;; (defun cool/dired-up-directory ()
-;;   "Take dired up one directory, but behave like dired-find-alternate-file"
-;;   (interactive)
-;;   (let ((old (current-buffer)))
-;;     (dired-up-directory)
-;;     (kill-buffer old)))
+(add-hook 'dired-mode-hook 'evil-mode)
+(defun cool/dired-up-directory ()
+  "Take dired up one directory, but behave like dired-find-alternate-file"
+  (interactive)
+  (let ((old (current-buffer)))
+    (dired-up-directory)
+    (kill-buffer old)))
 
-;; (evil-define-key 'normal dired-mode-map
-;;   "h" 'cool/dired-up-directory
-;;   "l" 'dired-find-alternate-file
-;;   "v" 'dired-toggle-marks
-;;   "c" 'dired-create-directory
-;;   "n" 'evil-search-next
-;;   "N" 'evil-search-previous
-;;   "q" 'kill-this-buffer)
+(evil-define-key 'normal dired-mode-map
+  "h" 'cool/dired-up-directory
+  "l" 'dired-find-alternate-file
+  "v" 'dired-toggle-marks
+  "c" 'dired-create-directory
+  "n" 'evil-search-next
+  "N" 'evil-search-previous
+  "q" 'kill-this-buffer)
 
 
 (provide 'init-evil)

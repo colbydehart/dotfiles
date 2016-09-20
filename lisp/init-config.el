@@ -14,8 +14,6 @@
 ;; Use newline or don't
 (setq-default require-final-newline cool/final-newline)
 (add-hook 'prog-mode-hook (lambda () (setq require-final-newline cool/final-newline)))
-;; Save desktop session
-(desktop-save-mode)
 ;; No splash screen
 (setq inhibit-splash-screen t
       ;; No bell!
