@@ -23,4 +23,4 @@ alias myip="ifconfig | grep en0 -A 3 | grep \"inet \" | cut -d \" \" -f 2 | pbco
 alias vim="vim"
 alias em="emacsclient -nw"
 
-alias dom="docker-machine"
+alias dc="docker-compose"

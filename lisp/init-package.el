@@ -2,7 +2,8 @@
 (setq package-enable-at-startup nil)
 
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
-                         ("marmalade" . "https://marmalade-repo.org/packages/")))
+                         ("marmalade" . "https://marmalade-repo.org/packages/")
+                         ("gnu" ."https://elpa.gnu.org/packages/")))
 
 (package-refresh-contents)
 (unless (package-installed-p 'use-package)

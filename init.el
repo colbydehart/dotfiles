@@ -11,9 +11,9 @@
 (require 'cl)
 (require 'init-package)
 (require 'init-fun)
-(require 'init-evil)
 (require 'init-config)
 (require 'init-nav)
+(require 'init-evil)
 
 (require 'init-lisp)
 (require 'init-irc)
@@ -29,7 +29,6 @@
 (require 'init-python)
 (require 'init-typescript)
 (require 'init-elm)
-(require 'init-csharp)
 (require 'init-fsharp)
 
 
@@ -44,7 +43,7 @@
  '(org-agenda-files (quote ("~/org/gtd.org")))
  '(package-selected-packages
    (quote
-    (eyebrowse tabbar elscreen-multi-term yasnippet yaml-mode which-key web-mode w3m vagrant-tramp use-package ujelly-theme toml-mode tide smart-mode-line scss-mode rvm ruby-end ruby-electric rspec-mode robe restclient rainbow-delimiters racer pyvenv python-mode puppet-mode projectile-rails org-bullets omnisharp nyan-mode multi-term markdown-mode json-mode js2-mode js-doc indent-guide highlight-indent-guides helm-projectile helm-company helm-ag ggtags fsharp-mode flymake-ruby evil-tabs evil-surround evil-magit evil-iedit-state evil-commentary evil-cleverparens epc enh-ruby-mode emmet-mode elscreen-persist elm-mode dockerfile-mode docker dash-at-point company-tern company-anaconda cider bind-map atom-one-dark-theme ansible alchemist ace-jump-mode))))
+    (spaceline eyebrowse tabbar elscreen-multi-term yasnippet yaml-mode which-key web-mode w3m vagrant-tramp use-package ujelly-theme toml-mode tide smart-mode-line scss-mode rvm ruby-end ruby-electric rspec-mode robe restclient rainbow-delimiters racer pyvenv python-mode puppet-mode projectile-rails org-bullets omnisharp nyan-mode multi-term markdown-mode json-mode js2-mode js-doc indent-guide highlight-indent-guides helm-projectile helm-company helm-ag ggtags fsharp-mode flymake-ruby evil-tabs evil-surround evil-magit evil-iedit-state evil-commentary evil-cleverparens epc enh-ruby-mode emmet-mode elscreen-persist elm-mode dockerfile-mode docker dash-at-point company-tern company-anaconda cider bind-map atom-one-dark-theme ansible alchemist ace-jump-mode))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

@@ -6,6 +6,7 @@
          ("C-w o" . toggle-maximize-buffer)
          ("C-o" . previous-buffer)
          ("C-i" . next-buffer)
+         ("C-u" . evil-scroll-page-up)
          ("C-h" . evil-window-left)
          ("C-j" . evil-window-down)
          ("C-k" . evil-window-up)
@@ -16,10 +17,11 @@
          ("C-k" . evil-window-up)
          ("C-l" . evil-window-right)
          :map evil-insert-state-map
+         ("C-u" . evil-scroll-page-up)
          ("C-n" . evil-next-line)
          ("C-p" . evil-previous-line)))
 (evil-mode t)
-;; ;; Tabs
+;; Tabs
 (use-package eyebrowse
   :init
   (setq eyebrowse-switch-back-and-forth t
@@ -29,31 +31,11 @@
   (set-face-foreground 'eyebrowse-mode-line-active "#00ffdd")
   :bind
   (:map evil-normal-state-map
-  ("M-l" . eyebrowse-next-window-config)
-  ("M-h" . eyebrowse-prev-window-config)
-  ("M-0" . eyebrowse-switch-to-window-config-0)
-  ("M-1" . eyebrowse-switch-to-window-config-1)
-  ("M-2" . eyebrowse-switch-to-window-config-2)
-  ("M-3" . eyebrowse-switch-to-window-config-3)
-  ("M-4" . eyebrowse-switch-to-window-config-4)
-  ("M-5" . eyebrowse-switch-to-window-config-5)
-  ("M-6" . eyebrowse-switch-to-window-config-6)
-  ("M-7" . eyebrowse-switch-to-window-config-7)
-  ("M-8" . eyebrowse-switch-to-window-config-8)
-  ("M-9" . eyebrowse-switch-to-window-config-9)
-  :map evil-emacs-state-map
-  ("M-l" . eyebrowse-next-window-config)
-  ("M-h" . eyebrowse-prev-window-config)
-  ("M-0" . eyebrowse-switch-to-window-config-0)
-  ("M-1" . eyebrowse-switch-to-window-config-1)
-  ("M-2" . eyebrowse-switch-to-window-config-2)
-  ("M-3" . eyebrowse-switch-to-window-config-3)
-  ("M-4" . eyebrowse-switch-to-window-config-4)
-  ("M-5" . eyebrowse-switch-to-window-config-5)
-  ("M-6" . eyebrowse-switch-to-window-config-6)
-  ("M-7" . eyebrowse-switch-to-window-config-7)
-  ("M-8" . eyebrowse-switch-to-window-config-8)
-  ("M-9" . eyebrowse-switch-to-window-config-9)))
+   ("M-l" . eyebrowse-next-window-config)
+   ("M-h" . eyebrowse-prev-window-config)
+   :map evil-emacs-state-map
+   ("M-l" . eyebrowse-next-window-config)
+   ("M-h" . eyebrowse-prev-window-config)))
 (eyebrowse-mode 1)
 
 (defun cool/leader-init ()
