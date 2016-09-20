@@ -25,6 +25,8 @@
   (setq eyebrowse-switch-back-and-forth t
         eyebrowse-wrap-around t
         eyebrowse-new-workspace t)
+  :config
+  (set-face-foreground 'eyebrowse-mode-line-active "#00ffdd")
   :bind
   (:map evil-normal-state-map
   ("M-l" . eyebrowse-next-window-config)

@@ -81,9 +81,14 @@
 (ansi-color-for-comint-mode-on)
 ;; tight mode line
 (use-package smart-mode-line
-  :config
-  (setq sml/no-confirm-load-theme t)
+  :init
+  (setq-default sml/no-confirm-load-theme t
+                sml/shorten-directory t
+                sml/shorten-modes t
+                sml/name-width 20
+                sml/mode-width 'right)
   (sml/setup))
+(smart-mode-line-enable)
 ;; dope font 
 (mac-auto-operator-composition-mode t)
 (set-default-font "Fira Code 14")
