@@ -24,7 +24,7 @@
   :defer t
   :mode
   ("\\.jsx?\\'" . js2-jsx-mode)
-  :init
+  :config
   (setq-default js2-bounce-indent-p t
                 js2-basic-offset 2
 								js2-indent-switch-body t)
@@ -35,4 +35,5 @@
   :config (setq js-indent-level 2))
 
 (add-hook 'js2-jsx-mode-hook 'cool/js-hook)
+(add-hook 'js2-mode-hook 'cool/js-hook)
 (provide 'init-javascript)
