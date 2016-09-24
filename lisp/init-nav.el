@@ -47,6 +47,7 @@
     (kill-buffer old)))
 
 (evil-define-key 'normal dired-mode-map
+  "f" 'helm-find-files
   "h" 'cool/dired-up-directory
   "l" 'dired-find-alternate-file
   "v" 'dired-toggle-marks

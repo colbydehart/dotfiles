@@ -12,14 +12,17 @@
     "gd" 'tide-jump-to-definition))
 
 (setq typescript-indent-level 2)
-(setq tide-format-options '(:insertSpaceAfterFunctionKeywordForAnonymousFunctions
-                            t
-                            :placeOpenBraceOnNewLineForFunctions
-                            nil
-                            :tabSize 2 :indentSize 2))
-(use-package tide :defer t)
-(use-package typescript-mode :mode "\\.tsx?$")
+(use-package tide
+  :defer t
+  :config
+  (setq tide-format-options '(:insertSpaceAfterFunctionKeywordForAnonymousFunctions
+                              t
+                              :placeOpenBraceOnNewLineForFunctions
+                              nil
+                              :tabSize 2 :indentSize 2)))
+(use-package typescript-mode :defer t :mode "\\.tsx?$")
 
 (add-hook 'typescript-mode-hook 'cool/ts-hook)
 (add-hook 'tide-references-mode 'evil-emacs-state)
+
 (provide 'init-typescript)

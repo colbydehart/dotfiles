@@ -3,6 +3,7 @@
   :init
   (setq evil-want-C-u-scroll t)
   :bind (:map evil-normal-state-map
+              ("RET" . helm-M-x)
               ("C-w o" . toggle-maximize-buffer)
               ("C-o" . previous-buffer)
               ("C-i" . next-buffer)
@@ -78,7 +79,9 @@
     "pf" 'helm-projectile-find-file
     "pt" 'projectile-regenerate-tags
     "p;" 'neotree-projectile-action
+    "sh" 'split-window-horizontally
     "sj" 'cool/split-down
+    "sk" 'split-window-vertically
     "sl" 'cool/split-right
     "t" 'multi-term-next
     "v" 'evil-iedit-state/iedit-mode
