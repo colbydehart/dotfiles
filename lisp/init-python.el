@@ -1,6 +1,6 @@
 (defun cool/python-hook ()
   (anaconda-mode)
-  (add-to-list 'company-backends 'company-anaconda)
+  (add-to-list (make-local-variable 'company-backends) 'company-anaconda)
   (setq-local helm-dash-docset "py"))
 
 (leader-for-mode 'python-mode

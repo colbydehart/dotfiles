@@ -30,7 +30,7 @@
      '(emacs-lisp-mode-hook
        eval-expression-minibuffer-setup-hook
        ielm-mode-hook
-       clojure-mode-hook
+       cider-mode-hook
        lisp-mode-hook
        lisp-interaction-mode-hook
        scheme-mode-hook))

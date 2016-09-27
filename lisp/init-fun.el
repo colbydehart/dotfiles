@@ -34,7 +34,7 @@
 	 (lambda (file)
 		 (if (bufferp file)
 				 (setq file (buffer-file-name file)))
-		 (elscreen-create)
+		 (eyebrowse-create-window-config)
 		 (find-file file))))
 
 (defun kill-other-buffers ()
@@ -81,5 +81,10 @@ Don't mess with special buffers."
   (interactive)
   (split-window-horizontally)
   (windmove-right))
+
+(defun cool/presentation-mode ()
+  (interactive)
+  (set-default-font "mononoki 24")
+  (prettify-symbols-mode -1))
 
 (provide 'init-fun)

@@ -35,7 +35,7 @@
          ("M-<return>" . yas/expand) 
          :map evil-insert-state-map
          ("C-SPC" . company-yasnippet))
-  :config (yas-global-mode 1))
+  :init (yas-global-mode 1))
 
 ;;;;;;;;;;;;;DIRED;;;;;;;;;;;;;;;;
 
@@ -62,7 +62,15 @@
   :config
   (setq company-idle-delay 0.1)
   (setq company-dabbrev-downcase nil)
-  (add-hook 'after-init-hook 'global-company-mode))
+  (add-hook 'after-init-hook 'global-company-mode)
+  ;; (setq company-backends
+  ;;       '((company-files
+  ;;          company-keywords
+  ;;          company-capf
+  ;;          company-yasnippet
+  ;;          company-abbrev
+  ;;          company-dabbrev)))
+  )
 (use-package helm-company
   :bind (:map company-mode-map
          ("C-;" . helm-company)

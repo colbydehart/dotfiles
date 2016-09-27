@@ -13,10 +13,11 @@
   (set-face-attribute 'org-column nil :foreground "#666666"))
 ;; Evil org stuff, I don't really like evil-org package
 (leader-for-mode 'org-mode
-    "t"  'org-show-todo-tree
-    "l"  'evil-org-open-links
     "j" (lambda () (interactive) (find-file "~/org/journal.org"))
-    "o"  'evil-org-recompute-clocks)
+    "l" 'evil-org-open-links
+    "o" 'evil-org-recompute-clocks
+    "r" 'org-refile
+    "t" 'org-show-todo-tree)
 (evil-define-key 'normal org-agenda-mode-map
     "e" 'org-agenda-set-effort
     "t" 'org-agenda-todo

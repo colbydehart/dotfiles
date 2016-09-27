@@ -1,6 +1,7 @@
 (defun cool/js-hook () 
   (emmet-mode 1)
   (setq-local emmet-expand-jsx-className? t)
+  (add-to-list (make-local-variable 'company-backends) 'company-tern)
   (web-mode-set-content-type "jsx")
   (yas-activate-extra-mode 'js-mode)
   (setq-local web-mode-enable-auto-quoting nil)
@@ -39,9 +40,8 @@
         js-indent-level 2
         js2-bounce-indent-p t))
 (use-package tern :defer t)
-(use-package company-tern :defer t
-  :config
-  (push 'company-tern company-backends-react-mode))
-(use-package json-mode :defer t :config (setq js-indent-level 2))
+(use-package company-tern :defer t)
+(use-package json-mode :defer t
+  :config (setq js-indent-level 2))
 
 (provide 'init-javascript)

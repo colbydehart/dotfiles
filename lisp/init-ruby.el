@@ -1,5 +1,6 @@
 (defun cool/ruby-hook ()
   (setq-local dash–at-point-docset "ruby")
+  (add-to-list (make-local-variable company-backends) 'company-robe)
   (rvm-activate-corresponding-ruby)
   (robe-mode)
   (rspec-mode)
@@ -23,9 +24,7 @@
 (use-package projectile-rails :defer t)
 (use-package flymake-ruby :defer t)
 (use-package ruby-electric :defer t)
-(use-package robe
-  :defer t
-  :init (push 'company-robe company-backends))
+(use-package robe :defer t)
 
 (add-hook 'ruby-mode-hook 'cool/ruby-hook)
 (provide 'init-ruby)

@@ -1,10 +1,15 @@
 ;; Hook
 (defun cool/clojure-hook ()
-  (setq cider-cljs-lein-repl "(do (use 'figwheel-sidecar.repl-api) (start-figwheel!) (cljs-repl))")
+  (cider-mode)
+  (setq-local)
+  (yas-activate-extra-mode 'clojure-mode)
   (setq-local dash-at-point-docset "clj"))
 
 ;; Leader bindings
 (which-key-declare-prefixes-for-mode 'clojure-mode
+  ",e" "Eval"
+  ",t" "Tests")
+(which-key-declare-prefixes-for-mode 'clojurescript-mode
   ",e" "Eval"
   ",t" "Tests")
 (dolist (mode '(clojure-mode clojurescript-mode))
@@ -30,7 +35,11 @@
               ("C-j" . windmove-down)
               ("C-l" . windmove-right)
               ("M-h" . eyebrowse-prev-window-config)
-              ("M-l" . eyebrowse-next-window-config)))
+              ("M-l" . eyebrowse-next-window-config))
+  :config
+  (setq cider-cljs-lein-repl "(do (use 'figwheel-sidecar.repl-api) (start-figwheel!) (cljs-repl))"))
 
 (add-hook 'clojure-mode-hook 'cool/clojure-hook) 
+(add-hook 'clojurescript-mode-hook 'cool/clojure-hook) 
+
 (provide 'init-clojure)

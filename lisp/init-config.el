@@ -4,7 +4,8 @@
 ;; No nothin', no how.
 (tool-bar-mode -1)
 (menu-bar-mode -1)
-(scroll-bar-mode -1)
+(if (display-graphic-p)
+  (scroll-bar-mode -1))
 ;; No time to type yes
 (fset 'yes-or-no-p 'y-or-n-p)
 ;; Use tabs or dont
@@ -85,9 +86,10 @@
   :config
   (setq spaceline-window-numbers-unicode t
         spaceline-workspace-numbers-unicode t))
-;; dope font 
-(mac-auto-operator-composition-mode t)
-(set-default-font "Fira Code 14")
+;; dope font
+(if (display-graphic-p) (set-default-font "Fira Code 18"))
+;; (set-default-font "mononoki 25") 
+(if (fboundp 'mac-auto-operator-composition-mode) (mac-auto-operator-composition-mode t))
 
 ;; GLOBAL KEYBINDINGS
 ;; ------------------
