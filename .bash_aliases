@@ -20,7 +20,6 @@ alias gag="git --no-pager grep --heading --break --line-number"
 alias haz="http icanhazip.com"
 alias myip="ifconfig | grep en0 -A 3 | grep \"inet \" | cut -d \" \" -f 2 | pbcopy"
 
-alias vim="vim"
-alias em="emacsclient -nw"
-
 alias dc="docker-compose"
+
+alias kill-tmux="tmux ls | grep : | cut -d. -f1 | awk '{print substr($1, 0, length($1)-1)}' | xargs kill"
