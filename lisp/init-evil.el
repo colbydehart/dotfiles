@@ -84,13 +84,17 @@
     "sk" 'split-window-vertically
     "sl" 'cool/split-right
     "t" 'multi-term-next
+    "uh" 'cool/dec-width
+    "ul" 'cool/inc-width
+    "uj" 'cool/dec-height
+    "uk" 'cool/inc-height
     "v" 'evil-iedit-state/iedit-mode
     "w" 'save-buffer
     "x" 'dired-jump
     "yc" 'cool/copy-file-name
     "yf" 'yas-visit-snippet-file
     "yy" 'yas-new-snippet
-    "zh" 'cool/goto-hacker-news
+    "zx" 'cool/goto-hacker-news
     "zz" 'w3m-search
     ":" 'helm-M-x
     "/" 'helm-projectile-ag

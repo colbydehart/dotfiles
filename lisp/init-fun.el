@@ -87,4 +87,20 @@ Don't mess with special buffers."
   (set-default-font "mononoki 24")
   (prettify-symbols-mode -1))
 
+(defun cool/dec-height ()
+  (interactive)
+  (evil-window-decrease-height 5))
+
+(defun cool/inc-height ()
+  (interactive)
+  (evil-window-increase-height 5))
+
+(defun cool/dec-width ()
+  (interactive)
+  (evil-window-decrease-width 5))
+
+(defun cool/inc-width ()
+  (interactive)
+  (evil-window-increase-width 5))
+
 (provide 'init-fun)

@@ -2,14 +2,16 @@
   (setq alchemist-hooks-test-on-save t
         alchemist-project-compile-when-needed t)
   (alchemist-mode)
-  (setq-local dash–at-point-docset "ex")
-  (set
-   (make-variable-buffer-local 'ruby-end-expand-keywords-before-re)
-   "\\(?:^\\|\\s-+\\)\\(?:do\\)")
-  (set
-   (make-variable-buffer-local 'ruby-end-check-statement-modifiers)
-   nil)
-  (ruby-end-mode +1))
+  (setq-local dash–at-point-docset "ex"))
+
+(sp-with-modes '(elixir-mode)
+  (sp-local-pair "fn" "end"
+                 :when '(("SPC" "RET"))
+                 :actions '(insert))
+  (sp-local-pair "do" "end"
+                 :when '(("SPC" "RET"))
+                 :post-handlers '(sp-ruby-def-post-handler)
+                 :actions '(insert)))
 
 (which-key-declare-prefixes-for-mode 'elixir-mode
   ",p" "Phoenix"
