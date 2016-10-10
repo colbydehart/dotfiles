@@ -30,7 +30,10 @@
   (add-to-list 'auto-mode-alist '("\\.jsx?$" . cool/js-mode))
   (add-to-list 'interpreter-mode-alist '("node" . cool/js-mode))
   (add-hook 'cool/js-mode-hook 'cool/js-hook)
-  (flycheck-add-mode 'javascript-eslint 'cool/js-mode)
+  (if cool/use-js-standard
+      (flycheck-add-mode 'javascript-standard 'cool/js-mode)
+    (flycheck-add-mode 'javascript-eslint 'cool/js-mode))
+  
   (add-to-list 'web-mode-indentation-params '("lineup-args" . nil))
   (add-to-list 'web-mode-indentation-params '("lineup-calls" . nil))
   (add-to-list 'web-mode-indentation-params '("lineup-concats" . nil)))

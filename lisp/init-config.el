@@ -75,7 +75,11 @@
 (use-package docker
   :config (docker-global-mode))
 ;; C O O O O O O O O O O O O O L~T H E E E E E E E E M E
-(load-theme 'wombat t)
+;; (use-package jbeans-theme)
+;; (load-theme 'jbeans t)
+(use-package badwolf-theme)
+(load-theme 'badwolf t)
+
 ;; nice term colors
 (ansi-color-for-comint-mode-on)
 ;; tight mode line

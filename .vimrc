@@ -34,23 +34,24 @@ Plug 'Raimondi/delimitMate'
 Plug 'tpope/vim-surround'
 Plug 'tstelzer/welpe.vim'
 Plug 'airblade/vim-gitgutter'
-
-" Navigation
-Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+Plug 'luochen1990/rainbow'
+Plug 'tpope/vim-speeddating'
+Plug 'vim-orgmode'
+let g:rainbow_active = 1 "0 if you want to enable it later via :RainbowToggle
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'ctrlpvim/ctrlp.vim'
-Plug 'jreybert/vimagit'
-
-" Autocomplete
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
+Plug 'ajh17/VimCompletesMe'
+set splitbelow
 Plug 'scrooloose/syntastic'
-
-" JavaScript
-Plug 'ternjs/tern_for_vim', { 'do': 'npm i'}
+Plug 'ternjs/tern_for_vim', {'do': 'npm i'}
 Plug 'mxw/vim-jsx'
 let g:jsx_ext_required = 0
 let g:syntastic_javascript_checkers = ['eslint']
-
+Plug 'elixir-lang/vim-elixir', {'for': 'elixir'}
+Plug 'slashmili/alchemist.vim', {'for': 'elixir'}
+Plug 'guns/vim-sexp', {'for': 'clojure'}
+Plug 'tpope/vim-sexp-mappings-for-regular-people', {'for': 'clojure'}
+Plug 'tpope/vim-fireplace', {'for': 'clojure'}
 call plug#end()
 syntax on
 
@@ -58,19 +59,19 @@ syntax on
 " Keybindings
 
 " Leader bindings
-nn <leader>; :NERDTreeToggle<CR>
 nn <leader>b :CtrlPBuffer<CR>
 nn <leader>f :CtrlP<CR>
 nn <leader>g :Magit<CR>
 nn <leader>k ZZ
 nn <leader>n :tabe<CR>
+nn <leader>oo :e ~/Dropbox/org/gtd.org<CR>
 nn <leader>sk :split<CR>
 nn <leader>sj :split<CR><C-W>j
 nn <leader>sh :vsplit<CR>
 nn <leader>sl :vsplit<CR><C-W>l
 nn <leader>v :e ~/.vimrc<CR>
 nn <leader>w :w!<CR>
-nn <leader>x :Ex<CR>
+nn <leader>x :Explore<CR>
 
 " Window navigation
 map <C-j> <C-W>j
@@ -80,7 +81,8 @@ map <C-l> <C-W>l
 " Tab navigation
 nn H gT
 nn L gt
-
+" Easier autocomplete
+ino <C-E> <C-X><C-O>
 " Local Vimrc
 if filereadable("./.lvimrc")
     execute "source ./.lvimrc"
