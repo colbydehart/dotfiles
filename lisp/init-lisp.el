@@ -1,11 +1,8 @@
 (defun cool/lisp-hook ()
   (setq indent-tabs-mode nil)
-  (electric-pair-mode nil)
   (turn-on-smartparens-strict-mode)
   (prettify-symbols-mode)
-  (turn-on-smartparens-mode)
-  (show-paren-mode)
-  (evil-cleverparens-mode))
+  (show-paren-mode))
 
 (leader-for-mode 'emacs-lisp-mode
 								 "e" 'eval-buffer

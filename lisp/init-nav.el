@@ -27,16 +27,8 @@
 (defun add-d-to-ediff-mode-map () (define-key ediff-mode-map "d" 'ediff-copy-both-to-C))
 (add-hook 'ediff-keymap-setup-hook 'add-d-to-ediff-mode-map)
 
-(use-package vagrant-tramp)
 (use-package flycheck :config (add-hook 'prog-mode-hook 'flycheck-mode))
 (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc emacs-lisp))
-(use-package yasnippet
-  :bind (:map yas-minor-mode-map 
-         ("M-<return>" . yas/expand) 
-         :map evil-insert-state-map
-         ("C-SPC" . company-yasnippet))
-  :init (yas-global-mode 1))
-
 ;;;;;;;;;;;;;DIRED;;;;;;;;;;;;;;;;
 
 (defun cool/dired-up-directory ()
@@ -55,26 +47,5 @@
   "n" 'evil-search-next
   "N" 'evil-search-previous
   "q" 'kill-this-buffer)
-
-;;;;;;;;AUTO COMPLETE;;;;;;;;;;;;;
-
-(use-package company
-  :config
-  (setq company-idle-delay 0.1)
-  (setq company-dabbrev-downcase nil)
-  (add-hook 'after-init-hook 'global-company-mode)
-  ;; (setq company-backends
-  ;;       '((company-files
-  ;;          company-keywords
-  ;;          company-capf
-  ;;          company-yasnippet
-  ;;          company-abbrev
-  ;;          company-dabbrev)))
-  )
-(use-package helm-company
-  :bind (:map company-mode-map
-         ("C-;" . helm-company)
-         :map company-active-map
-         ("C-j" . helm-company)))
 
 (provide 'init-nav)

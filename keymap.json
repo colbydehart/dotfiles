@@ -1,0 +1,31 @@
+{
+  "atom-text-editor.vim-mode:not(.insert-mode)": {
+    "shift-H": "pane:show-next-recently-used-item",
+    "shift-L": "pane:show-previous-recently-used-item",
+    "space": "unbind!",
+    "space b": "fuzzy-finder:toggle-buffer-finder",
+    "space f": "advanced-open-file:toggle",
+    "space g": "git-plus:menu",
+    "space k": "core:close",
+    "space n": "application:new-file",
+    "space s k": "pane:split-up-and-copy-active-item",
+    "space s j": "pane:split-down-and-copy-active-item",
+    "space s h": "pane:split-left-and-copy-active-item",
+    "space s l": "pane:split-right-and-copy-active-item",
+    "space t": "term3:open",
+    "space w": "core:save"
+  },
+  "atom-text-editor.vim-mode": {
+    "ctrl-w o": "cool:close-panes",
+    "ctrl-h": "window:focus-pane-on-left",
+    "ctrl-l": "window:focus-pane-on-right",
+    "ctrl-k": "window:focus-pane-above",
+    "ctrl-j": "window:focus-pane-below"
+  },
+  ".term3": {
+    "ctrl-h": "window:focus-pane-on-left",
+    "ctrl-l": "window:focus-pane-on-right",
+    "ctrl-k": "window:focus-pane-above",
+    "ctrl-j": "window:focus-pane-below"
+  }
+}

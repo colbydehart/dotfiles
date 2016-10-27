@@ -1,0 +1,15 @@
+{
+  "*": {
+    "core": {
+      "telemetryConsent": "limited",
+      "themes": [
+        "one-dark-ui",
+        "base16-tomorrow-dark-theme"
+      ],
+      "useCustomTitleBar": true
+    },
+    "exception-reporting": {
+      "userId": "80c4c77b-28f1-22b4-e79c-4a6e7f1784bc"
+    }
+  }
+}

@@ -1,16 +1,23 @@
 (defun cool/elixir-hook ()
-  (setq alchemist-hooks-test-on-save t
-        alchemist-project-compile-when-needed t)
+  (setq alchemist-project-compile-when-needed t)
+  (turn-on-smartparens-mode)
   (alchemist-mode)
   (setq-local dash–at-point-docset "ex"))
+
+(defun cool/elixir-do-end-close-action (id action context)
+  (when (eq action 'insert)
+    (newline-and-indent)
+    (forward-line -1)
+    (indent-according-to-mode)))
 
 (sp-with-modes '(elixir-mode)
   (sp-local-pair "fn" "end"
                  :when '(("SPC" "RET"))
+                 :post-handlers '(:add cool/elixir-do-end-close-action)
                  :actions '(insert))
   (sp-local-pair "do" "end"
-                 :when '(("SPC" "RET"))
-                 :post-handlers '(sp-ruby-def-post-handler)
+                 :when '(("RET"))
+                 :post-handlers '(:add cool/elixir-do-end-close-action)
                  :actions '(insert)))
 
 (which-key-declare-prefixes-for-mode 'elixir-mode
@@ -36,7 +43,7 @@
                  "pw" 'alchemist-phoenix-find-web)
 
 (use-package elixir-mode :defer t)
-(use-package ruby-end :defer t)
+(use-package smartparens :defer t)
 (use-package alchemist :defer t)
 
 (add-hook 'elixir-mode-hook 'cool/elixir-hook)

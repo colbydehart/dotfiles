@@ -1,7 +1,9 @@
 (use-package evil
   :ensure t
   :init
-  (setq evil-want-C-u-scroll t)
+  (setq evil-want-C-u-scroll t
+        evil-shift-width 2
+        evil-esc-delay 0)
   :bind (:map evil-normal-state-map
               ("RET" . helm-M-x)
               ("C-w o" . toggle-maximize-buffer)
@@ -21,7 +23,7 @@
               ("C-u" . evil-scroll-page-up)
               ("C-n" . evil-next-line)
               ("C-p" . evil-previous-line)))
-(evil-mode t)
+(evil-mode 1)
 ;; Tabs
 (use-package eyebrowse
   :init
