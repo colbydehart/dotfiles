@@ -104,4 +104,23 @@ Don't mess with special buffers."
   (interactive)
   (evil-window-increase-width 5))
 
+(defun cool/open-log ()
+  (interactive)
+  (let ((date (shell-command-to-string "echo -n $(date +%Y/%m/%d)")))
+    (find-file (concat "~/log/" date ".org"))))
+
+(defun cool/startup-layout ()
+  (interactive)
+  (split-window-below)
+  (split-window-below)
+  (split-window-right)
+  (rcirc nil)
+  (windmove-right)
+  (multi-term)
+  (windmove-down)
+  (cool/open-log)
+  (windmove-down)
+  (evil-window-decrease-height 10)
+  (find-file "~/Dropbox/org/gtd.org"))
+
 (provide 'init-fun)

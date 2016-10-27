@@ -64,9 +64,11 @@ set splitbelow
 Plug 'elixir-lang/vim-elixir', {'for': 'elixir'}
 Plug 'slashmili/alchemist.vim', {'for': 'elixir'}
 " Clojure
-" Plug 'guns/vim-sexp', {'for': 'clojure'}
-" Plug 'tpope/vim-sexp-mappings-for-regular-people', {'for': 'clojure'}
-" Plug 'tpope/vim-fireplace', {'for': 'clojure'}
+Plug 'guns/vim-sexp', {'for': 'clojure'}
+Plug 'tpope/vim-sexp-mappings-for-regular-people', {'for': 'clojure'}
+Plug 'tpope/vim-fireplace', {'for': 'clojure'}
+" Ruby
+Plug 'tpope/vim-rails', {'for': 'ruby'}
 call plug#end()
 filetype plugin indent on
 syntax on

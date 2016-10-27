@@ -20,6 +20,7 @@
               ("C-k" . evil-window-up)
               ("C-l" . evil-window-right)
               :map evil-insert-state-map
+              ("C-e" . hippie-expand)
               ("C-u" . evil-scroll-page-up)
               ("C-n" . evil-next-line)
               ("C-p" . evil-previous-line)))
@@ -60,6 +61,7 @@
     "a" 'org-agenda
     "b" 'helm-mini
     "c" 'org-capture
+    "d" 'other-frame
     "f" 'helm-find-files
     "g" 'magit-status
     "ha" 'helm-apropos
@@ -69,6 +71,7 @@
     "hv" 'describe-variable
     "i" 'helm-imenu
     "k" 'eyebrowse-close-window-config
+    "l" 'cool/open-log
     "mk" 'bookmark-delete
     "mc" 'bookmark-set
     "mm" 'helm-bookmarks
