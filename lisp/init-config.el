@@ -14,13 +14,15 @@
       make-backup-files nil
       backup-directory-alist '(("." . "/tmp")) 
       ;; Do or don't use tabs and final newline
-      cool/use-tabs (eq (getenv "USE_TABS") "1")
-      cool/final-newline (eq (getenv "USE_FINAL_NEWLINE") "1"))
+      cool/use-tabs (string= (getenv "USE_TABS") "1")
+      cool/final-newline (string= (getenv "USE_FINAL_NEWLINE") "1"))
 ;; ;; No nothin', no how.
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 (if (display-graphic-p)
-  (scroll-bar-mode -1))
+    (progn
+      (scroll-bar-mode -1)
+      (mac-auto-operator-composition-mode t)))
 ;; No time to type yes
 (fset 'yes-or-no-p 'y-or-n-p)
 ;; Use tabs or dont
@@ -35,8 +37,12 @@
 ;; Web browser
 (use-package w3m)
 ;; Cool Theme
+(setq solarized-use-variable-pitch nil
+      solarized-scale-org-headlines nil)
+(use-package solarized-theme)
+(load-theme 'solarized-dark t)
 ;; (use-package badwolf-theme)
-(load-theme 'tango)
+;; (load-theme 'badwolf t)
 ;; nice term colors
 (ansi-color-for-comint-mode-on)
 ;; tight mode line
@@ -51,7 +57,7 @@
 (if (display-graphic-p)
     (if (getenv "BIG_MONITOR")
         (set-default-font "Fira Code 14")
-      (set-default-font "Fira Code 18")))
+      (set-default-font "Fira Code 16")))
 
 ;; GLOBAL KEYBINDINGS
 ;; ------------------

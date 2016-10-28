@@ -1,11 +1,17 @@
 (defun cool/js-hook () 
   (emmet-mode 1)
   (add-to-list (make-local-variable 'company-backends) 'company-tern)
+  (web-mode-set-content-type "jsx")
+  (yas-activate-extra-mode 'js-mode)
   (push 'javascript-jshint flycheck-disabled-checkers)
   (setq-local dash-at-point-docset "js")
-  (setq js-switch-indent-offset 2
-        js-indent-level 2)
-  (js2-imenu-extras-mode)
+  (setq-local web-mode-enable-auto-quoting nil)
+  (setq emmet-expand-jsx-className? t
+        js-switch-indent-offset 2
+        js-indent-level 2
+        web-mode-markup-indent-offset 2
+        web-mode-attr-indent-offset 2
+        web-mode-code-indent-offset 2)
   (tern-mode))
 
 (leader-for-mode 'cool/js-mode
@@ -13,20 +19,24 @@
                  "ht" 'tern-get-type
                  "/" 'web-mode-element-close)
 
+(use-package web-mode
+  :config
+  (define-derived-mode cool/js-mode web-mode "Cool/JS")
+  (if cool/use-tabs (web-mode-use-tabs))
+  (add-to-list 'auto-mode-alist '("\\.jsx?$" . cool/js-mode))
+  (add-to-list 'interpreter-mode-alist '("node" . cool/js-mode))
+  (add-hook 'cool/js-mode-hook 'cool/js-hook)
+  (if cool/use-js-standard
+      (flycheck-add-mode 'javascript-standard 'cool/js-mode)
+    (flycheck-add-mode 'javascript-eslint 'cool/js-mode))
+  
+  (add-to-list 'web-mode-indentation-params '("lineup-args" . nil))
+  (add-to-list 'web-mode-indentation-params '("lineup-calls" . nil))
+  (add-to-list 'web-mode-indentation-params '("lineup-concats" . nil)))
+
 (use-package json-mode :defer t
   :config (setq js-indent-level 2))
 (use-package tern :defer t)
-(use-package js2-mode :defer t)
 (use-package company-tern :defer t)
-
-(define-derived-mode cool/js-mode js-jsx-mode "Cool/JS")
-(add-to-list 'auto-mode-alist '("\\.jsx?$" . cool/js-mode))
-(add-to-list 'interpreter-mode-alist '("node" . cool/js-mode))
-
-(if cool/use-js-standard
-    (flycheck-add-mode 'javascript-standard 'cool/js-mode)
-  (flycheck-add-mode 'javascript-eslint 'cool/js-mode))
-
-(add-hook 'cool/js-mode-hook 'cool/js-hook)
 
 (provide 'init-javascript)

@@ -51,7 +51,8 @@
   :defer t
   :init
   (add-hook 'org-mode-hook 'org-bullets-mode)
-  (setq org-bullets-bullet-list '("☯" "♫" "♜"  "⚡" "☢")))
+  (setq org-bullets-bullet-list '("✽" "⎈" "✲" "✱" "✻" "✼" "✽" "✾" "✿" "❀" "❁" "❂" "❃" "❄" "❅" "❆" "❇" "✡")))
+
 ;; Templates for org-capture
 (setq org-capture-templates
         '(("t" "Todo" entry (file+headline "~/org/gtd.org" "tasks")

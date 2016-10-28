@@ -23,3 +23,5 @@ alias myip="ifconfig | grep en0 -A 3 | grep \"inet \" | cut -d \" \" -f 2 | pbco
 alias dc="docker-compose"
 
 alias kill-tmux="tmux ls | grep : | cut -d. -f1 | awk '{print substr($1, 0, length($1)-1)}' | xargs kill"
+
+alias skexport="sketchtool export artboards --format=svg"
