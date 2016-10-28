@@ -2,6 +2,7 @@
 "=================================================
 set t_Co=256
 set tabstop=2 shiftwidth=2
+set completeopt=longest,menuone,preview "completion options
 set ruler                       "show line and column in status line
 set number                      "Line numbers
 set mouse=a                     "Use the mouse
@@ -23,6 +24,8 @@ if $USE_FINAL_NEWLINE != '1'
   set noeol
 endif
 
+
+
 " The Silver Searcher
 if executable('ag')
   set grepprg=ag\ --nogroup\ --nocolor
@@ -39,37 +42,51 @@ set wildignore+=.venv
 "==================================
 " Plugins
 call plug#begin()
-" Plug 'tpope/vim-surround'
-" Plug 'tpope/vim-speeddating'
-" Plug 'tpope/vim-endwise'
-" Plug 'tpope/vim-commentary'
-" Plug 'junegunn/vim-easy-align'
-" Plug 'Raimondi/delimitMate'
-Plug 'tstelzer/welpe.vim'
-" Plug 'airblade/vim-gitgutter'
-" Plug 'luochen1990/rainbow'
-" Plug 'vim-orgmode'
-" let g:rainbow_active = 1 "0 if you want to enable it later via :RainbowToggle
-" Plug 'christoomey/vim-tmux-navigator'
-" Plug 'ctrlpvim/ctrlp.vim'
-" Plug 'ajh17/VimCompletesMe'
-" " Plug 'scrooloose/syntastic'
-set splitbelow
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-speeddating'
+Plug 'tpope/vim-endwise'
+Plug 'tpope/vim-commentary'
+Plug 'junegunn/vim-easy-align'
+Plug 'Raimondi/delimitMate'
+Plug 'altercation/vim-colors-solarized'
+Plug 'airblade/vim-gitgutter'
+Plug 'luochen1990/rainbow'
+Plug 'vim-orgmode'
+let g:rainbow_active = 1 "0 if you want to enable it later via :RainbowToggle
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'scrooloose/syntastic'
+Plug 'shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+let g:deoplete#enable_at_startup = 1
+let g:deoplete#enable_smart_case = 1
+let g:deoplete#omni#functions = {}
+let g:deoplete#omni#functions.javascript = [
+  \ 'tern#Complete',
+  \ 'jspc#omni'
+\]
+Plug 'ervandew/supertab'
+let g:SuperTabDefaultCompletionType = "<c-x><c-o>"
+let g:SuperTabClosePreviewOnPopupClose = 1
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 " Javascript
-" Plug 'ternjs/tern_for_vim', {'do': 'npm i'}
-" Plug 'mxw/vim-jsx'
-" let g:jsx_ext_required = 0
-" let g:syntastic_javascript_checkers = ['eslint']
+Plug 'ternjs/tern_for_vim', {'do': 'npm i', 'for': ['javascript', 'javascript.jsx']}
+Plug 'carlitux/deoplete-ternjs', {'for': ['javascript', 'javascript.jsx']}
+Plug 'othree/jspc.vim', { 'for': ['javascript', 'javascript.jsx'] }
+Plug 'mxw/vim-jsx'
+let g:jsx_ext_required = 0
+let g:syntastic_javascript_checkers = ['eslint']
 " Elixir
 Plug 'elixir-lang/vim-elixir', {'for': 'elixir'}
 Plug 'slashmili/alchemist.vim', {'for': 'elixir'}
 " Clojure
-" Plug 'guns/vim-sexp', {'for': 'clojure'}
-" Plug 'tpope/vim-sexp-mappings-for-regular-people', {'for': 'clojure'}
-" Plug 'tpope/vim-fireplace', {'for': 'clojure'}
+Plug 'guns/vim-sexp', {'for': 'clojure'}
+Plug 'tpope/vim-sexp-mappings-for-regular-people', {'for': 'clojure'}
+Plug 'tpope/vim-fireplace', {'for': 'clojure'}
 call plug#end()
 filetype plugin indent on
-syntax on
+syntax enable
+set background=dark
+colo solarized
 
 "=================================================
 " Keybindings
@@ -85,6 +102,7 @@ nn <leader>sk :split<CR>
 nn <leader>sj :split<CR><C-W>j
 nn <leader>sh :vsplit<CR>
 nn <leader>sl :vsplit<CR><C-W>l
+nn <leader>t :terminal<CR>
 nn <leader>v :e ~/.vimrc<CR>
 nn <leader>w :w!<CR>
 nn <leader>x :Explore<CR>
@@ -99,11 +117,11 @@ nn H gT
 nn L gt
 " Easier autocomplete
 ino <C-E> <C-X><C-O>
+" Terminal stuff
+:tnoremap <Esc> <C-\><C-n>
 " Local Vimrc
 if filereadable("./.lvimrc")
     execute "source ./.lvimrc"
 endif
-
-colo welpe
 
 autocmd! bufwritepost .vimrc source %
