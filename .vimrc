@@ -82,6 +82,8 @@ Plug 'slashmili/alchemist.vim', {'for': 'elixir'}
 Plug 'guns/vim-sexp', {'for': 'clojure'}
 Plug 'tpope/vim-sexp-mappings-for-regular-people', {'for': 'clojure'}
 Plug 'tpope/vim-fireplace', {'for': 'clojure'}
+" Ruby
+Plug 'tpope/vim-rails', {'for': 'ruby'}
 call plug#end()
 filetype plugin indent on
 syntax enable

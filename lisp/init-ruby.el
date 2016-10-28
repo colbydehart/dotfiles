@@ -1,7 +1,7 @@
 (defun cool/ruby-hook ()
   (setq-local dash–at-point-docset "ruby")
   (add-to-list (make-local-variable company-backends) 'company-robe)
-  (rvm-activate-corresponding-ruby)
+  (rvm-use-default)
   (robe-mode)
   (rspec-mode)
   (ruby-electric-mode)
