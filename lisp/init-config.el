@@ -40,9 +40,7 @@
 (setq solarized-use-variable-pitch nil
       solarized-scale-org-headlines nil)
 (use-package solarized-theme)
-(load-theme 'solarized-dark t)
-;; (use-package badwolf-theme)
-;; (load-theme 'badwolf t)
+(load-theme 'solarized-light t)
 ;; nice term colors
 (ansi-color-for-comint-mode-on)
 ;; tight mode line
@@ -58,6 +56,14 @@
     (if (getenv "BIG_MONITOR")
         (set-default-font "Fira Code 14")
       (set-default-font "Fira Code 16")))
+;; scratch stuff
+(setq initial-major-mode 'elixir-mode)
+(setq initial-scratch-message "defmodule Scratch do
+@moduledoc\"\"\"
+This buffer is for text that is not saved, and for Elixir evaluation.
+To create a file, visit it with C-x C-f and enter text in its buffer.
+\"\"\"
+end")
 
 ;; GLOBAL KEYBINDINGS
 ;; ------------------
@@ -67,5 +73,6 @@
 ;; I HATE THESE KEYBINDING
 (global-set-key (kbd "TAB") nil)
 (global-set-key (kbd "M-t") nil)
+
 
 (provide 'init-config)

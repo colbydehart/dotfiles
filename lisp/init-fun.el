@@ -84,7 +84,6 @@ Don't mess with special buffers."
 
 (defun cool/presentation-mode ()
   (interactive)
-  (load-theme 'tango)
   (set-default-font "mononoki 24")
   (prettify-symbols-mode -1))
 

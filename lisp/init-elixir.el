@@ -11,10 +11,6 @@
     (indent-according-to-mode)))
 
 (sp-with-modes '(elixir-mode)
-  (sp-local-pair "fn" "end"
-                 :when '(("SPC" "RET"))
-                 :post-handlers '(:add cool/elixir-do-end-close-action)
-                 :actions '(insert))
   (sp-local-pair "do" "end"
                  :when '(("RET"))
                  :post-handlers '(:add cool/elixir-do-end-close-action)

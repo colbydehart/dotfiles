@@ -49,7 +49,7 @@
  '(org-agenda-files (quote ("~/org/gtd.org")))
  '(package-selected-packages
    (quote
-    (w3m badwolf-theme jbeans-theme golden-ratio yasnippet yaml-mode which-key web-mode vagrant-tramp use-package toml-mode tide spaceline scss-mode rvm ruby-end ruby-electric rspec-mode robe restclient rainbow-delimiters racer pyvenv python-mode puppet-mode projectile-rails org-bullets multi-term markdown-mode js2-mode js-doc indent-guide helm-projectile helm-company helm-ag fsharp-mode flymake-ruby eyebrowse evil-surround evil-magit evil-iedit-state evil-commentary evil-cleverparens emmet-mode elm-mode dockerfile-mode docker dash-at-point company-tern company-anaconda cider bind-map ansible alchemist ace-jump-mode))))
+    (solarized-theme solarized w3m badwolf-theme jbeans-theme golden-ratio yasnippet yaml-mode which-key web-mode vagrant-tramp use-package toml-mode tide spaceline scss-mode rvm ruby-end ruby-electric rspec-mode robe restclient rainbow-delimiters racer pyvenv python-mode puppet-mode projectile-rails org-bullets multi-term markdown-mode js2-mode js-doc indent-guide helm-projectile helm-company helm-ag fsharp-mode flymake-ruby eyebrowse evil-surround evil-magit evil-iedit-state evil-commentary evil-cleverparens emmet-mode elm-mode dockerfile-mode docker dash-at-point company-tern company-anaconda cider bind-map ansible alchemist ace-jump-mode))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
