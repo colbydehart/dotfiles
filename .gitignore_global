@@ -43,7 +43,6 @@ Thumbs.db
 *.un~
 Session.vim
 *~
-.tern-project
 .tern-port
 .lnvimrc
 .lvimrc
@@ -65,7 +64,6 @@ _build
 # Emacs
 #############
 .#*
-.tern-port
 GTAGS
 GRTAGS
 GPATH

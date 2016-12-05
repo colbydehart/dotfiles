@@ -2,6 +2,7 @@
   (setq indent-tabs-mode nil)
   (turn-on-smartparens-strict-mode)
   (prettify-symbols-mode)
+  (evil-cleverparens-mode)
   (show-paren-mode))
 
 (leader-for-mode 'emacs-lisp-mode

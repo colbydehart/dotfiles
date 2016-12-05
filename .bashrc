@@ -1,30 +1,37 @@
 . ~/.bash_aliases
 . ~/.git-prompt.sh
 
-export EDITOR=vim
+# asdf version manager
+. $HOME/.asdf/asdf.sh
+. $HOME/.asdf/completions/asdf.bash
 
-# Keep logged in on lpass
-export LPASS_AGENT_TIMEOUT=0
+# let me open a bunch of files
+ulimit -n 2048
 
-# nvm setup
-export NVM_DIR="$HOME/.nvm"
-. "$(brew --prefix nvm)/nvm.sh"
+#Neovim is editor
+export EDITOR=nvim
 
-export LP_PS1_POSTFIX="\n🙇  " 
+#Cool prompt
+export LP_PS1_POSTFIX="\n🙇  "
 . ~/liquidprompt/liquidprompt
 
-eval "$(direnv hook bash)"
+#Fix nvim cursor
+export NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 
 #Update PATH
-export PATH="$PATH:./node_modules/.bin"
-
-export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
-
-# brew completions
-if [ -f $(brew --prefix)/etc/bash_completion ]; then
-	. $(brew --prefix)/etc/bash_completion
+YARN_BIN_PATH=$(yarn global bin) # Add node_modules to PATH
+if [ -d $YARN_BIN_PATH ]; then
+  export PATH="$PATH:$YARN_BIN_PATH"
 fi
 
-if [ -f ~/.lbashrc ]; then
-  . ~/.lbashrc
+export ANDROID_HOME="$HOME/Library/Android/sdk"
+if [ -d $ANDROID_HOME ]; then
+  export PATH="$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools"
+fi
+
+# git completion
+# brew completions
+BREW_COMPLETIONS=$(brew --prefix)
+if [ -f $BREW_COMPLETIONS/etc/bash_completion ]; then
+  . $BREW_COMPLETIONS/etc/bash_completion
 fi

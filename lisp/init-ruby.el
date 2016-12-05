@@ -1,6 +1,7 @@
 (defun cool/ruby-hook ()
   (setq-local dash–at-point-docset "ruby")
   (add-to-list (make-local-variable company-backends) 'company-robe)
+  (inf-ruby-minor-mode)
   (rvm-use-default)
   (robe-mode)
   (rspec-mode)

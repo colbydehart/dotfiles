@@ -12,8 +12,9 @@
     "space s j": "pane:split-down-and-copy-active-item",
     "space s h": "pane:split-left-and-copy-active-item",
     "space s l": "pane:split-right-and-copy-active-item",
-    "space t": "term3:open",
-    "space w": "core:save"
+    "space t": "terminal-plus:toggle",
+    "space w": "core:save",
+    "space space": "easy-motion-redux:letter"
   },
   "atom-text-editor.vim-mode": {
     "ctrl-w o": "cool:close-panes",

@@ -20,7 +20,6 @@
               ("C-k" . evil-window-up)
               ("C-l" . evil-window-right)
               :map evil-insert-state-map
-              ("C-e" . hippie-expand)
               ("C-u" . evil-scroll-page-up)
               ("C-n" . evil-next-line)
               ("C-p" . evil-previous-line)))
@@ -103,7 +102,8 @@
     "zz" 'w3m-search
     ":" 'helm-M-x
     "/" 'helm-projectile-ag
-    "<SPC>" 'ace-jump-char-mode))
+    "<SPC>" 'avy-goto-char
+    "C-<SPC>" 'avy-goto-char-2))
 
 
 (defun leader-for-mode (mode key def &rest bindings)

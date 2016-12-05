@@ -12,7 +12,7 @@
 (use-package helm-projectile :config (helm-projectile-on))
 (use-package helm-ag)
 (use-package dash-at-point)
-(use-package ace-jump-mode)
+(use-package avy)
 (use-package iedit)
 (use-package evil-iedit-state)
 (use-package evil-magit :config (add-hook 'magit-mode-hook 'evil-local-mode))

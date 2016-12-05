@@ -84,8 +84,12 @@ Don't mess with special buffers."
 
 (defun cool/presentation-mode ()
   (interactive)
-  (set-default-font "mononoki 24")
-  (prettify-symbols-mode -1))
+  (set-default-font "mononoki 48")
+  (prettify-symbols-mode nil))
+
+(defun cool/small-mode ()
+  (interactive)
+  (set-default-font "mononoki 15"))
 
 (defun cool/dec-height ()
   (interactive)
@@ -97,11 +101,11 @@ Don't mess with special buffers."
 
 (defun cool/dec-width ()
   (interactive)
-  (evil-window-decrease-width 5))
+  (evil-window-decrease-width 8))
 
 (defun cool/inc-width ()
   (interactive)
-  (evil-window-increase-width 5))
+  (evil-window-increase-width 8))
 
 (defun cool/open-log ()
   (interactive)

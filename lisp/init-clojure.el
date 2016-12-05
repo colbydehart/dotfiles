@@ -14,11 +14,13 @@
   ",t" "Tests")
 (dolist (mode '(clojure-mode clojurescript-mode))
   (leader-for-mode mode
+                   ":" 'cider-read-and-eval
                    "c" 'cider-jack-in
                    "C" 'cider-jack-in-clojurescript
                    "b" 'cider-load-buffer
                    "d" 'cider-doc
                    "eb" 'cider-eval-buffer
+                   "ee" 'cider-eval-defun-at-point
                    "er" 'cider-eval-region
                    "l" 'cider-eval-last-sexp
                    "n" 'cider-repl-set-ns
@@ -35,9 +37,7 @@
               ("C-j" . windmove-down)
               ("C-l" . windmove-right)
               ("M-h" . eyebrowse-prev-window-config)
-              ("M-l" . eyebrowse-next-window-config))
-  :config
-  (setq cider-cljs-lein-repl "(do (use 'figwheel-sidecar.repl-api) (start-figwheel!) (cljs-repl))"))
+              ("M-l" . eyebrowse-next-window-config)))
 
 (add-hook 'clojure-mode-hook 'cool/clojure-hook) 
 (add-hook 'clojurescript-mode-hook 'cool/clojure-hook) 
