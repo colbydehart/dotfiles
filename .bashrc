@@ -1,12 +1,8 @@
 . ~/.bash_aliases
 . ~/.git-prompt.sh
 
-# asdf version manager
-. $HOME/.asdf/asdf.sh
-. $HOME/.asdf/completions/asdf.bash
-
 # let me open a bunch of files
-ulimit -n 2048
+ulimit -n 4096
 
 #Neovim is editor
 export EDITOR=nvim

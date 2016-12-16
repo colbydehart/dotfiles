@@ -26,8 +26,7 @@
 (menu-bar-mode -1)
 (if (display-graphic-p)
     (progn
-      (scroll-bar-mode -1)
-      (mac-auto-operator-composition-mode t)))
+      (scroll-bar-mode -1)))
 ;; No time to type yes
 (fset 'yes-or-no-p 'y-or-n-p)
 ;; 2 space width

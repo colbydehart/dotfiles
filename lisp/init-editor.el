@@ -38,15 +38,7 @@
 ;; Auto pair parens
 ;; (add-hook 'prog-mode-hook 'electric-pair-mode)
 (show-paren-mode t)
-(use-package smartparens)
-(smartparens-global-mode t)
-(show-smartparens-global-mode nil)
-(setq sp-autoescape-string-quote nil
-      sp-highlight-pair-overlay nil
-      sp-highlight-wrap-overlay nil
-      sp-highlight-wrap-tag-overlay nil
-      show-paren-delay 0)
-(add-hook 'prog-mode-hook 'turn-on-smartparens-mode)
+(electric-pair-mode t)
 
 
 (provide 'init-editor)

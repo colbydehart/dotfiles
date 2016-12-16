@@ -6,18 +6,19 @@
   (show-paren-mode))
 
 (leader-for-mode 'emacs-lisp-mode
-								 "e" 'eval-buffer
-								 "r" 'eval-region)
+                 "e" 'eval-buffer
+                 "r" 'eval-region)
 
+(add-hook 'prog-mode-hook 'turn-on-smartparens-mode)
 (use-package smartparens
-	:config (require 'smartparens-config))
+  :config (require 'smartparens-config))
 
 (use-package evil-cleverparens
   :bind (:map evil-cleverparens-mode-map
-         ("C-{" . sp-backward-slurp-sexp)
-         ("C-}" . sp-backward-barf-sexp)
-         ("C-(" . sp-forward-barf-sexp)
-         ("C-)" . sp-forward-slurp-sexp))
+              ("C-{" . sp-backward-slurp-sexp)
+              ("C-}" . sp-backward-barf-sexp)
+              ("C-(" . sp-forward-barf-sexp)
+              ("C-)" . sp-forward-slurp-sexp))
   :config
   (evil-define-key 'normal evil-cleverparens-mode-map
     (kbd "M-h") 'eyebrowse-prev-window-config
