@@ -250,6 +250,7 @@ nn <leader>vv :e ~/dotfiles/.vimrc<CR>
 nn <leader>vl :e ./.lvimrc<CR>
 nn <leader>w :w<CR>
 nn <leader>x :
+nn <leader>y :NeoSnippetEdit<CR>
 nn <leader>/ :grep!<Space>
 nn <leader>` :terminal<CR>
 nn <leader>-- :so ./Session.vim<CR>
