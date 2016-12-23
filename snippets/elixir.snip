@@ -1,0 +1,23 @@
+snippet     @td
+abbr        @typedoc
+options     head
+  @typedoc """
+  ${1}
+  """
+
+snippet     @t
+abbr        @type
+options     head
+  @type ${1} ::
+  	${2}
+
+snippet     @s
+abbr        @spec
+options     head
+  @spec ${1}(${2}) :: ${3}
+
+snippet     for
+options     head
+  for ${1} <- ${2} do
+    ${3}
+  end

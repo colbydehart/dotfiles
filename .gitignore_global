@@ -36,7 +36,7 @@ ehthumbs.db
 Thumbs.db
 
 
-# Vim Stuff #
+# Text editors
 #############
 [._]*.s[a-w][a-z]
 [._]s[a-w][a-z]
@@ -48,8 +48,20 @@ Session.vim
 .lvimrc
 .envrc
 *.sublime-project
-node_modules
 .vagrant
+
+# JavaScript
+#############
+node_modules
+
+# Python
+#############
+*.pyc
+pyvenv
+
+# Elm
+#############
+elm-stuff
 
 # Elixir
 #############

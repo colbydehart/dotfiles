@@ -15,9 +15,9 @@ echo "Installing Python stuff"
 sudo pip install django pywatch virtualenv flake8
 
 echo "Installing Atom.io packages"
-apm install vim-mode vim-surround ex-mode atom-beautify 
-apm install atom-ctags atom-ternjs autocomplete-paths autocomplete-php 
-apm install autocomplete-python color-picker emmet 
+apm install vim-mode vim-surround ex-mode atom-beautify
+apm install atom-ctags atom-ternjs autocomplete-paths autocomplete-php
+apm install autocomplete-python color-picker emmet
 apm install file-icons language-babel language-blade linter
 apm install linter-eslint linter-flake8 linter-php merge-conflicts todo-show
 apm install php-debug pigments regex-railroad-diagram
@@ -36,7 +36,7 @@ curl http://www.vim.org/scripts/download_script.php?src_id=13400 > ~/.vim/colors
 sudo pip install django pywatch virtualenv
 
 echo "link dotfiles from git"
-cd ~ 
+cd ~
 shopt -s dotglob
 rm ~/.bash_aliases
 rm ~/.eslintrc
@@ -45,7 +45,7 @@ rm ~/.inputrc
 rm ~/.vimrc
 rm ~/.tmux.conf
 
-rm ~/.atom/keymap.cson 
+rm ~/.atom/keymap.cson
 rm ~/.atom/config.cson
 
 ln -s ~/dotfiles/.bash_aliases
