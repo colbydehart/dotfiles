@@ -5,9 +5,11 @@
 "====================================VIMRC=====================================
 "==============================================================================
 "===================================GENERAL====================================
-let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 set statusline=[%l,%v]\ %t%m%r%h%w\ %y[%p%%]\ %{fugitive#statusline()}
+set statusline+=\ %{ALEGetStatusLine()}
+let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 set t_Co=256                       "256 colors
+set termguicolors                  "true color
 set tabstop=2                      "2 spaces for tab
 set shiftwidth=2                   "2 spaces for tab
 set softtabstop=2                  "2 spaces for tab
@@ -74,26 +76,27 @@ call plug#begin()
 
 Plug 'justinmk/vim-dirvish'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'Shougo/denite.nvim'
-Plug 'Shougo/neomru.vim'
 Plug 'easymotion/vim-easymotion'
 let g:EasyMotion_smartcase=1
 let g:EasyMotion_keys = 'arstdhneioqwfpgjluy;zxcvbkm,./' "Colemak
 let g:EasyMotion_do_mapping=0
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 
 "===================================COSMETIC====================================
 
-Plug 'juanpabloaj/vim-pixelmuerto'
+Plug 'NLKNguyen/papercolor-theme'
 Plug 'pbrisbin/vim-colors-off'
 Plug 'Yggdroot/indentLine'
 let g:indentLine_char = '┊'
 Plug 'Raimondi/delimitMate'
 let delimitMate_expand_cr = 2
 let delimitMate_expand_space = 1
-Plug 'AndrewRadev/splitjoin.vim'
 Plug 'luochen1990/rainbow'
 let g:rainbow_active = 1
 Plug 'powerman/vim-plugin-AnsiEsc'
+Plug 'AndrewRadev/splitjoin.vim'
+Plug 'roman/golden-ratio'
 
 "===================================TPOPE======================================
 
@@ -107,12 +110,12 @@ Plug 'tpope/vim-projectionist'
 
 "===================================BUILD/TEST==================================
 
-Plug 'neomake/neomake'
-let g:neomake_error_sign = {'text': '✘', 'texthl': 'WarningMessage'}
-let g:neomake_warning_sign = { 'text': '⚑', 'texthl': 'Function' }
-let g:neomake_message_sign = { 'text': '➤', 'texthl': 'Title' }
-let g:neomake_info_sign = {'text': 'i', 'texthl': 'HelpCommand'}
-au! BufWritePost,BufRead * Neomake
+Plug 'w0rp/ale'
+let g:ale_linters = {
+      \ 'javascript': ['standard'],
+      \ 'jsx': ['standard'],
+      \ 'elixir': ['credo']
+      \ }
 Plug 'janko-m/vim-test'
 let g:test#strategy = 'neovim'
 
@@ -124,6 +127,9 @@ let g:deoplete#file#enable_buffer_path = 1
 let g:deoplete#enable_smart_case = 1
 let g:deoplete#enable_smart_case = 1
 let g:deoplete#omni#input_patterns = {}
+let g:deoplete#omni#functions = {}
+Plug 'Shougo/neopairs.vim'
+Plug 'Shougo/echodoc.vim'
 au! InsertLeave * pclose!
 Plug 'shougo/neosnippet.vim'
 Plug 'shougo/neosnippet-snippets'
@@ -141,50 +147,35 @@ let g:vim_json_syntax_conceal=0
 
 "===================================JAVASCRIPT==================================
 
-let g:neomake_javascript_enabled_makers = ['standard']
-let g:neomake_jsx_enabled_makers = ['standard']
 let g:neosnippet#scope_aliases['javascript.jsx'] = 'javascript,jsx'
 Plug 'pangloss/vim-javascript', { 'for': [ 'javascript.jsx', 'javascript' ] }
 Plug 'mxw/vim-jsx', { 'for': ['jsx', 'javascript.jsx']}
 let g:jsx_ext_required = 0  "Always use jsx syntax
-Plug 'carlitux/deoplete-ternjs', {
+let flowreadable = filereadable('./.flowconfig')
+Plug 'flowtype/vim-flow', Cond(flowreadable, {'for': ['jsx', 'javascript.jsx']})
+if flowreadable
+  let g:ale_linters['javascript'] += ['flow']
+  let g:ale_linters['jsx'] += ['flow']
+  let g:flow#enable=0
+  let g:flow#autoclose = 1
+endif
+" Only use tern if we are not using flow
+let ternreadable = filereadable('./.tern-project')
+Plug 'carlitux/deoplete-ternjs', Cond(ternreadable, {
       \ 'do': 'yarn global add tern',
       \ 'for': ['jsx', 'javascript', 'javascript.jsx']
-      \ }
-let g:tern_request_timeout=1  "Use tern completion
-let g:tern_show_argument_hints="on_hold"  "Give me argument hints
-let g:tern#filetypes = [ 'javascript', 'jsx', 'javascript.jsx' ]
+      \ })
+if ternreadable
+  let g:tern_request_timeout=1  "Use tern completion
+  let g:tern_show_argument_hints="on_hold"  "Give me argument hints
+  let g:tern#filetypes = [ 'javascript', 'jsx', 'javascript.jsx' ]
+endif
 
 "===================================ELIXIR======================================
 
 Plug 'elixir-lang/vim-elixir', {'for': 'elixir'}
 Plug 'c-brenn/phoenix.vim', {'for': 'elixir'}
 Plug 'slashmili/alchemist.vim', {'for': 'elixir'}
-" track https://github.com/neomake/neomake/pull/300
-" to see if this gets pulled into neomake
-let g:neomake_elixir_enabled_makers = ['mycredo']
-function! NeomakeCredoErrorType(entry)
-    if a:entry.type ==# 'F'      " Refactoring opportunities
-        let type = 'W'
-    elseif a:entry.type ==# 'D'  " Software design suggestions
-        let type = 'I'
-    elseif a:entry.type ==# 'W'  " Warnings
-        let type = 'W'
-    elseif a:entry.type ==# 'R'  " Readability suggestions
-        let type = 'I'
-    elseif a:entry.type ==# 'C'  " Convention violation
-        let type = 'W'
-    else
-        let type = 'M'           " Everything else is a message
-    endif
-    let a:entry.type = type
-endfunction
-let g:neomake_elixir_mycredo_maker = {
-      \ 'exe': 'mix',
-      \ 'args': ['credo', 'list', '%:p', '--format=oneline'],
-      \ 'errorformat': '[%t] %. %f:%l:%c %m,[%t] %. %f:%l %m',
-      \ 'postprocess': function('NeomakeCredoErrorType')
-      \ }
 augroup elixir
   au!
   au FileType elixir nn <buffer> <localleader>a :A<CR>
@@ -206,6 +197,7 @@ augroup END
 "===================================ELM=========================================
 
 let g:deoplete#omni#input_patterns.elm = '[^ \t]+'
+let g:deoplete#omni#functions.elm = ['elm#Complete']
 Plug 'ElmCast/elm-vim', {'for': 'elm'}
 let g:elm_setup_keybindings=0
 let g:elm_format_autosave=1
@@ -216,9 +208,9 @@ augroup elm
   au FileType elm setlocal softtabstop=4
   au FileType elm let b:deoplete_sources = ['omni', 'file']
   au bufenter,bufwritepost *.elm :IndentLinesReset
-  au FileType elm nn K :ElmShowDocs<CR>
-  au FileType elm nn <localleader>m :ElmMake<CR>
-  au FileType elm nn <localleader>r :ElmRepl<CR>
+  au FileType elm nn <buffer> K :ElmShowDocs<CR>
+  au FileType elm nn <buffer> <localleader>m :ElmMake<CR>
+  au FileType elm nn <buffer> <localleader>r :ElmRepl<CR>
 augroup END
 
 "===================================CLOJURE=====================================
@@ -252,6 +244,11 @@ augroup python
   au FileType python nn <localleader>f :0,$!yapf<CR>
 augroup END
 
+"=====================================C=========================================
+
+Plug 'zchee/deoplete-clang'
+au! FileType arduino setlocal omnifunc=ccomplete#Complete
+
 "===================================VIML========================================
 
 Plug 'shougo/neco-vim'
@@ -259,28 +256,24 @@ Plug 'thinca/vim-themis'
 
 "===================================ETC=========================================
 
+" nvalt
 Plug 'jceb/vim-orgmode'
+Plug 'dag/vim-fish'
+Plug 'evanmiller/nginx-vim-syntax'
 
 "===================================ENDPLUGIN====================================
 
 call plug#end()
+colo PaperColor
+set background=dark
 filetype plugin indent on
 syntax enable
-
-"===================================COLORSCHEME=================================
-
-set background=dark
-colo off
-" hi TabLine ctermfg=darkGrey
-" hi TabLineSel ctermfg=lightBlue
 
 "===================================FAST=SEARCH=================================
 
 if executable('ag')
   set grepprg=ag\ --nogroup\ --nocolor\ --ignore-case\ --column
   set grepformat=%f:%l:%c:%m,%f:%l:%m
-  call denite#custom#var('file_rec', 'command',
-        \ ['ag', '--follow', '--nocolor', '--nogroup', '-g', ''])
 endif
 
 "===================================KEYBINDINGS=================================
@@ -289,22 +282,23 @@ map  / <Plug>(easymotion-sn)
 om / <Plug>(easymotion-tn)
 map  n <Plug>(easymotion-next)
 map  N <Plug>(easymotion-prev)
-nn <leader>bb :Denite buffer<CR>
+nn <leader>bb :Buffers<CR>
 nn <leader>bh :bN<CR>
 nn <leader>bl :bn<CR>
 nn <leader>d :Dirvish %<CR>
 nn <leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
-nn <leader>f :Denite file_rec<CR>
+nn <leader>f :GFiles<CR>
 nn <leader>g :Gstatus<CR>
 nn <leader>h :h<Space>
 nn <leader>j <C-]>
 nn <leader>k ZZ
-nn <leader>m :Denite file_mru<CR>
+nn <leader>m :History<CR>
 nn <leader>n :tabe<CR>
-nn <leader>o :e ~/Dropbox/org/gtd.org<CR>
+nn <leader>oo :e ~/Dropbox/org/gtd.org<CR>
+nn <leader>o/ :Files ~/Dropbox/org<CR>
 nn <leader>q :b#<CR>
-nn <leader>rr :Subvert/
-nn <leader>ra :%Subvert/
+nn <leader>rr :S/
+nn <leader>ra :%S/
 nn <leader>sk :split<CR>
 nn <leader>sj :split<CR><C-W>j
 nn <leader>sh :vsplit<CR>
@@ -319,10 +313,9 @@ nn <leader>vl :e ./.lvimrc<CR>
 nn <leader>w :w<CR>
 nn <leader>x :
 nn <leader>y :NeoSnippetEdit<CR>
-nn <leader>/ :grep!<Space>
+nn <leader>/ :Ag<CR>
 nn <leader>` :terminal<CR>
-nn <leader>-- :so ./Session.vim<CR>
-nn <leader>-m :mks ./Session.vim<CR>
+nn <leader>' :Marks<CR>
 nn <leader><CR> :
 " Window navigation
 nn <C-j> <C-W>j
@@ -337,9 +330,6 @@ nn <Down> :resize -2<CR>
 " Tab navigation
 nn H gT
 nn L gt
-" Denite navigation
-call denite#custom#map('insert', '<C-n>', '<denite:move_to_next_line>', 'noremap')
-call denite#custom#map('insert', '<C-p>', '<denite:move_to_previous_line>', 'noremap')
 " One button cmds
 nn ! :!
 " Terminal stuff
@@ -352,6 +342,8 @@ tnoremap <C-l> <C-\><C-n><C-w>l
 if filereadable('./.lvimrc')
   exec 'source ./.lvimrc'
 endif
+" easy omni complete
+ino <C-SPACE> <C-X><C-O>
 " Autocomplete with tab; Please kill me.
 function! s:check_back_space() abort
   let col = col('.') - 1

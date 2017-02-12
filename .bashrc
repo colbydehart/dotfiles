@@ -31,3 +31,6 @@ BREW_COMPLETIONS=$(brew --prefix)
 if [ -f $BREW_COMPLETIONS/etc/bash_completion ]; then
   . $BREW_COMPLETIONS/etc/bash_completion
 fi
+
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash

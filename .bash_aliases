@@ -1,16 +1,17 @@
 # get back up the tree faster
-alias ..=" cd ..$*"
-alias ...=" cd ../..$*"
-alias ....=" cd ../../..$*"
-alias .....=" cd ../../../..$*"
-alias ......=" cd ../../../../..$*"
+alias ..=" cd ..$argv"
+alias ...=" cd ../..$argv"
+alias ....=" cd ../../..$argv"
+alias .....=" cd ../../../..$argv"
+alias ......=" cd ../../../../..$argv"
 # git stuff
 alias gs="git status"
-alias gl="git log --oneline --graph --decorate $*"
+alias gl="git log --oneline --graph --decorate $argv"
 alias gri="git rebase -i source/development"
 alias grs="git rebase source/development"
 alias ga="git add -p"
-alias gc="git commit -m $*"
+alias gc="git commit -m $argv"
+alias gf="git fetch --all --prune"
 # no time to type "nvim"
 alias nv="nvim"
 # serve current directory
@@ -33,3 +34,5 @@ alias dc="docker-compose"
 alias rn="react-native"
 # kill every tmux alive
 alias kill-tmux="tmux ls | grep : | cut -d. -f1 | awk '{print substr($1, 0, length($1)-1)}' | xargs kill"
+# arduino CLI tool
+alias arduino='/Applications/Arduino.app/Contents/MacOS/Arduino'

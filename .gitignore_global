@@ -47,6 +47,7 @@ Session.vim
 .lnvimrc
 .lvimrc
 .envrc
+.env
 *.sublime-project
 .vagrant
 

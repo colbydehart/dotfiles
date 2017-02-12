@@ -36,10 +36,11 @@
 ;; Web browser
 (use-package w3m)
 ;; Cool Theme
-(setq solarized-use-variable-pitch nil
-      solarized-scale-org-headlines nil)
-(use-package solarized-theme)
-(load-theme 'solarized-dark t)
+;; (setq solarized-use-variable-pitch nil
+;;       solarized-scale-org-headlines nil)
+;; (use-package solarized-theme)
+;; (load-theme 'solarized-dark t)
+(load-theme 'wombat)
 ;; nice term colors
 (ansi-color-for-comint-mode-on)
 ;; tight mode line
