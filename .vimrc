@@ -85,6 +85,7 @@ Plug 'junegunn/fzf.vim'
 
 "===================================COSMETIC====================================
 
+Plug 'AlessandroYorba/Sierra'
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'pbrisbin/vim-colors-off'
 Plug 'Yggdroot/indentLine'
@@ -260,11 +261,12 @@ Plug 'thinca/vim-themis'
 Plug 'jceb/vim-orgmode'
 Plug 'dag/vim-fish'
 Plug 'evanmiller/nginx-vim-syntax'
+Plug 'kchmck/vim-coffee-script'
 
 "===================================ENDPLUGIN====================================
 
 call plug#end()
-colo PaperColor
+colo sierra
 set background=dark
 filetype plugin indent on
 syntax enable
