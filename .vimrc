@@ -39,8 +39,10 @@ set wildmenu                       "tab autocomplete commands
 set diffopt=vertical               "vertical diff splits
 set inccommand=split               "show substitute preview
 set updatetime=2000                "a bit faster updatetime
+set shortmess+=c
 :let mapleader = ' '               "leader is space
 :let maplocalleader = ','          "localleader is comma
+
 au! QuickFixCmdPost [^l]* cwindow  "open quickfix after search
 au! QuickFixCmdPost l* lwindow     "open quickfix after search
 
@@ -85,7 +87,6 @@ Plug 'junegunn/fzf.vim'
 
 "===================================COSMETIC====================================
 
-Plug 'AlessandroYorba/Sierra'
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'pbrisbin/vim-colors-off'
 Plug 'Yggdroot/indentLine'
@@ -126,9 +127,10 @@ Plug 'Shougo/deoplete.nvim'
 let g:deoplete#enable_at_startup=1
 let g:deoplete#file#enable_buffer_path = 1
 let g:deoplete#enable_smart_case = 1
-let g:deoplete#enable_smart_case = 1
 let g:deoplete#omni#input_patterns = {}
+let g:deoplete#keyword_patterns = {}
 let g:deoplete#omni#functions = {}
+let g:deoplete#sources = {}
 Plug 'Shougo/neopairs.vim'
 Plug 'Shougo/echodoc.vim'
 au! InsertLeave * pclose!
@@ -136,6 +138,8 @@ Plug 'shougo/neosnippet.vim'
 Plug 'shougo/neosnippet-snippets'
 let g:neosnippet#snippets_directory="/Users/colbydehart/dotfiles/snippets"
 let g:neosnippet#scope_aliases = {}
+Plug 'ludovicchabant/vim-gutentags'
+let g:gutentags_cache_dir = '~/.tags_cache'
 
 "===================================WEB=========================================
 
@@ -175,23 +179,24 @@ endif
 "===================================ELIXIR======================================
 
 Plug 'elixir-lang/vim-elixir', {'for': 'elixir'}
-Plug 'c-brenn/phoenix.vim', {'for': 'elixir'}
+" Plug 'c-brenn/phoenix.vim', {'for': 'elixir'}
 Plug 'slashmili/alchemist.vim', {'for': 'elixir'}
+let g:alchemist_tag_disable = 1
+Plug 'powerman/vim-plugin-AnsiEsc'
 augroup elixir
   au!
   au FileType elixir nn <buffer> <localleader>a :A<CR>
   au FileType elixir nn <buffer> <localleader>d :ExDoc<Space>
-  au FileType elixir nn <buffer> <localleader>gc :Econtroller<Space>
-  au FileType elixir nn <buffer> <localleader>gf :Econfig<Space>
-  au FileType elixir nn <buffer> <localleader>gm :Emodel<Space>
-  au FileType elixir nn <buffer> <localleader>gt :Etest<Space>
-  au FileType elixir nn <buffer> <localleader>gr :Erouter<Space>
-  au FileType elixir nn <buffer> <localleader>gv :Eview<Space>
-  au FileType elixir nn <buffer> <localleader>gx :Echannel<Space>
+  " au FileType elixir nn <buffer> <localleader>gc :Econtroller<Space>
+  " au FileType elixir nn <buffer> <localleader>gf :Econfig<Space>
+  " au FileType elixir nn <buffer> <localleader>gm :Emodel<Space>
+  " au FileType elixir nn <buffer> <localleader>gt :Etest<Space>
+  " au FileType elixir nn <buffer> <localleader>gr :Erouter<Space>
+  " au FileType elixir nn <buffer> <localleader>gv :Eview<Space>
+  " au FileType elixir nn <buffer> <localleader>gx :Echannel<Space>
   au FileType elixir nn <buffer> <localleader>i :IEx<CR>
-  au FileType elixir nn <buffer> <localleader>pg :Pgenerate<Space>
-  au FileType elixir nn <buffer> <localleader>pp :Ppreview<Space>
-  au FileType elixir nn <buffer> <localleader>ps :Pgenerate<Space>
+  " au FileType elixir nn <buffer> <localleader>pg :Pgenerate<Space>
+  " au FileType elixir nn <buffer> <localleader>pp :Ppreview<Space>
   au FileType elixir nn <buffer> <localleader>x :Mix<Space>
 augroup END
 
@@ -216,6 +221,11 @@ augroup END
 
 "===================================CLOJURE=====================================
 
+let g:deoplete#keyword_patterns.clojure = '[\w!$%&*+/:<=>?@\^_~\-\.#]*'
+let g:deoplete#keyword_patterns.clojurescript = '[\w!$%&*+/:<=>?@\^_~\-\.#]*'
+Plug 'clojure-vim/async-clj-omni'
+let g:deoplete#sources.clojure = ['async_clj', 'file']
+Plug 'tpope/vim-classpath'
 Plug 'guns/vim-sexp',
       \ {'for': ['clojure', 'clojurescript']}
 Plug 'tpope/vim-sexp-mappings-for-regular-people',
@@ -262,11 +272,12 @@ Plug 'jceb/vim-orgmode'
 Plug 'dag/vim-fish'
 Plug 'evanmiller/nginx-vim-syntax'
 Plug 'kchmck/vim-coffee-script'
+Plug 'neo4j-contrib/cypher-vim-syntax'
 
 "===================================ENDPLUGIN====================================
 
 call plug#end()
-colo sierra
+colo PaperColor
 set background=dark
 filetype plugin indent on
 syntax enable
@@ -289,9 +300,10 @@ nn <leader>bh :bN<CR>
 nn <leader>bl :bn<CR>
 nn <leader>d :Dirvish %<CR>
 nn <leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
-nn <leader>f :GFiles<CR>
+nn <leader>f :Files<CR>
 nn <leader>g :Gstatus<CR>
 nn <leader>h :h<Space>
+nn <leader>i :Tags<CR>
 nn <leader>j <C-]>
 nn <leader>k ZZ
 nn <leader>m :History<CR>

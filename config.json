@@ -23,7 +23,8 @@
         ]
       },
       "disabledPackages": [
-        "linter-gcc"
+        "linter-gcc",
+        "elmjutsu"
       ],
       "ignoredNames": [
         ".git",
@@ -102,6 +103,11 @@
     },
     "welcome": {
       "showOnStartup": false
+    }
+  },
+  ".elixir.text": {
+    "editor": {
+      "showIndentGuide": true
     }
   }
 }

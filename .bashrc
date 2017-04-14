@@ -32,8 +32,14 @@ if [ -f $BREW_COMPLETIONS/etc/bash_completion ]; then
   . $BREW_COMPLETIONS/etc/bash_completion
 fi
 
-
+# fzf settings
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+# use for neovim alias and atom
+complete -F _fzf_file_completion -o default -o bashdefault nv
+complete -F _fzf_file_completion -o default -o bashdefault atom
+# respect gitignore
+export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -g ""'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 # added by travis gem
 [ -f /Users/colbydehart/.travis/travis.sh ] && source /Users/colbydehart/.travis/travis.sh

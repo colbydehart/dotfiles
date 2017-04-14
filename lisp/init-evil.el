@@ -103,6 +103,54 @@
     ":" 'helm-M-x
     "/" 'helm-projectile-ag
     "<SPC>" 'avy-goto-char
+    "C-<SPC>" 'avy-goto-char-2)
+  (bind-map-set-keys leader-map
+    "a" 'org-agenda
+    "b" 'helm-mini
+    "c" 'org-capture
+    "d" 'other-frame
+    "f" 'helm-find-files
+    "g" 'magit-status
+    "ha" 'helm-apropos
+    "hf" 'describe-function
+    "hh" 'dash-at-point
+    "hk" 'describe-key
+    "hv" 'describe-variable
+    "i" 'helm-imenu
+    "k" 'eyebrowse-close-window-config
+    "l" 'cool/open-log
+    "mk" 'bookmark-delete
+    "mc" 'bookmark-set
+    "mm" 'helm-bookmarks
+    "n" 'eyebrowse-create-window-config
+    "oo" (lambda () (interactive) (find-file "~/org/gtd.org"))
+    "oj" (lambda () (interactive) (find-file "~/org/journal.org"))
+    "oa" 'org-agenda
+    ;; Projects
+    "pp" 'helm-projectile-switch-project
+    "pf" 'helm-projectile-find-file
+    "pt" 'projectile-regenerate-tags
+    "p;" 'neotree-projectile-action
+    "sh" 'split-window-horizontally
+    "sj" 'cool/split-down
+    "sk" 'split-window-vertically
+    "sl" 'cool/split-right
+    "t" 'multi-term-next
+    "uh" 'cool/dec-width
+    "ul" 'cool/inc-width
+    "uj" 'cool/dec-height
+    "uk" 'cool/inc-height
+    "v" 'evil-iedit-state/iedit-mode
+    "w" 'save-buffer
+    "x" 'dired-jump
+    "yc" 'cool/copy-file-name
+    "yf" 'yas-visit-snippet-file
+    "yy" 'yas-new-snippet
+    "zx" 'cool/goto-hacker-news
+    "zz" 'w3m-search
+    ":" 'helm-M-x
+    "/" 'helm-projectile-ag
+    "<SPC>" 'avy-goto-char
     "C-<SPC>" 'avy-goto-char-2))
 
 

@@ -11,7 +11,9 @@ alias gri="git rebase -i source/development"
 alias grs="git rebase source/development"
 alias ga="git add -p"
 alias gc="git commit -m $argv"
+alias gca="git commit --amend --no-edit"
 alias gf="git fetch --all --prune"
+alias gpf="git push --force-with-lease"
 # no time to type "nvim"
 alias nv="nvim"
 # serve current directory
@@ -36,3 +38,5 @@ alias rn="react-native"
 alias kill-tmux="tmux ls | grep : | cut -d. -f1 | awk '{print substr($1, 0, length($1)-1)}' | xargs kill"
 # arduino CLI tool
 alias arduino='/Applications/Arduino.app/Contents/MacOS/Arduino'
+# go to work
+alias dw="cd ~/dev/work"
