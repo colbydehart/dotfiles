@@ -12,7 +12,7 @@ export LP_PS1_POSTFIX="\n🙇  "
 . ~/liquidprompt/liquidprompt
 
 #Fix nvim cursor
-export NVIM_TUI_ENABLE_CURSOR_SHAPE=1
+#export NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 
 #Update PATH
 YARN_BIN_PATH=$(yarn global bin) # Add node_modules to PATH
@@ -24,6 +24,7 @@ export ANDROID_HOME="$HOME/Library/Android/sdk"
 if [ -d $ANDROID_HOME ]; then
   export PATH="$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools"
 fi
+export PATH="$PATH:$HOME/go/bin"
 
 # git completion
 # brew completions

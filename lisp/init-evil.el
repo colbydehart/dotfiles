@@ -61,7 +61,8 @@
     "b" 'helm-mini
     "c" 'org-capture
     "d" 'other-frame
-    "f" 'helm-find-files
+    "e" 'helm-find-files
+    "f" 'helm-projectile-find-file
     "g" 'magit-status
     "ha" 'helm-apropos
     "hf" 'describe-function
@@ -80,7 +81,6 @@
     "oa" 'org-agenda
     ;; Projects
     "pp" 'helm-projectile-switch-project
-    "pf" 'helm-projectile-find-file
     "pt" 'projectile-regenerate-tags
     "p;" 'neotree-projectile-action
     "sh" 'split-window-horizontally

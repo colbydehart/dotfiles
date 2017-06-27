@@ -17,7 +17,7 @@ alias gpf="git push --force-with-lease"
 # no time to type "nvim"
 alias nv="nvim"
 # serve current directory
-alias srvdir="python -m SimpleHTTPServer 8000"
+alias srvdir="live-server"
 # easier xclipping
 alias xclip="xclip -selection c"
 # clear the screen
@@ -40,3 +40,5 @@ alias kill-tmux="tmux ls | grep : | cut -d. -f1 | awk '{print substr($1, 0, leng
 alias arduino='/Applications/Arduino.app/Contents/MacOS/Arduino'
 # go to work
 alias dw="cd ~/dev/work"
+# mix testing
+alias mixtest="mix test --stale --listen-on-stdin"

@@ -84,3 +84,4 @@ tags*
 .tags*
 .ac-php-conf.json
 
+.cljs-rhino-repl

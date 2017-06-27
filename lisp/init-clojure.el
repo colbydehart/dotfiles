@@ -1,11 +1,11 @@
-;; Hook
-(defun cool/clojure-hook ()
-  (cider-mode)
-  (setq-local)
-  (yas-activate-extra-mode 'clojure-mode)
-  (setq-local dash-at-point-docset "clj"))
+;; ;; Hook
+;; (defun cool/clojure-hook ()
+;;   (cider-mode)
+;;   (setq-local)
+;;   (yas-activate-extra-mode 'clojure-mode)
+;;   (setq-local dash-at-point-docset "clj"))
 
-;; Leader bindings
+;; ;; Leader bindings
 (which-key-declare-prefixes-for-mode 'clojure-mode
   ",e" "Eval"
   ",t" "Tests")
@@ -30,6 +30,7 @@
 
 ;; Packages
 (use-package clojure-mode :defer t)
+(use-package clojure-mode-extra-font-locking :defer t)
 (use-package cider
   :bind (:map cider-repl-mode-map
               ("C-k" . windmove-up)
