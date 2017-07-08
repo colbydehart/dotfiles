@@ -160,6 +160,7 @@ let g:clojure_align_subforms = 1
 let g:deoplete#keyword_patterns.clojure = '[\w!$%&*+/:<=>?@\^_~\-\.#]*'
 let g:deoplete#keyword_patterns.clojurescript = '[\w!$%&*+/:<=>?@\^_~\-\.#]*'
 let g:deoplete#sources.clojure = ['async_clj', 'file']
+  let g:clj_fmt_autosave = 0
 au! BufEnter build.boot set filetype=clojure
 augroup clojure
   au!
@@ -206,17 +207,17 @@ if executable('ag')
 endif
 "===================================KEYBINDINGS=================================
 " Leader mappings
-nn <leader>bb :Buffers<CR>
-nn <leader>bh :bN<CR>
-nn <leader>bl :bn<CR>
+nn <leader>b :Buffers<CR>
+nn [b :bp<CR>
+nn ]b :bn<CR>
 nn <leader>d :Explore<CR>
 nn <leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
 nn <leader>f :Files<CR>
 nn <leader>h :h<Space>
-nn <leader>g :Gstatus<CR>
+nn <leader>g :tab split \| Gstatus \| wincmd o<CR>
 nn <leader>i :Tags<CR>
 nn <leader>j <C-]>
-nn <leader>k ZZ
+nn <leader>k ZQ
 nn <silent> <leader>ln :ALENext<CR>
 nn <silent> <leader>lp :ALEPrevious<CR>
 nn <leader>m :History<CR>
@@ -250,6 +251,8 @@ nn <Left> :vertical resize +2<CR>
 nn <Right> :vertical resize -2<CR>
 nn <Up> :resize +2<CR>
 nn <Down> :resize -2<CR>
+" Easy close
+nn <C-q> ZQ
 " Tab navigation
 nn H gT
 nn L gt
