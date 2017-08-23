@@ -5,29 +5,30 @@
 "====================================VIMRC=====================================
 "==============================================================================
 "===================================GENERAL====================================
-set statusline=[%l,%v]\ %t%m%r%h%w\ %y[%p%%]\ %{fugitive#statusline()}
-set statusline+=\ %{ALEGetStatusLine()}
+" set statusline=[%l,%v]\ %t%m%r%h%w\ %y[%p%%]\ %{fugitive#statusline()}
+" set statusline+=\ %{ALEGetStatusLine()}
 set t_Co=256                       "256 colors
 set termguicolors                  "true color
 set tabstop=2                      "2 spaces for tab
 set shiftwidth=2                   "2 spaces for tab
 set softtabstop=2                  "2 spaces for tab
 set expandtab                      "no tabs
+let &showbreak='↳ '                "pretty showbreak
 set list                           "show tab characters
 set timeoutlen=1000 ttimeoutlen=-1 "better timeouts"
-set number                         "line numbers
+set relativenumber                 "line numbers
 set mouse=a                        "use the mouse
 set cindent                        "auto indent
 set foldmethod=syntax              "code folding
-set foldlevelstart=7               "don't fold it all
+set foldlevelstart=10              "don't fold it all
 set textwidth=80                   "format at 80 lines
 set ls=2                           "better status line
 set clipboard=unnamedplus          "use system clipboard
-let g:netrw_localrmdir='rm -r'     "recursive delete in netrw
+let g:netrw_localrmdir='rm -rf'     "recursive delete in netrw
 let g:netrw_banner=0               "no banner on netrw
 let g:netrw_browse_split=4         "open files in previous window
 let g:netrw_liststyle=3            "use tree view for netrw
-let g:netrw_preview=1              "open previews vertically
+" let g:netrw_preview=1              "open previews vertically
 set nobackup                       "no backups!
 set visualbell                     "no sounds!
 set nohlsearch                     "no highlight search after
@@ -64,13 +65,18 @@ au! BufWritePre * silent call StripTrailingWhitespace()
 "===================================PLUGINS=====================================
 call plug#begin()
 "====================================COSMETIC===================================
-Plug 'nightsense/vim-crunchbang'
+Plug 'w0ng/vim-hybrid'
 Plug 'luochen1990/rainbow'
+Plug 'Yggdroot/indentLine'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 let g:rainbow_active = 1
-let g:rainbow_conf =
-\ {
+let g:rainbow_conf = {
 \  'guifgs': ['LightCoral', 'turquoise', 'PeachPuff1', 'SkyBlue1', 'OliveDrab2', 'tomato1', 'chartreuse1', 'MediumPurple1']
-\}
+\ }
+let g:airline#extensions#ale#enabled = 1
+let g:airline_theme='badcat'
+let g:airline_powerline_fonts = 1
 "====================================UTILITY====================================
 Plug 'jiangmiao/auto-pairs'
 Plug 'powerman/vim-plugin-AnsiEsc'
@@ -84,17 +90,21 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-speeddating'
 Plug 'rhysd/clever-f.vim'
 Plug 'justinmk/vim-sneak'
+Plug 'christoomey/vim-tmux-navigator'
 "====================================BUILD/TEST=================================
 Plug 'w0rp/ale'
 Plug 'janko-m/vim-test'
 Plug 'sbdchd/neoformat'
-let g:ale_linters = {'javascript': ['flow'], 'jsx': ['flow'], 'elixir': ['credo']}
+let g:ale_linters = {'elixir': ['credo']}
 let g:test#strategy = 'neovim'
+let g:neoformat_only_msg_on_error = 0
 "==================================NAVIGATION===================================
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 "==================================AUTOCOMPLETION===============================
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
+" Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
+Plug 'Shougo/vimproc.vim', {'do': 'make'}
 Plug 'Shougo/echodoc.vim'
 Plug 'shougo/neosnippet.vim'
 Plug 'shougo/neosnippet-snippets'
@@ -103,7 +113,13 @@ Plug 'ervandew/supertab'
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#file#enable_buffer_path = 1
 let g:deoplete#enable_smart_case = 1
-let g:neosnippet#snippets_directory="/Users/colbydehart/dotfiles/snippets"
+" let g:LanguageClient_autoStart = 1
+" let g:LanguageClient_serverCommands = {
+"       \ 'elixir': ['~/.config/lsp/elixir-ls/release/exscript.sh',  '~/.config/lsp/elixir-ls/release/language_server']
+"       \ }
+let g:LanguageClient_diagnosticsEnable = 1
+let g:LanguageClient_trace = "on"
+let g:neosnippet#snippets_directory = "~/dotfiles/snippets"
 let g:neosnippet#scope_aliases = {}
 let g:deoplete#keyword_patterns = {}
 let g:deoplete#sources = {}
@@ -113,6 +129,7 @@ let g:SuperTabContextDefaultCompletionType = "<c-n>"
 "===================================WEB=========================================
 Plug 'mattn/emmet-vim'
 let g:user_emmet_settings = {'javascript.jsx': {'extends': 'jsx'}}
+Plug 'elzr/vim-json'
 let g:vim_json_syntax_conceal=0
 "==================================JAVASCRIPT===================================
 Plug 'pangloss/vim-javascript', { 'for': [ 'javascript', 'javascript.jsx' ] }
@@ -122,9 +139,24 @@ let g:jsx_ext_required = 0  "Always use jsx syntax
 let g:javascript_plugin_flow = 1
 let g:flow#enable=0
 let g:flow#autoclose = 1
-autocmd BufWritePre *.js Neoformat
+" autocmd BufWritePre *.js Neoformat prettier
+"==================================TYPESCRIPT===================================
+Plug 'leafgarland/typescript-vim', { 'for': [ 'typescript', 'typescript.tsx' ] }
+Plug 'Quramy/tsuquyomi', { 'for': [ 'typescript', 'typescript.tsx' ] }
+let g:neoformat_typescript_tsprettier = {
+ \ 'exe': 'prettier',
+ \ 'args': ['--stdin', '--parser', 'typescript', '--single-quote', 'true'],
+ \ 'stdin': 1
+ \ }
+let g:neoformat_enabled_typescript = ['tsprettier']
+augroup typescript
+  au!
+  au FileType typescript nn <buffer> K :TsuDefinition<CR>
+  au BufWritePre *.ts Neoformat
+  au BufWritePre *.tsx Neoformat
+augroup END
 "==================================ELIXIR=======================================
-Plug 'slashmili/alchemist.vim'
+Plug 'slashmili/alchemist.vim', {'branch': 'elixir-sense'}
 Plug 'elixir-lang/vim-elixir'
 augroup elixir
   au!
@@ -133,7 +165,16 @@ augroup elixir
   au FileType elixir nn <buffer> <localleader>i :IEx<CR>
   au FileType elixir nn <buffer> <localleader>t :Mix test<CR>
   au FileType elixir nn <buffer> <localleader>x :Mix<Space>
+  au FileType eelixir let b:splitjoin_join_callbacks=['sj#html#JoinTags', 'sj#html#JoinAttributes']
+  au FileType eelixir let b:splitjoin_split_callbacks=['sj#html#SplitTags', 'sj#html#SplitAttributes']
 augroup END
+"=================================HASKELL=======================================
+Plug 'eagletmt/neco-ghc'
+Plug 'eagletmt/ghcmod-vim'
+Plug 'neovimhaskell/haskell-vim'
+let g:haskellmode_completion_ghc = 0
+autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
+autocmd BufWritePre *.hs Neoformat
 "===================================ELM=========================================
 Plug 'ElmCast/elm-vim', {'for': 'elm'}
 Plug 'pbogut/deoplete-elm', {'for': 'elm'}
@@ -141,9 +182,9 @@ let g:elm_setup_keybindings = 0
 let g:elm_format_autosave=1
 augroup elm
   au!
-  au FileType elm setlocal tabstop=4 shiftwidth=4 softtabstop=4
+  au FileType elm setlocal tabstop=4 shiftwidth=4 softtabstop=4 foldmethod=indent
   au FileType elm nn <buffer> K :ElmShowDocs<CR>
-  au FileType elm nn <buffer> <localleader>m :ElmMake<CR>
+  au FileType elm nn <buffer> <localleader>m :ElmMakeMain<CR>
   au FileType elm nn <buffer> <localleader>r :ElmRepl<CR>
 augroup END
 "===================================CLOJURE=====================================
@@ -160,7 +201,7 @@ let g:clojure_align_subforms = 1
 let g:deoplete#keyword_patterns.clojure = '[\w!$%&*+/:<=>?@\^_~\-\.#]*'
 let g:deoplete#keyword_patterns.clojurescript = '[\w!$%&*+/:<=>?@\^_~\-\.#]*'
 let g:deoplete#sources.clojure = ['async_clj', 'file']
-  let g:clj_fmt_autosave = 0
+let g:clj_fmt_autosave = 0
 au! BufEnter build.boot set filetype=clojure
 augroup clojure
   au!
@@ -190,39 +231,42 @@ Plug 'fsharp/vim-fsharp', {
       \}
 "===================================ETC.========================================
 Plug 'jceb/vim-orgmode'
-augroup org
-  au!
-  au FileType org nmap <buffer> O <Plug>OrgNewHeadingAboveNormal
-  au FileType org nmap <buffer> o <Plug>OrgNewHeadingBelowNormal
-augroup END
+Plug 'dag/vim-fish'
 "=================================PLUG END======================================
 call plug#end()
-colo crunchbang
+set background=dark
+colo hybrid
 filetype plugin indent on
 syntax enable
+" for showbreak
+hi! NonText guifg=#337755
+hi! link EndOfBuffer deusBg2
 "===================================FAST=SEARCH=================================
 if executable('ag')
   set grepprg=ag\ --nogroup\ --nocolor\ --ignore-case\ --column
   set grepformat=%f:%l:%c:%m,%f:%l:%m
 endif
 "===================================KEYBINDINGS=================================
-" Leader mappings
-nn <leader>b :Buffers<CR>
+" Buffer jumper
 nn [b :bp<CR>
 nn ]b :bn<CR>
+" Leader mappings
+nn <leader><leader> :b#<CR>
+nn <leader>b :Buffers<CR>
 nn <leader>d :Explore<CR>
 nn <leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
 nn <leader>f :Files<CR>
-nn <leader>h :h<Space>
+nn <leader>h :Helptags<CR>
 nn <leader>g :tab split \| Gstatus \| wincmd o<CR>
 nn <leader>i :Tags<CR>
 nn <leader>j <C-]>
-nn <leader>k ZQ
+nn <leader>k ZZ
 nn <silent> <leader>ln :ALENext<CR>
 nn <silent> <leader>lp :ALEPrevious<CR>
 nn <leader>m :History<CR>
 nn <leader>n :tabe<CR>
 nn <leader>o :e ~/Dropbox/org/gtd.org<CR>
+nn <leader>p :call tomato#reset()<CR>
 nn <leader>q :b#<CR>
 nn <leader>rr :S/
 nn <leader>ra :%S/
@@ -231,6 +275,7 @@ nn <leader>sj :split<CR><C-W>j
 nn <leader>sh :vsplit<CR>
 nn <leader>sl :vsplit<CR><C-W>l
 nn <leader>t :terminal<CR>
+nn <leader>u :BTags<CR>
 nn <leader>vv :e ~/dotfiles/.vimrc<CR>
 nn <leader>vl :e ./.lvimrc<CR>
 nn <leader>w :w<CR>
@@ -240,7 +285,7 @@ nn <leader><CR> :
 nn <leader>/ :Ag<CR>
 nn <leader>' :Marks<CR>
 " Open netrw for current file
-nn - :30Hexplore %:p:h<CR>
+nn - :Vexplore 20<CR>
 " Window navigation
 nn <C-j> <C-W>j
 nn <C-k> <C-W>k
@@ -251,8 +296,10 @@ nn <Left> :vertical resize +2<CR>
 nn <Right> :vertical resize -2<CR>
 nn <Up> :resize +2<CR>
 nn <Down> :resize -2<CR>
+" (g)oto (d)efinition
+nn gd <C-]>
 " Easy close
-nn <C-q> ZQ
+nn <C-q> ZZ
 " Tab navigation
 nn H gT
 nn L gt
@@ -264,6 +311,7 @@ tnoremap <C-h> <C-\><C-n><C-w>h
 tnoremap <C-j> <C-\><C-n><C-w>j
 tnoremap <C-k> <C-\><C-n><C-w>k
 tnoremap <C-l> <C-\><C-n><C-w>l
+autocmd TermOpen * set bufhidden=hide
 " Easy omni complete
 ino <C-SPACE> <C-X><C-O>
 " Snippet expansion

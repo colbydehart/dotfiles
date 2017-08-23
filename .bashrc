@@ -20,13 +20,15 @@ if [ -d $YARN_BIN_PATH ]; then
   export PATH="$PATH:$YARN_BIN_PATH"
 fi
 
+#Haskell executables
+export PATH="$HOME/Library/Haskell/bin:$PATH"
+
 export ANDROID_HOME="$HOME/Library/Android/sdk"
 if [ -d $ANDROID_HOME ]; then
   export PATH="$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools"
 fi
 export PATH="$PATH:$HOME/go/bin"
 
-# git completion
 # brew completions
 BREW_COMPLETIONS=$(brew --prefix)
 if [ -f $BREW_COMPLETIONS/etc/bash_completion ]; then
@@ -41,6 +43,9 @@ complete -F _fzf_file_completion -o default -o bashdefault atom
 # respect gitignore
 export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -g ""'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
+# set erlang flags for elixir history
+export ERL_AFLAGS="-kernel shell_history enabled"
 
 # added by travis gem
 [ -f /Users/colbydehart/.travis/travis.sh ] && source /Users/colbydehart/.travis/travis.sh
