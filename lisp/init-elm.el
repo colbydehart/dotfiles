@@ -13,7 +13,10 @@
                  "i" 'elm-compile-clean-imports
                  "r" 'elm-preview-buffer)
 
-(use-package elm-mode :mode "\\.elm$")
+(use-package elm-mode :mode "\\.elm$"
+  :config 
+  (evil-define-key 'normal elm-mode-map
+    "K" 'elm-oracle-doc-at-point))
 
 (add-hook 'elm-mode-hook 'cool/elm-hook)
 

@@ -22,6 +22,8 @@ fi
 
 #Haskell executables
 export PATH="$HOME/Library/Haskell/bin:$PATH"
+#Python executables
+export PATH="/usr/local/opt/python/libexec/bin:$PATH"
 
 export ANDROID_HOME="$HOME/Library/Android/sdk"
 if [ -d $ANDROID_HOME ]; then

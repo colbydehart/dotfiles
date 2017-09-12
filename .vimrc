@@ -5,15 +5,13 @@
 "====================================VIMRC=====================================
 "==============================================================================
 "===================================GENERAL====================================
-" set statusline=[%l,%v]\ %t%m%r%h%w\ %y[%p%%]\ %{fugitive#statusline()}
-" set statusline+=\ %{ALEGetStatusLine()}
 set t_Co=256                       "256 colors
 set termguicolors                  "true color
 set tabstop=2                      "2 spaces for tab
 set shiftwidth=2                   "2 spaces for tab
 set softtabstop=2                  "2 spaces for tab
 set expandtab                      "no tabs
-let &showbreak='↳ '                "pretty showbreak
+set nowrap                         "no softwrap
 set list                           "show tab characters
 set timeoutlen=1000 ttimeoutlen=-1 "better timeouts"
 set relativenumber                 "line numbers
@@ -24,18 +22,19 @@ set foldlevelstart=10              "don't fold it all
 set textwidth=80                   "format at 80 lines
 set ls=2                           "better status line
 set clipboard=unnamedplus          "use system clipboard
-let g:netrw_localrmdir='rm -rf'     "recursive delete in netrw
-let g:netrw_banner=0               "no banner on netrw
-let g:netrw_browse_split=4         "open files in previous window
-let g:netrw_liststyle=3            "use tree view for netrw
-" let g:netrw_preview=1              "open previews vertically
-set nobackup                       "no backups!
+set hidden                         "allow jumping back and forth
+                                   "between multiple unsaved buffers
+set noshowmode                     "because airline...
 set visualbell                     "no sounds!
 set nohlsearch                     "no highlight search after
 set ignorecase                     "ignore case when searching
 set smartcase                      "don't ignore when i specify
 set wildignorecase                 "case insensitive file search
-set noswapfile                     "no swaps!
+set undofile                       "undo history file
+set backup                         "backups
+set undodir=~/.vim/.undo//
+set backupdir=~/.vim/.backup//
+set directory=~/.vim/.swp//
 set diffopt=vertical               "vertical diff splits
 set inccommand=split               "show substitute preview
 set updatetime=2000                "a bit faster updatetime
@@ -71,18 +70,20 @@ Plug 'Yggdroot/indentLine'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 let g:rainbow_active = 1
-let g:rainbow_conf = {
-\  'guifgs': ['LightCoral', 'turquoise', 'PeachPuff1', 'SkyBlue1', 'OliveDrab2', 'tomato1', 'chartreuse1', 'MediumPurple1']
-\ }
+" let g:rainbow_conf = {
+" \  'guifgs': ['LightCoral', 'turquoise', 'PeachPuff1', 'SkyBlue1', 'OliveDrab2', 'tomato1', 'chartreuse1', 'MediumPurple1']
+" \ }
 let g:airline#extensions#ale#enabled = 1
-let g:airline_theme='badcat'
+let g:airline_theme='deus'
 let g:airline_powerline_fonts = 1
 "====================================UTILITY====================================
+Plug 'justinmk/vim-dirvish'
 Plug 'jiangmiao/auto-pairs'
 Plug 'powerman/vim-plugin-AnsiEsc'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
@@ -95,7 +96,11 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'w0rp/ale'
 Plug 'janko-m/vim-test'
 Plug 'sbdchd/neoformat'
-let g:ale_linters = {'elixir': ['credo']}
+let g:ale_linters = {
+      \ 'elixir': ['credo'],
+      \ 'haskell': ['stack-ghc-mod', 'hlint'],
+      \ 'elm': ['elm-make']
+      \ }
 let g:test#strategy = 'neovim'
 let g:neoformat_only_msg_on_error = 0
 "==================================NAVIGATION===================================
@@ -103,7 +108,6 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 "==================================AUTOCOMPLETION===============================
 Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
-" Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
 Plug 'Shougo/vimproc.vim', {'do': 'make'}
 Plug 'Shougo/echodoc.vim'
 Plug 'shougo/neosnippet.vim'
@@ -113,12 +117,6 @@ Plug 'ervandew/supertab'
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#file#enable_buffer_path = 1
 let g:deoplete#enable_smart_case = 1
-" let g:LanguageClient_autoStart = 1
-" let g:LanguageClient_serverCommands = {
-"       \ 'elixir': ['~/.config/lsp/elixir-ls/release/exscript.sh',  '~/.config/lsp/elixir-ls/release/language_server']
-"       \ }
-let g:LanguageClient_diagnosticsEnable = 1
-let g:LanguageClient_trace = "on"
 let g:neosnippet#snippets_directory = "~/dotfiles/snippets"
 let g:neosnippet#scope_aliases = {}
 let g:deoplete#keyword_patterns = {}
@@ -139,7 +137,7 @@ let g:jsx_ext_required = 0  "Always use jsx syntax
 let g:javascript_plugin_flow = 1
 let g:flow#enable=0
 let g:flow#autoclose = 1
-" autocmd BufWritePre *.js Neoformat prettier
+autocmd BufWritePre *.js Neoformat prettier
 "==================================TYPESCRIPT===================================
 Plug 'leafgarland/typescript-vim', { 'for': [ 'typescript', 'typescript.tsx' ] }
 Plug 'Quramy/tsuquyomi', { 'for': [ 'typescript', 'typescript.tsx' ] }
@@ -156,7 +154,7 @@ augroup typescript
   au BufWritePre *.tsx Neoformat
 augroup END
 "==================================ELIXIR=======================================
-Plug 'slashmili/alchemist.vim', {'branch': 'elixir-sense'}
+Plug 'slashmili/alchemist.vim'
 Plug 'elixir-lang/vim-elixir'
 augroup elixir
   au!
@@ -172,7 +170,10 @@ augroup END
 Plug 'eagletmt/neco-ghc'
 Plug 'eagletmt/ghcmod-vim'
 Plug 'neovimhaskell/haskell-vim'
+Plug 'parsonsmatt/intero-neovim'
 let g:haskellmode_completion_ghc = 0
+let g:intero_start_immediately = 1 " Auto start intero for haskell files ?
+let g:intero_use_neomake = 0 " Don't use neomake because ale is doing it.
 autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
 autocmd BufWritePre *.hs Neoformat
 "===================================ELM=========================================
@@ -188,13 +189,16 @@ augroup elm
   au FileType elm nn <buffer> <localleader>r :ElmRepl<CR>
 augroup END
 "===================================CLOJURE=====================================
-Plug 'guns/vim-clojure-static', {'for': ['clojure', 'clojurescript']}
-Plug 'clojure-vim/async-clj-omni'
-Plug 'tpope/vim-classpath'
+" Plug 'guns/vim-clojure-static', {'for': ['clojure', 'clojurescript']}
+" Plug 'tpope/vim-salve', {'for': ['clojure', 'clojurescript']}
+" Autocomplete
+Plug 'tpope/vim-fireplace', {'for': ['clojure', 'clojurescript']}
+Plug 'tpope/vim-classpath', {'for': ['clojure', 'clojurescript']}
+Plug 'clojure-vim/async-clj-omni', {'for': ['clojure', 'clojurescript']}
+" Editing
 Plug 'guns/vim-sexp', {'for': ['clojure', 'clojurescript']}
 Plug 'tpope/vim-sexp-mappings-for-regular-people', {'for': ['clojure', 'clojurescript']}
-Plug 'tpope/vim-fireplace', {'for': ['clojure', 'clojurescript']}
-Plug 'tpope/vim-salve', {'for': ['clojure', 'clojurescript']}
+" Formatting
 Plug 'venantius/vim-cljfmt', {'for': ['clojure', 'clojurescript']}
 let g:clojure_align_multiline_strings = 1
 let g:clojure_align_subforms = 1
@@ -206,7 +210,8 @@ au! BufEnter build.boot set filetype=clojure
 augroup clojure
   au!
   au FileType clojure nn <buffer> <LocalLeader>C
-        \ :Piggieback (figwheel-sidecar.repl-api/repl-env)<CR>
+        \ :Piggieback (figwheel-sidecar.repl-api/repl-env)
+  au FileType clojure nn <buffer> <localleader>f :Cljfmt<CR>
 augroup END
 "===================================RUBY========================================
 Plug 'vim-ruby/vim-ruby', {'for': 'ruby'}
@@ -222,7 +227,10 @@ Plug 'shougo/neco-vim'
 Plug 'thinca/vim-themis'
 augroup vim
   au!
-  au FileType vim set foldmethod=indent
+  au FileType vim setlocal foldmethod=indent
+  au FileType vim setlocal keywordprg=:help
+  au FileType vim vn <buffer> <localleader>e :<C-u>echo eval(getline(".")[col("'<")-1:col("'>")])<CR>
+  au FileType vim nn <buffer> <localleader>e :echo eval(getline("."))<CR>
 augroup END
 "===================================FSHARP======================================
 Plug 'fsharp/vim-fsharp', {
@@ -232,6 +240,10 @@ Plug 'fsharp/vim-fsharp', {
 "===================================ETC.========================================
 Plug 'jceb/vim-orgmode'
 Plug 'dag/vim-fish'
+augroup sh
+  au!
+  au FileType sh nn <buffer> <localleader>e :normal Z!<CR>
+augroup END
 "=================================PLUG END======================================
 call plug#end()
 set background=dark
@@ -253,7 +265,7 @@ nn ]b :bn<CR>
 " Leader mappings
 nn <leader><leader> :b#<CR>
 nn <leader>b :Buffers<CR>
-nn <leader>d :Explore<CR>
+nn <leader>d :vsplit \| :vertical resize 30 \| :Dirvish<CR>
 nn <leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
 nn <leader>f :Files<CR>
 nn <leader>h :Helptags<CR>
@@ -285,7 +297,7 @@ nn <leader><CR> :
 nn <leader>/ :Ag<CR>
 nn <leader>' :Marks<CR>
 " Open netrw for current file
-nn - :Vexplore 20<CR>
+nn - :vsplit \| :vertical resize 30 \| :Dirvish %<CR>
 " Window navigation
 nn <C-j> <C-W>j
 nn <C-k> <C-W>k
