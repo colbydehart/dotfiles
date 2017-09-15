@@ -30,9 +30,7 @@ set nohlsearch                     "no highlight search after
 set ignorecase                     "ignore case when searching
 set smartcase                      "don't ignore when i specify
 set wildignorecase                 "case insensitive file search
-set undofile                       "undo history file
 set backup                         "backups
-set undodir=~/.vim/.undo//
 set backupdir=~/.vim/.backup//
 set directory=~/.vim/.swp//
 set diffopt=vertical               "vertical diff splits
@@ -82,7 +80,7 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'powerman/vim-plugin-AnsiEsc'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'tpope/vim-abolish'
-Plug 'tpope/vim-fugitive'
+Plug 'jreybert/vimagit'
 Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-surround'
@@ -92,6 +90,10 @@ Plug 'tpope/vim-speeddating'
 Plug 'rhysd/clever-f.vim'
 Plug 'justinmk/vim-sneak'
 Plug 'christoomey/vim-tmux-navigator'
+augroup magit
+  au!
+  au FileType magit nn <buffer> <TAB> za
+augroup END
 "====================================BUILD/TEST=================================
 Plug 'w0rp/ale'
 Plug 'janko-m/vim-test'
@@ -147,6 +149,7 @@ let g:neoformat_typescript_tsprettier = {
  \ 'stdin': 1
  \ }
 let g:neoformat_enabled_typescript = ['tsprettier']
+let g:tsuquyomi_completion_detail=1
 augroup typescript
   au!
   au FileType typescript nn <buffer> K :TsuDefinition<CR>
@@ -156,6 +159,7 @@ augroup END
 "==================================ELIXIR=======================================
 Plug 'slashmili/alchemist.vim'
 Plug 'elixir-lang/vim-elixir'
+let g:deoplete#sources.elixir = ['alchemist', 'buffer', 'file', 'tag']
 augroup elixir
   au!
   au FileType elixir nn <buffer> <localleader>a :A<CR>
@@ -264,12 +268,13 @@ nn [b :bp<CR>
 nn ]b :bn<CR>
 " Leader mappings
 nn <leader><leader> :b#<CR>
+" nn <leader>a
 nn <leader>b :Buffers<CR>
 nn <leader>d :vsplit \| :vertical resize 30 \| :Dirvish<CR>
 nn <leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
 nn <leader>f :Files<CR>
+nn <leader>g :Magit<CR>
 nn <leader>h :Helptags<CR>
-nn <leader>g :tab split \| Gstatus \| wincmd o<CR>
 nn <leader>i :Tags<CR>
 nn <leader>j <C-]>
 nn <leader>k ZZ
@@ -278,7 +283,7 @@ nn <silent> <leader>lp :ALEPrevious<CR>
 nn <leader>m :History<CR>
 nn <leader>n :tabe<CR>
 nn <leader>o :e ~/Dropbox/org/gtd.org<CR>
-nn <leader>p :call tomato#reset()<CR>
+" nn <leader>p
 nn <leader>q :b#<CR>
 nn <leader>rr :S/
 nn <leader>ra :%S/
@@ -293,6 +298,7 @@ nn <leader>vl :e ./.lvimrc<CR>
 nn <leader>w :w<CR>
 nn <leader>x :
 nn <leader>y :NeoSnippetEdit<CR>
+" nn <leader>z
 nn <leader><CR> :
 nn <leader>/ :Ag<CR>
 nn <leader>' :Marks<CR>

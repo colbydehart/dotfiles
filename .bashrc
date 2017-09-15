@@ -15,9 +15,9 @@ export LP_PS1_POSTFIX="\n🙇  "
 #export NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 
 #Update PATH
-YARN_BIN_PATH=$(yarn global bin) # Add node_modules to PATH
-if [ -d $YARN_BIN_PATH ]; then
-  export PATH="$PATH:$YARN_BIN_PATH"
+NPM_BIN_PATH=$(npm -g bin) # Add node_modules to PATH
+if [ -d $NPM_BIN_PATH ]; then
+  export PATH="$PATH:$NPM_BIN_PATH"
 fi
 
 #Haskell executables
