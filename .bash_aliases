@@ -46,4 +46,4 @@ alias arduino='/Applications/Arduino.app/Contents/MacOS/Arduino'
 # go to work
 alias dw="cd ~/dev/work"
 # mix testing
-alias mixtest="MIX_ENV=test iex -S mix"
+alias mixtest="mix test --stale --listen-on-stdin"

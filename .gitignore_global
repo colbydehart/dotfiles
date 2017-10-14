@@ -70,6 +70,9 @@ _build
 deps
 _build
 
+# ClojureScript
+.cljs_rhino_repl
+
 # Idea
 #############
 .idea

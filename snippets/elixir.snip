@@ -21,3 +21,18 @@ options     head
   for ${1} <- ${2} do
     ${3}
   end
+
+snippet     gens
+abbr        GenServer
+options     head
+  use GenServer
+
+  @doc false
+  def start_link do
+    GenServer.start_link(__MODULE__, ${1:Map.new})
+  end
+
+  @impl true
+  def init(state) do
+    {:ok, state}
+  end

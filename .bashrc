@@ -1,5 +1,5 @@
-. ~/.bash_aliases
-. ~/.git-prompt.sh
+[ -f ~/.bash_aliases ] && source ~/.bash_aliases
+[ -f ~/.git-prompt.sh ] && source ~/.git-prompt.sh
 
 # let me open a bunch of files
 ulimit -n 4096
@@ -9,35 +9,32 @@ export EDITOR=nvim
 
 #Cool prompt
 export LP_PS1_POSTFIX="\n🙇  "
-. ~/liquidprompt/liquidprompt
+[ -f ~/liquidprompt/liquidprompt ] && source ~/liquidprompt/liquidprompt
 
-#Fix nvim cursor
-#export NVIM_TUI_ENABLE_CURSOR_SHAPE=1
-
-#Update PATH
+#NPM executables
 NPM_BIN_PATH=$(npm -g bin) # Add node_modules to PATH
-if [ -d $NPM_BIN_PATH ]; then
-  export PATH="$PATH:$NPM_BIN_PATH"
-fi
-
-#Haskell executables
-export PATH="$HOME/Library/Haskell/bin:$PATH"
+[ -d $NPM_BIN_PATH ] && export PATH="$PATH:$NPM_BIN_PATH"
 #Python executables
-export PATH="/usr/local/opt/python/libexec/bin:$PATH"
-
+PYTHON_BIN_PATH="/usr/local/opt/python/libexec/bin"
+[ -d $PYTHON_BIN_PATH ] && export PATH="$PYTHON_BIN_PATH:$PATH"
+#Android executables
 export ANDROID_HOME="$HOME/Library/Android/sdk"
-if [ -d $ANDROID_HOME ]; then
-  export PATH="$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools"
-fi
-export PATH="$PATH:$HOME/go/bin"
+[ -d $ANDROID_HOME ] && export PATH="$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools"
+#Haskell executables
+[ -d "$HOME/Library/Haskell/bin" ] && export PATH="$HOME/Library/Haskell/bin:$PATH"
+#Go executables
+[ -d "$HOME/go/bin" ] && export PATH="$PATH:$HOME/go/bin"
 
 # brew completions
 BREW_COMPLETIONS=$(brew --prefix)
 if [ -f $BREW_COMPLETIONS/etc/bash_completion ]; then
-  . $BREW_COMPLETIONS/etc/bash_completion
+  source $BREW_COMPLETIONS/etc/bash_completion
 fi
 
-# fzf settings
+# -- ASDF
+source /usr/local/opt/asdf/asdf.sh
+
+# -- FZF
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 # use for neovim alias and atom
 complete -F _fzf_file_completion -o default -o bashdefault nv
@@ -46,8 +43,8 @@ complete -F _fzf_file_completion -o default -o bashdefault atom
 export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -g ""'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
-# set erlang flags for elixir history
+# set erlang flags for iex history
 export ERL_AFLAGS="-kernel shell_history enabled"
 
-# added by travis gem
-[ -f /Users/colbydehart/.travis/travis.sh ] && source /Users/colbydehart/.travis/travis.sh
+# Set up Travis
+[ -f $HOME/.travis/travis.sh ] && source $HOME/.travis/travis.sh

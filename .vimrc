@@ -14,6 +14,7 @@ set expandtab                      "no tabs
 set nowrap                         "no softwrap
 set list                           "show tab characters
 set timeoutlen=1000 ttimeoutlen=-1 "better timeouts"
+set number                         "line numbers
 set relativenumber                 "line numbers
 set mouse=a                        "use the mouse
 set cindent                        "auto indent
@@ -31,12 +32,16 @@ set ignorecase                     "ignore case when searching
 set smartcase                      "don't ignore when i specify
 set wildignorecase                 "case insensitive file search
 set backup                         "backups
+set noswapfile
 set backupdir=~/.vim/.backup//
-set directory=~/.vim/.swp//
 set diffopt=vertical               "vertical diff splits
-set inccommand=split               "show substitute preview
 set updatetime=2000                "a bit faster updatetime
 set shortmess+=c                   "make that mess shorter?
+let g:netrw_liststyle = 0          "Tree style netrw
+let g:netrw_browse_split = 4       "open netrw files in other window
+let g:netrw_winsize = 25           "25 column width for netrw
+let g:netrw_altv = 1               "Vertical split on right side
+let g:netrw_localrmdir='rm -rf'     "Remove nonempty directories
 :let mapleader = ' '               "leader is space
 :let maplocalleader = ','          "localleader is comma
 au! QuickFixCmdPost [^l]* cwindow  "open quickfix after search
@@ -59,23 +64,34 @@ func! StripTrailingWhitespace()
 endfunc
 "Clear trailing whitespace
 au! BufWritePre * silent call StripTrailingWhitespace()
+
+func! OpenOrCreateTerminal()
+  let term = bufname('term://')
+  if bufexists(term)
+    :buffer term
+  else
+    :terminal
+  endif
+endfunc
 "===================================PLUGINS=====================================
 call plug#begin()
 "====================================COSMETIC===================================
-Plug 'w0ng/vim-hybrid'
+" Colorschemes
+Plug 'joshdick/onedark.vim'
 Plug 'luochen1990/rainbow'
 Plug 'Yggdroot/indentLine'
+Plug 'justinmk/vim-sneak'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 let g:rainbow_active = 1
-" let g:rainbow_conf = {
-" \  'guifgs': ['LightCoral', 'turquoise', 'PeachPuff1', 'SkyBlue1', 'OliveDrab2', 'tomato1', 'chartreuse1', 'MediumPurple1']
-" \ }
+let g:rainbow_conf = {
+\  'guifgs': ['LightCoral', 'turquoise', 'PeachPuff1', 'SkyBlue1', 'OliveDrab2', 'tomato1', 'chartreuse1', 'MediumPurple1']
+\ }
 let g:airline#extensions#ale#enabled = 1
 let g:airline_theme='deus'
 let g:airline_powerline_fonts = 1
 "====================================UTILITY====================================
-Plug 'justinmk/vim-dirvish'
+Plug 'tpope/vim-vinegar'
 Plug 'jiangmiao/auto-pairs'
 Plug 'powerman/vim-plugin-AnsiEsc'
 Plug 'AndrewRadev/splitjoin.vim'
@@ -87,8 +103,6 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-speeddating'
-Plug 'rhysd/clever-f.vim'
-Plug 'justinmk/vim-sneak'
 Plug 'christoomey/vim-tmux-navigator'
 augroup magit
   au!
@@ -160,13 +174,16 @@ augroup END
 Plug 'slashmili/alchemist.vim'
 Plug 'elixir-lang/vim-elixir'
 let g:deoplete#sources.elixir = ['alchemist', 'buffer', 'file', 'tag']
+let g:alchemist#extended_autocomplete = 1
 augroup elixir
   au!
   au FileType elixir nn <buffer> <localleader>a :A<CR>
   au FileType elixir nn <buffer> <localleader>d :ExDoc<Space>
+  au FileType elixir nn <buffer> <localleader>f :silent !mix format %<CR>:silent e %<CR>
   au FileType elixir nn <buffer> <localleader>i :IEx<CR>
   au FileType elixir nn <buffer> <localleader>t :Mix test<CR>
   au FileType elixir nn <buffer> <localleader>x :Mix<Space>
+
   au FileType eelixir let b:splitjoin_join_callbacks=['sj#html#JoinTags', 'sj#html#JoinAttributes']
   au FileType eelixir let b:splitjoin_split_callbacks=['sj#html#SplitTags', 'sj#html#SplitAttributes']
 augroup END
@@ -193,16 +210,11 @@ augroup elm
   au FileType elm nn <buffer> <localleader>r :ElmRepl<CR>
 augroup END
 "===================================CLOJURE=====================================
-" Plug 'guns/vim-clojure-static', {'for': ['clojure', 'clojurescript']}
-" Plug 'tpope/vim-salve', {'for': ['clojure', 'clojurescript']}
-" Autocomplete
 Plug 'tpope/vim-fireplace', {'for': ['clojure', 'clojurescript']}
-Plug 'tpope/vim-classpath', {'for': ['clojure', 'clojurescript']}
+Plug 'tpope/vim-classpath'
 Plug 'clojure-vim/async-clj-omni', {'for': ['clojure', 'clojurescript']}
-" Editing
 Plug 'guns/vim-sexp', {'for': ['clojure', 'clojurescript']}
 Plug 'tpope/vim-sexp-mappings-for-regular-people', {'for': ['clojure', 'clojurescript']}
-" Formatting
 Plug 'venantius/vim-cljfmt', {'for': ['clojure', 'clojurescript']}
 let g:clojure_align_multiline_strings = 1
 let g:clojure_align_subforms = 1
@@ -210,12 +222,19 @@ let g:deoplete#keyword_patterns.clojure = '[\w!$%&*+/:<=>?@\^_~\-\.#]*'
 let g:deoplete#keyword_patterns.clojurescript = '[\w!$%&*+/:<=>?@\^_~\-\.#]*'
 let g:deoplete#sources.clojure = ['async_clj', 'file']
 let g:clj_fmt_autosave = 0
-au! BufEnter build.boot set filetype=clojure
 augroup clojure
   au!
+  au BufEnter build.boot set filetype=clojure
   au FileType clojure nn <buffer> <LocalLeader>C
         \ :Piggieback (figwheel-sidecar.repl-api/repl-env)
   au FileType clojure nn <buffer> <localleader>f :Cljfmt<CR>
+augroup END
+"===================================RUST========================================
+Plug 'sebastianmarkow/deoplete-rust', {'for': 'rust'}
+Plug 'rust-lang/rust.vim', {'for': 'rust'}
+augroup rust
+  au!
+  au BufWritePre *.rs Neoformat
 augroup END
 "===================================RUBY========================================
 Plug 'vim-ruby/vim-ruby', {'for': 'ruby'}
@@ -242,16 +261,21 @@ Plug 'fsharp/vim-fsharp', {
       \ 'do':  'make fsautocomplete',
       \}
 "===================================ETC.========================================
-Plug 'jceb/vim-orgmode'
 Plug 'dag/vim-fish'
-augroup sh
-  au!
-  au FileType sh nn <buffer> <localleader>e :normal Z!<CR>
-augroup END
+Plug 'neo4j-contrib/cypher-vim-syntax'
+Plug 'aquach/vim-http-client'
+let g:http_client_bind_hotkey=0
+let g:http_client_json_ft='json'
+let g:http_client_json_escape_utf=0
+let g:http_client_result_vsplit=0
+let g:http_client_focus_output_window=0
+
+au! BufRead,BufNewFile *.rest set filetype=rest
+au! FileType rest nn <buffer> <CR> :HTTPClientDoRequest<CR>
 "=================================PLUG END======================================
 call plug#end()
 set background=dark
-colo hybrid
+colo onedark
 filetype plugin indent on
 syntax enable
 " for showbreak
@@ -270,7 +294,7 @@ nn ]b :bn<CR>
 nn <leader><leader> :b#<CR>
 " nn <leader>a
 nn <leader>b :Buffers<CR>
-nn <leader>d :vsplit \| :vertical resize 30 \| :Dirvish<CR>
+nn <leader>d :Vexplore! .<CR>
 nn <leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
 nn <leader>f :Files<CR>
 nn <leader>g :Magit<CR>
@@ -282,16 +306,16 @@ nn <silent> <leader>ln :ALENext<CR>
 nn <silent> <leader>lp :ALEPrevious<CR>
 nn <leader>m :History<CR>
 nn <leader>n :tabe<CR>
-nn <leader>o :e ~/Dropbox/org/gtd.org<CR>
+nn <leader>o :!open /Applications/Notes.app<CR>
 " nn <leader>p
-nn <leader>q :b#<CR>
+nn <leader>q :qa!<CR>
 nn <leader>rr :S/
 nn <leader>ra :%S/
 nn <leader>sk :split<CR>
 nn <leader>sj :split<CR><C-W>j
 nn <leader>sh :vsplit<CR>
 nn <leader>sl :vsplit<CR><C-W>l
-nn <leader>t :terminal<CR>
+nn <leader>t :silent call OpenOrCreateTerminal()<CR>
 nn <leader>u :BTags<CR>
 nn <leader>vv :e ~/dotfiles/.vimrc<CR>
 nn <leader>vl :e ./.lvimrc<CR>
@@ -303,7 +327,7 @@ nn <leader><CR> :
 nn <leader>/ :Ag<CR>
 nn <leader>' :Marks<CR>
 " Open netrw for current file
-nn - :vsplit \| :vertical resize 30 \| :Dirvish %<CR>
+nn - :Vexplore!<CR>
 " Window navigation
 nn <C-j> <C-W>j
 nn <C-k> <C-W>k
@@ -316,8 +340,6 @@ nn <Up> :resize +2<CR>
 nn <Down> :resize -2<CR>
 " (g)oto (d)efinition
 nn gd <C-]>
-" Easy close
-nn <C-q> ZZ
 " Tab navigation
 nn H gT
 nn L gt
@@ -329,7 +351,7 @@ tnoremap <C-h> <C-\><C-n><C-w>h
 tnoremap <C-j> <C-\><C-n><C-w>j
 tnoremap <C-k> <C-\><C-n><C-w>k
 tnoremap <C-l> <C-\><C-n><C-w>l
-autocmd TermOpen * set bufhidden=hide
+au TermOpen * set bufhidden=hide
 " Easy omni complete
 ino <C-SPACE> <C-X><C-O>
 " Snippet expansion
@@ -343,3 +365,29 @@ endif
 " Autoreload .vimrc
 au! bufwritepost .vimrc source %
 au! bufwritepost .lvimrc source %
+
+" Scratch File
+
+augroup scratch
+  au!
+  au BufEnter .scratch nn <buffer> <localleader>e :sp \| terminal iex %<CR>
+augroup END
+
+" if !exists("g:colby_loaded") && argc() == 0
+if 0
+  :silent e! ~/.scratch
+  :silent 0,$d
+  call append(0, [
+        \ "defmodule Scratch do",
+        \ "  @moduledoc\"\"\"",
+        \ "  This buffer is for text that is not saved and for",
+        \ "  Elixir evaluation. To create a file, visit it with",
+        \ "  :e and enter the text in its buffer",
+        \ "  \"\"\"",
+        \ "end",
+        \ ])
+  :silent set ft=elixir
+  :silent normal zR
+  :silent w
+endif
+let g:colby_loaded=1
