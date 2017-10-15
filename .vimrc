@@ -33,7 +33,7 @@ set smartcase                      "don't ignore when i specify
 set wildignorecase                 "case insensitive file search
 set backup                         "backups
 set noswapfile
-set backupdir=~/.vim/.backup//
+set backupdir=~/.config/nvim/backup
 set diffopt=vertical               "vertical diff splits
 set updatetime=2000                "a bit faster updatetime
 set shortmess+=c                   "make that mess shorter?
@@ -77,7 +77,7 @@ endfunc
 call plug#begin()
 "====================================COSMETIC===================================
 " Colorschemes
-Plug 'joshdick/onedark.vim'
+Plug 'sonph/onehalf', {'rtp': 'vim'}
 Plug 'luochen1990/rainbow'
 Plug 'Yggdroot/indentLine'
 Plug 'justinmk/vim-sneak'
@@ -85,11 +85,11 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 let g:rainbow_active = 1
 let g:rainbow_conf = {
-\  'guifgs': ['LightCoral', 'turquoise', 'PeachPuff1', 'SkyBlue1', 'OliveDrab2', 'tomato1', 'chartreuse1', 'MediumPurple1']
-\ }
+      \  'guifgs': ['LightCoral', 'turquoise', 'PeachPuff1', 'SkyBlue1', 'OliveDrab2', 'tomato1', 'chartreuse1', 'MediumPurple1']
+      \ }
 let g:airline#extensions#ale#enabled = 1
-let g:airline_theme='deus'
-let g:airline_powerline_fonts = 1
+let g:airline_theme='onehalfdark'
+let g:airline_powerline_fonts = 0
 "====================================UTILITY====================================
 Plug 'tpope/vim-vinegar'
 Plug 'jiangmiao/auto-pairs'
@@ -275,7 +275,7 @@ au! FileType rest nn <buffer> <CR> :HTTPClientDoRequest<CR>
 "=================================PLUG END======================================
 call plug#end()
 set background=dark
-colo onedark
+colo onehalfdark
 filetype plugin indent on
 syntax enable
 " for showbreak
@@ -367,14 +367,12 @@ au! bufwritepost .vimrc source %
 au! bufwritepost .lvimrc source %
 
 " Scratch File
-
 augroup scratch
   au!
   au BufEnter .scratch nn <buffer> <localleader>e :sp \| terminal iex %<CR>
 augroup END
 
-" if !exists("g:colby_loaded") && argc() == 0
-if 0
+if !exists("g:colby_loaded") && argc() == 0
   :silent e! ~/.scratch
   :silent 0,$d
   call append(0, [

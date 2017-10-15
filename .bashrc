@@ -6,6 +6,8 @@ ulimit -n 4096
 
 #Neovim is editor
 export EDITOR=nvim
+#Neovim colors
+export NVIM_TUI_ENABLE_TRUE_COLOR=1
 
 #Cool prompt
 export LP_PS1_POSTFIX="\n🙇  "
@@ -32,7 +34,7 @@ if [ -f $BREW_COMPLETIONS/etc/bash_completion ]; then
 fi
 
 # -- ASDF
-source /usr/local/opt/asdf/asdf.sh
+[ -f /usr/local/opt/asdf/asdf.sh ] && source /usr/local/opt/asdf/asdf.sh
 
 # -- FZF
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
