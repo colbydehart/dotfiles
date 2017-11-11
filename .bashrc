@@ -39,6 +39,7 @@ fi
 # -- FZF
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 # use for neovim alias and atom
+complete -F _fzf_file_completion -o default -o bashdefault nvim
 complete -F _fzf_file_completion -o default -o bashdefault nv
 complete -F _fzf_file_completion -o default -o bashdefault atom
 # respect gitignore

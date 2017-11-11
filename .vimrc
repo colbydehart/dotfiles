@@ -125,6 +125,7 @@ Plug 'junegunn/fzf.vim'
 "==================================AUTOCOMPLETION===============================
 Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
 Plug 'Shougo/vimproc.vim', {'do': 'make'}
+Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
 Plug 'Shougo/echodoc.vim'
 Plug 'shougo/neosnippet.vim'
 Plug 'shougo/neosnippet-snippets'
@@ -133,6 +134,15 @@ Plug 'ervandew/supertab'
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#file#enable_buffer_path = 1
 let g:deoplete#enable_smart_case = 1
+let g:LanguageClient_autoStart = 1
+let g:LanguageClient_serverCommands = {
+      \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
+      \ 'javascript': ['javascript-typescript-stdio'],
+      \ 'javascript.jsx': ['javascript-typescript-stdio'],
+      \ 'typescript': ['javascript-typescript-stdio'],
+      \ 'typescript.jsx': ['javascript-typescript-stdio'],
+      \ 'python': ['pyls']
+      \ }
 let g:neosnippet#snippets_directory = "~/dotfiles/snippets"
 let g:neosnippet#scope_aliases = {}
 let g:deoplete#keyword_patterns = {}
@@ -148,27 +158,33 @@ let g:vim_json_syntax_conceal=0
 "==================================JAVASCRIPT===================================
 Plug 'pangloss/vim-javascript', { 'for': [ 'javascript', 'javascript.jsx' ] }
 Plug 'mxw/vim-jsx', { 'for': ['javascript', 'javascript.jsx']}
-Plug 'flowtype/vim-flow',  {'for': ['javascript', 'javascript.jsx']}
 let g:jsx_ext_required = 0  "Always use jsx syntax
-let g:javascript_plugin_flow = 1
-let g:flow#enable=0
-let g:flow#autoclose = 1
-autocmd BufWritePre *.js Neoformat prettier
+augroup javascript
+  au!
+  au FileType javascript.jsx setlocal omnifunc=LanguageClient#complete
+  au FileType javascript.jsx nn <buffer> K :call LanguageClient_textDocument_hover()<cr>
+  au FileType javascript.jsx nn <buffer> gd :call LanguageClient_textDocument_definition()<cr>
+  au FileType javascript.jsx nn <buffer> <localleader>r :call LanguageClient_textDocument_rename()<cr>
+  au FileType javascript.jsx nn <buffer> <localleader>u :call LanguageClient_textDocument_documentSymbol()<cr>
+  au BufWritePre *.js Neoformat prettier
+  au BufWritePre *.jsx Neoformat prettier
+augroup END
 "==================================TYPESCRIPT===================================
 Plug 'leafgarland/typescript-vim', { 'for': [ 'typescript', 'typescript.tsx' ] }
-Plug 'Quramy/tsuquyomi', { 'for': [ 'typescript', 'typescript.tsx' ] }
 let g:neoformat_typescript_tsprettier = {
  \ 'exe': 'prettier',
  \ 'args': ['--stdin', '--parser', 'typescript', '--single-quote', 'true'],
  \ 'stdin': 1
  \ }
 let g:neoformat_enabled_typescript = ['tsprettier']
-let g:tsuquyomi_completion_detail=1
 augroup typescript
   au!
-  au FileType typescript nn <buffer> K :TsuDefinition<CR>
-  au BufWritePre *.ts Neoformat
-  au BufWritePre *.tsx Neoformat
+  au FileType typescript setlocal omnifunc=LanguageClient#complete
+  au FileType typescript nn <buffer> K :call LanguageClient_textDocument_hover()<cr>
+  au FileType typescript nn <buffer> gd :call LanguageClient_textDocument_definition()<cr>
+  au FileType typescript nn <buffer> <localleader>r :call LanguageClient_textDocument_rename()<cr>
+  au FileType typescript nn <buffer> <localleader>u :call LanguageClient_textDocument_documentSymbol()<cr>
+  au BufWritePre *.tsx? Neoformat
 augroup END
 "==================================ELIXIR=======================================
 Plug 'slashmili/alchemist.vim'
@@ -210,7 +226,7 @@ augroup elm
   au FileType elm nn <buffer> <localleader>r :ElmRepl<CR>
 augroup END
 "===================================CLOJURE=====================================
-Plug 'tpope/vim-fireplace', {'for': ['clojure', 'clojurescript']}
+Plug 'tpope/vim-fireplace'
 Plug 'tpope/vim-classpath'
 Plug 'clojure-vim/async-clj-omni', {'for': ['clojure', 'clojurescript']}
 Plug 'guns/vim-sexp', {'for': ['clojure', 'clojurescript']}
@@ -239,11 +255,14 @@ augroup END
 "===================================RUBY========================================
 Plug 'vim-ruby/vim-ruby', {'for': 'ruby'}
 "==================================PYTHON=======================================
-Plug 'zchee/deoplete-jedi', {'for': 'python'}
 augroup python
   au!
   au FileType python setlocal tabstop=4 shiftwidth=4 softtabstop=4
   au FileType python nn <buffer> <localleader>f :0,$!yapf<CR>
+  au FileType python setlocal omnifunc=LanguageClient#complete
+  au FileType python nn <buffer> K :call LanguageClient_textDocument_hover()<cr>
+  au FileType python nn <buffer> gd :call LanguageClient_textDocument_definition()<cr>
+  au FileType python nn <buffer> <localleader>r :call LanguageClient_textDocument_rename()<cr>
 augroup END
 "===================================VIML========================================
 Plug 'shougo/neco-vim'
@@ -264,12 +283,14 @@ Plug 'fsharp/vim-fsharp', {
 Plug 'dag/vim-fish'
 Plug 'neo4j-contrib/cypher-vim-syntax'
 Plug 'aquach/vim-http-client'
+Plug 'jparise/vim-graphql'
 let g:http_client_bind_hotkey=0
 let g:http_client_json_ft='json'
 let g:http_client_json_escape_utf=0
 let g:http_client_result_vsplit=0
 let g:http_client_focus_output_window=0
 
+au! FileType markdown set conceallevel=0 "I hate concealing markdown emphasis
 au! BufRead,BufNewFile *.rest set filetype=rest
 au! FileType rest nn <buffer> <CR> :HTTPClientDoRequest<CR>
 "=================================PLUG END======================================
@@ -315,7 +336,7 @@ nn <leader>sk :split<CR>
 nn <leader>sj :split<CR><C-W>j
 nn <leader>sh :vsplit<CR>
 nn <leader>sl :vsplit<CR><C-W>l
-nn <leader>t :silent call OpenOrCreateTerminal()<CR>
+nn <silent> <leader>t :call OpenOrCreateTerminal()<CR>
 nn <leader>u :BTags<CR>
 nn <leader>vv :e ~/dotfiles/.vimrc<CR>
 nn <leader>vl :e ./.lvimrc<CR>

@@ -1,20 +1,20 @@
 # get back up the tree faster
-alias ..=" cd ..$argv"
-alias ...=" cd ../..$argv"
-alias ....=" cd ../../..$argv"
-alias .....=" cd ../../../..$argv"
-alias ......=" cd ../../../../..$argv"
+alias ..=' cd ..'
+alias ...=' cd ../..'
+alias ....=' cd ../../..'
+alias .....=' cd ../../../..'
+alias ......=' cd ../../../../..'
 # git stuff
-alias gs="git status"
-alias gl="git log --oneline --graph --decorate $argv"
-alias gri="git rebase -i source/development"
-alias grs="git rebase source/development"
-alias ga="git add -p"
-alias gc="git commit -m $argv"
-alias gca="git commit --amend --no-edit"
-alias gco="git checkout -b $argv"
-alias gf="git fetch --all --prune"
-alias gpf="git push --force-with-lease"
+alias gs='git status'
+alias gl='git log --oneline --graph --decorate $argv'
+alias gri='git rebase -i source/development'
+alias grs='git rebase source/development'
+alias ga='git add -p'
+alias gc='git commit -m $argv'
+alias gca='git commit --amend --no-edit'
+alias gco='git checkout -b $argv'
+alias gf='git fetch --all --prune'
+alias gpf='git push --force-with-lease'
 # no time to type "nvim"
 alias nv="nvim"
 # serve current directory
