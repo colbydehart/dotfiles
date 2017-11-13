@@ -76,8 +76,7 @@ endfunc
 "===================================PLUGINS=====================================
 call plug#begin()
 "====================================COSMETIC===================================
-" Colorschemes
-Plug 'sonph/onehalf', {'rtp': 'vim'}
+Plug 'jacoborus/tender.vim'
 Plug 'luochen1990/rainbow'
 Plug 'Yggdroot/indentLine'
 Plug 'justinmk/vim-sneak'
@@ -88,7 +87,6 @@ let g:rainbow_conf = {
       \  'guifgs': ['LightCoral', 'turquoise', 'PeachPuff1', 'SkyBlue1', 'OliveDrab2', 'tomato1', 'chartreuse1', 'MediumPurple1']
       \ }
 let g:airline#extensions#ale#enabled = 1
-let g:airline_theme='onehalfdark'
 let g:airline_powerline_fonts = 0
 "====================================UTILITY====================================
 Plug 'tpope/vim-vinegar'
@@ -228,6 +226,7 @@ augroup END
 "===================================CLOJURE=====================================
 Plug 'tpope/vim-fireplace'
 Plug 'tpope/vim-classpath'
+Plug 'tpope/vim-salve'
 Plug 'clojure-vim/async-clj-omni', {'for': ['clojure', 'clojurescript']}
 Plug 'guns/vim-sexp', {'for': ['clojure', 'clojurescript']}
 Plug 'tpope/vim-sexp-mappings-for-regular-people', {'for': ['clojure', 'clojurescript']}
@@ -296,7 +295,8 @@ au! FileType rest nn <buffer> <CR> :HTTPClientDoRequest<CR>
 "=================================PLUG END======================================
 call plug#end()
 set background=dark
-colo onehalfdark
+colo tender
+let g:airline_theme='tender'
 filetype plugin indent on
 syntax enable
 " for showbreak
@@ -348,7 +348,11 @@ nn <leader><CR> :
 nn <leader>/ :Ag<CR>
 nn <leader>' :Marks<CR>
 " Open netrw for current file
-nn - :Vexplore!<CR>
+" nn - :Vexplore!<CR>
+" Refresh netrw
+au! FileType netrw nn <buffer> r :e .<CR>
+" New file netrw
+au! FileType netrw nn <buffer> i :silent !touch <C-R>=b:netrw_curdir<CR>/
 " Window navigation
 nn <C-j> <C-W>j
 nn <C-k> <C-W>k
@@ -372,7 +376,7 @@ tnoremap <C-h> <C-\><C-n><C-w>h
 tnoremap <C-j> <C-\><C-n><C-w>j
 tnoremap <C-k> <C-\><C-n><C-w>k
 tnoremap <C-l> <C-\><C-n><C-w>l
-au TermOpen * set bufhidden=hide
+au TermOpen * setlocal nonumber norelativenumber bufhidden=hide
 " Easy omni complete
 ino <C-SPACE> <C-X><C-O>
 " Snippet expansion
