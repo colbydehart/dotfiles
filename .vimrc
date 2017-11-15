@@ -283,13 +283,15 @@ Plug 'dag/vim-fish'
 Plug 'neo4j-contrib/cypher-vim-syntax'
 Plug 'aquach/vim-http-client'
 Plug 'jparise/vim-graphql'
+Plug 'plasticboy/vim-markdown'
 let g:http_client_bind_hotkey=0
 let g:http_client_json_ft='json'
 let g:http_client_json_escape_utf=0
 let g:http_client_result_vsplit=0
 let g:http_client_focus_output_window=0
 
-au! FileType markdown set conceallevel=0 "I hate concealing markdown emphasis
+au! FileType markdown setlocal tw=80
+let g:vim_markdown_conceal = 0
 au! BufRead,BufNewFile *.rest set filetype=rest
 au! FileType rest nn <buffer> <CR> :HTTPClientDoRequest<CR>
 "=================================PLUG END======================================
