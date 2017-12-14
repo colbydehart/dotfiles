@@ -92,3 +92,7 @@ tags*
 .ac-php-conf.json
 
 .cljs-rhino-repl
+# Rest Client
+*.rest
+# ag ingore file
+.ignore

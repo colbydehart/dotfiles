@@ -55,6 +55,7 @@ set wildignore+=*/node_modules/*
 set wildignore+=*/bower_components/*
 set wildignore+=.git
 set wildignore+=.venv
+set wildignore+=*/dist
 "===================================FUNCTIONS===================================
 func! StripTrailingWhitespace()
   let l = line('.')
@@ -77,6 +78,8 @@ endfunc
 call plug#begin()
 "====================================COSMETIC===================================
 Plug 'jacoborus/tender.vim'
+Plug 'nightsense/wonka'
+Plug 'joshdick/onedark.vim'
 Plug 'luochen1990/rainbow'
 Plug 'Yggdroot/indentLine'
 Plug 'justinmk/vim-sneak'
@@ -151,12 +154,20 @@ let g:SuperTabContextDefaultCompletionType = "<c-n>"
 "===================================WEB=========================================
 Plug 'mattn/emmet-vim'
 let g:user_emmet_settings = {'javascript.jsx': {'extends': 'jsx'}}
+let g:user_emmet_settings = {'typescript': {'extends': 'jsx'}}
+let g:user_emmet_settings = {'typescript.tsx': {'extends': 'jsx'}}
 Plug 'elzr/vim-json'
 let g:vim_json_syntax_conceal=0
+au! BufWritePre *.css,*.scss,*.sass Neoformat
 "==================================JAVASCRIPT===================================
-Plug 'pangloss/vim-javascript', { 'for': [ 'javascript', 'javascript.jsx' ] }
-Plug 'mxw/vim-jsx', { 'for': ['javascript', 'javascript.jsx']}
+Plug 'pangloss/vim-javascript'
+Plug 'mxw/vim-jsx'
 let g:jsx_ext_required = 0  "Always use jsx syntax
+let g:neoformat_javascript_jsprettier = {
+ \ 'exe': 'prettier',
+ \ 'args': ['--stdin', '--parser', '--single-quote', 'true'],
+ \ 'stdin': 1
+ \ }
 augroup javascript
   au!
   au FileType javascript.jsx setlocal omnifunc=LanguageClient#complete
@@ -235,7 +246,8 @@ let g:clojure_align_multiline_strings = 1
 let g:clojure_align_subforms = 1
 let g:deoplete#keyword_patterns.clojure = '[\w!$%&*+/:<=>?@\^_~\-\.#]*'
 let g:deoplete#keyword_patterns.clojurescript = '[\w!$%&*+/:<=>?@\^_~\-\.#]*'
-let g:deoplete#sources.clojure = ['async_clj', 'file']
+let g:deoplete#sources.clojure = ['async_clj', 'buffer', 'file', 'tag']
+let g:deoplete#sources.clojurescript = ['async_clj', 'buffer', 'file', 'tag']
 let g:clj_fmt_autosave = 0
 augroup clojure
   au!
@@ -284,6 +296,7 @@ Plug 'neo4j-contrib/cypher-vim-syntax'
 Plug 'aquach/vim-http-client'
 Plug 'jparise/vim-graphql'
 Plug 'plasticboy/vim-markdown'
+Plug 'slim-template/vim-slim'
 let g:http_client_bind_hotkey=0
 let g:http_client_json_ft='json'
 let g:http_client_json_escape_utf=0
@@ -297,8 +310,8 @@ au! FileType rest nn <buffer> <CR> :HTTPClientDoRequest<CR>
 "=================================PLUG END======================================
 call plug#end()
 set background=dark
-colo tender
-let g:airline_theme='tender'
+colo onedark
+let g:airline_theme='onedark'
 filetype plugin indent on
 syntax enable
 " for showbreak
@@ -330,7 +343,7 @@ nn <silent> <leader>lp :ALEPrevious<CR>
 nn <leader>m :History<CR>
 nn <leader>n :tabe<CR>
 nn <leader>o :!open /Applications/Notes.app<CR>
-" nn <leader>p
+nn <leader>p :cl<CR>
 nn <leader>q :qa!<CR>
 nn <leader>rr :S/
 nn <leader>ra :%S/
@@ -350,7 +363,7 @@ nn <leader><CR> :
 nn <leader>/ :Ag<CR>
 nn <leader>' :Marks<CR>
 " Open netrw for current file
-" nn - :Vexplore!<CR>
+nn - :Vexplore!<CR>
 " Refresh netrw
 au! FileType netrw nn <buffer> r :e .<CR>
 " New file netrw
@@ -399,7 +412,10 @@ augroup scratch
   au BufEnter .scratch nn <buffer> <localleader>e :sp \| terminal iex %<CR>
 augroup END
 
-if !exists("g:colby_loaded") && argc() == 0
+
+if !exists("g:colby_loaded") && filereadable("./README.md") && argc() == 0
+  :silent e! ./README.md
+elseif !exists("g:colby_loaded") && argc() == 0
   :silent e! ~/.scratch
   :silent 0,$d
   call append(0, [

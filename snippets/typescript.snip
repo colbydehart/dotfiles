@@ -1,0 +1,32 @@
+snippet     d
+abbr        documentation
+options     head
+  /** ${0} */
+
+
+snippet     re
+abbr        React Element
+options     head
+  import React from 'react';
+
+  export class ${1} extends React.Component {
+    render() {
+      return (
+        <div>${0}</div>
+      );
+    }
+  }
+
+snippet     sfc
+abbr        React Stateless Functional Component
+options     head
+  import React from 'react';
+
+  export interface PropTypes {
+    ${1}
+  }
+
+  /** ${2} */
+  export const ${3}: React.SFC<PropsType> = (props) => (
+    <div>${0}</div>
+  );

@@ -1,6 +1,8 @@
 # Path to your oh-my-zsh installation.
 export ZSH=/Users/colbydehart/.oh-my-zsh
 # If you come from bash you might have to change your $PATH.
+# Local executables
+PATH="$PATH:/usr/local/bin"
 #NPM executables
 NPM_BIN_PATH=$(npm -g bin)
 [ -d $NPM_BIN_PATH ] && export PATH="$PATH:$NPM_BIN_PATH"

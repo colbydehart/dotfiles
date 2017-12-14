@@ -16,9 +16,29 @@ abbr        @spec
 options     head
   @spec ${1}(${2}) :: ${3}
 
+snippet     @md
+abbr        @moduledoc
+options     head
+  @moduledoc """
+  ${1}
+  """
+
+snippet     @d
+abbr        @doc
+options     head
+  @doc """
+  ${1}
+  """
+
 snippet     for
 options     head
   for ${1} <- ${2} do
+    ${3}
+  end
+
+snippet     with
+options     head
+  with ${1} <- ${2} do
     ${3}
   end
 

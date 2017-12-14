@@ -10,11 +10,14 @@ alias gl='git log --oneline --graph --decorate $argv'
 alias gri='git rebase -i source/development'
 alias grs='git rebase source/development'
 alias ga='git add -p'
-alias gc='git commit -m $argv'
+alias gc='git commit -m'
 alias gca='git commit --amend --no-edit'
 alias gco='git checkout -b $argv'
 alias gf='git fetch --all --prune'
 alias gpf='git push --force-with-lease'
+# git submodule stuff
+alias gsuu='git submodule update --remote --rebase'
+alias gsup='git push --recurse-submodules=on-demand'
 # no time to type "nvim"
 alias nv="nvim"
 # serve current directory
@@ -46,4 +49,4 @@ alias arduino='/Applications/Arduino.app/Contents/MacOS/Arduino'
 # go to work
 alias dw="cd ~/dev/work"
 # mix testing
-alias mixtest="mix test --stale --listen-on-stdin"
+alias mixtest="mix-test-watch"
