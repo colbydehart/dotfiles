@@ -50,3 +50,7 @@ alias arduino='/Applications/Arduino.app/Contents/MacOS/Arduino'
 alias dw="cd ~/dev/work"
 # mix testing
 alias mixtest="mix-test-watch"
+# Open localhost
+olh () {
+    open http://localhost:$1;
+}

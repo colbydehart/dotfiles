@@ -9,9 +9,13 @@ NPM_BIN_PATH=$(npm -g bin)
 #YARN executables
 YARN_BIN_PATH=$(yarn global bin)
 [ -d $YARN_BIN_PATH ] && export PATH="$PATH:$YARN_BIN_PATH"
+#Rust
+RUST_BIN_PATH="~/.cargo/bin"
+[ -d $RUST_BIN_PATH ] && export PATH="$PATH:$RUST_BIN_PATH"
+[ -f ~/.cargo/env ] && source ~/.cargo/env
 #Python executables
 PYTHON_BIN_PATH="/usr/local/opt/python/libexec/bin"
-[ -d $PYTHON_BIN_PATH ] && export PATH="$PYTHON_BIN_PATH:$PATH"
+[ -d $PYTHON_BIN_PATH ] && export PATH="$PATH:$PYTHON_BIN_PATH"
 #Android executables
 export ANDROID_HOME="$HOME/Library/Android/sdk"
 [ -d $ANDROID_HOME ] && export PATH="$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools"
@@ -19,6 +23,8 @@ export ANDROID_HOME="$HOME/Library/Android/sdk"
 [ -d "$HOME/Library/Haskell/bin" ] && export PATH="$HOME/Library/Haskell/bin:$PATH"
 #Go executables
 [ -d "$HOME/go/bin" ] && export PATH="$PATH:$HOME/go/bin"
+# ASDF shell
+[ -f /usr/local/opt/asdf/asdf.sh ] && source /usr/local/opt/asdf/asdf.sh
 
 
 # Homebrew completions

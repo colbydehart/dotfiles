@@ -141,7 +141,7 @@ let g:LanguageClient_serverCommands = {
       \ 'javascript': ['javascript-typescript-stdio'],
       \ 'javascript.jsx': ['javascript-typescript-stdio'],
       \ 'typescript': ['javascript-typescript-stdio'],
-      \ 'typescript.jsx': ['javascript-typescript-stdio'],
+      \ 'typescript.tsx': ['javascript-typescript-stdio'],
       \ 'python': ['pyls']
       \ }
 let g:neosnippet#snippets_directory = "~/dotfiles/snippets"
@@ -180,6 +180,7 @@ augroup javascript
 augroup END
 "==================================TYPESCRIPT===================================
 Plug 'leafgarland/typescript-vim', { 'for': [ 'typescript', 'typescript.tsx' ] }
+Plug 'ianks/vim-tsx'
 let g:neoformat_typescript_tsprettier = {
  \ 'exe': 'prettier',
  \ 'args': ['--stdin', '--parser', 'typescript', '--single-quote', 'true'],
@@ -188,12 +189,13 @@ let g:neoformat_typescript_tsprettier = {
 let g:neoformat_enabled_typescript = ['tsprettier']
 augroup typescript
   au!
-  au FileType typescript setlocal omnifunc=LanguageClient#complete
-  au FileType typescript nn <buffer> K :call LanguageClient_textDocument_hover()<cr>
-  au FileType typescript nn <buffer> gd :call LanguageClient_textDocument_definition()<cr>
-  au FileType typescript nn <buffer> <localleader>r :call LanguageClient_textDocument_rename()<cr>
-  au FileType typescript nn <buffer> <localleader>u :call LanguageClient_textDocument_documentSymbol()<cr>
-  au BufWritePre *.tsx? Neoformat
+  au FileType typescript.tsx setlocal omnifunc=LanguageClient#complete
+  au FileType typescript.tsx nn <buffer> K :call LanguageClient_textDocument_hover()<cr>
+  au FileType typescript.tsx nn <buffer> gd :call LanguageClient_textDocument_definition()<cr>
+  au FileType typescript.tsx nn <buffer> <localleader>r :call LanguageClient_textDocument_rename()<cr>
+  au FileType typescript.tsx nn <buffer> <localleader>u :call LanguageClient_textDocument_documentSymbol()<cr>
+  au BufWritePre *.ts Neoformat
+  au BufWritePre *.tsx Neoformat
 augroup END
 "==================================ELIXIR=======================================
 Plug 'slashmili/alchemist.vim'
@@ -378,6 +380,8 @@ nn <Left> :vertical resize +2<CR>
 nn <Right> :vertical resize -2<CR>
 nn <Up> :resize +2<CR>
 nn <Down> :resize -2<CR>
+" fast macros
+nnoremap Q @@
 " (g)oto (d)efinition
 nn gd <C-]>
 " Tab navigation
