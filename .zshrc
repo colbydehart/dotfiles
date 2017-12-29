@@ -24,8 +24,7 @@ export ANDROID_HOME="$HOME/Library/Android/sdk"
 #Go executables
 [ -d "$HOME/go/bin" ] && export PATH="$PATH:$HOME/go/bin"
 # ASDF shell
-[ -f /usr/local/opt/asdf/asdf.sh ] && source /usr/local/opt/asdf/asdf.sh
-
+[ -f ~/.asdf/asdf.sh ] && source ~/.asdf/asdf.sh
 
 # Homebrew completions
 BREW_COMPLETIONS=$(brew --prefix)

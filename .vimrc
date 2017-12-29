@@ -142,7 +142,8 @@ let g:LanguageClient_serverCommands = {
       \ 'javascript.jsx': ['javascript-typescript-stdio'],
       \ 'typescript': ['javascript-typescript-stdio'],
       \ 'typescript.tsx': ['javascript-typescript-stdio'],
-      \ 'python': ['pyls']
+      \ 'python': ['pyls'],
+      \ 'elixir': ['elixir-ls']
       \ }
 let g:neosnippet#snippets_directory = "~/dotfiles/snippets"
 let g:neosnippet#scope_aliases = {}
@@ -198,17 +199,21 @@ augroup typescript
   au BufWritePre *.tsx Neoformat
 augroup END
 "==================================ELIXIR=======================================
-Plug 'slashmili/alchemist.vim'
+" Plug 'slashmili/alchemist.vim'
 Plug 'elixir-lang/vim-elixir'
-let g:deoplete#sources.elixir = ['alchemist', 'buffer', 'file', 'tag']
-let g:alchemist#extended_autocomplete = 1
+" let g:deoplete#sources.elixir = ['', 'buffer', 'file', 'tag']
+" let g:alchemist#extended_autocomplete = 1
 augroup elixir
   au!
+  au FileType elixir setlocal omnifunc=LanguageClient#complete
+  au FileType elixir nn <buffer> K :call LanguageClient_textDocument_hover()<cr>
+  au FileType elixir nn <buffer> gd :call LanguageClient_textDocument_definition()<cr>
   au FileType elixir nn <buffer> <localleader>a :A<CR>
-  au FileType elixir nn <buffer> <localleader>d :ExDoc<Space>
-  au FileType elixir nn <buffer> <localleader>f :silent !mix format %<CR>:silent e %<CR>
+  au FileType elixir nn <buffer> <localleader>f :call LanguageClient_textDocument_formatting()<cr>
   au FileType elixir nn <buffer> <localleader>i :IEx<CR>
+  au FileType elixir nn <buffer> <localleader>r :call LanguageClient_textDocument_rename()<cr>
   au FileType elixir nn <buffer> <localleader>t :Mix test<CR>
+  au FileType elixir nn <buffer> <localleader>u :call LanguageClient_textDocument_documentSymbol()<cr>
   au FileType elixir nn <buffer> <localleader>x :Mix<Space>
 
   au FileType eelixir let b:splitjoin_join_callbacks=['sj#html#JoinTags', 'sj#html#JoinAttributes']

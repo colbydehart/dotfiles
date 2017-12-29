@@ -22,7 +22,7 @@ abbr        React Stateless Functional Component
 options     head
   import React from 'react';
 
-  export interface PropTypes {
+  export interface PropsTypes {
     ${1}
   }
 
@@ -30,3 +30,8 @@ options     head
   export const ${3}: React.SFC<PropsType> = (props) => (
     <div>${0}</div>
   );
+
+snippet     i
+abbr        import
+options     head
+  import { ${0} } from '${2}';
