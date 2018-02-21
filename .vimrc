@@ -12,6 +12,7 @@ set shiftwidth=2                   "2 spaces for tab
 set softtabstop=2                  "2 spaces for tab
 set expandtab                      "no tabs
 set nowrap                         "no softwrap
+set noshowmode                     "don't show insert in echo area
 set list                           "show tab characters
 set timeoutlen=1000 ttimeoutlen=-1 "better timeouts"
 set number                         "line numbers
@@ -80,6 +81,7 @@ call plug#begin()
 Plug 'jacoborus/tender.vim'
 Plug 'nightsense/wonka'
 Plug 'joshdick/onedark.vim'
+Plug 'romainl/Apprentice'
 Plug 'luochen1990/rainbow'
 Plug 'Yggdroot/indentLine'
 Plug 'justinmk/vim-sneak'
@@ -153,22 +155,22 @@ let g:gutentags_cache_dir = '~/.tags_cache'
 let g:SuperTabDefaultCompletionType = "<c-n>"
 let g:SuperTabContextDefaultCompletionType = "<c-n>"
 "===================================WEB=========================================
-Plug 'mattn/emmet-vim'
-let g:user_emmet_settings = {'javascript.jsx': {'extends': 'jsx'}}
-let g:user_emmet_settings = {'typescript': {'extends': 'jsx'}}
-let g:user_emmet_settings = {'typescript.tsx': {'extends': 'jsx'}}
-Plug 'elzr/vim-json'
+Plug 'mattn/emmet-vim' "quick HTML expansion
+let g:user_emmet_settings = {}
+let g:user_emmet_settings['javascript'] =  {'extends': 'jsx'}
+let g:user_emmet_settings['javascript.jsx'] =  {'extends': 'jsx'}
+let g:user_emmet_settings['typescript'] =  {'extends': 'jsx'}
+let g:user_emmet_settings['typescript.tsx'] =  {'extends': 'jsx'}
+Plug 'elzr/vim-json' "Better JSON highlighting
 let g:vim_json_syntax_conceal=0
 au! BufWritePre *.css,*.scss,*.sass Neoformat
 "==================================JAVASCRIPT===================================
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 let g:jsx_ext_required = 0  "Always use jsx syntax
-let g:neoformat_javascript_jsprettier = {
- \ 'exe': 'prettier',
- \ 'args': ['--stdin', '--parser', '--single-quote', 'true'],
- \ 'stdin': 1
- \ }
+autocmd FileType javascript setlocal formatprg=prettier\ --stdin\ --parser\ flow\ --single-quote
+" Use formatprg when available
+let g:neoformat_try_formatprg = 1
 augroup javascript
   au!
   au FileType javascript.jsx setlocal omnifunc=LanguageClient#complete
@@ -176,6 +178,8 @@ augroup javascript
   au FileType javascript.jsx nn <buffer> gd :call LanguageClient_textDocument_definition()<cr>
   au FileType javascript.jsx nn <buffer> <localleader>r :call LanguageClient_textDocument_rename()<cr>
   au FileType javascript.jsx nn <buffer> <localleader>u :call LanguageClient_textDocument_documentSymbol()<cr>
+  au BufEnter *.js setlocal omnifunc=LanguageClient#complete
+  au BufEnter *.jsx setlocal omnifunc=LanguageClient#complete
   au BufWritePre *.js Neoformat prettier
   au BufWritePre *.jsx Neoformat prettier
 augroup END
@@ -195,14 +199,16 @@ augroup typescript
   au FileType typescript.tsx nn <buffer> gd :call LanguageClient_textDocument_definition()<cr>
   au FileType typescript.tsx nn <buffer> <localleader>r :call LanguageClient_textDocument_rename()<cr>
   au FileType typescript.tsx nn <buffer> <localleader>u :call LanguageClient_textDocument_documentSymbol()<cr>
+  au FileType typescript setlocal omnifunc=LanguageClient#complete
+  au FileType typescript nn <buffer> K :call LanguageClient_textDocument_hover()<cr>
+  au FileType typescript nn <buffer> gd :call LanguageClient_textDocument_definition()<cr>
+  au FileType typescript nn <buffer> <localleader>r :call LanguageClient_textDocument_rename()<cr>
+  au FileType typescript nn <buffer> <localleader>u :call LanguageClient_textDocument_documentSymbol()<cr>
   au BufWritePre *.ts Neoformat
   au BufWritePre *.tsx Neoformat
 augroup END
 "==================================ELIXIR=======================================
-" Plug 'slashmili/alchemist.vim'
 Plug 'elixir-lang/vim-elixir'
-" let g:deoplete#sources.elixir = ['', 'buffer', 'file', 'tag']
-" let g:alchemist#extended_autocomplete = 1
 augroup elixir
   au!
   au FileType elixir setlocal omnifunc=LanguageClient#complete
@@ -216,8 +222,8 @@ augroup elixir
   au FileType elixir nn <buffer> <localleader>u :call LanguageClient_textDocument_documentSymbol()<cr>
   au FileType elixir nn <buffer> <localleader>x :Mix<Space>
 
-  au FileType eelixir let b:splitjoin_join_callbacks=['sj#html#JoinTags', 'sj#html#JoinAttributes']
-  au FileType eelixir let b:splitjoin_split_callbacks=['sj#html#SplitTags', 'sj#html#SplitAttributes']
+  au BufWritePre *.ex Neoformat
+  au BufWritePre *.exs Neoformat
 augroup END
 "=================================HASKELL=======================================
 Plug 'eagletmt/neco-ghc'
@@ -298,27 +304,41 @@ Plug 'fsharp/vim-fsharp', {
       \ 'do':  'make fsautocomplete',
       \}
 "===================================ETC.========================================
-Plug 'dag/vim-fish'
+Plug 'vimwiki/vimwiki', {'branch': 'dev'}
 Plug 'neo4j-contrib/cypher-vim-syntax'
-Plug 'aquach/vim-http-client'
+Plug 'aquach/vim-http-client' "vim rest client
 Plug 'jparise/vim-graphql'
 Plug 'plasticboy/vim-markdown'
 Plug 'slim-template/vim-slim'
+let g:vimwiki_list = [{
+      \ 'path': '~/Documents/vimwiki/',
+      \ 'syntax': 'markdown',
+      \ 'ext': '.md'
+      \ }]
+let g:vimwiki_folding='list'
 let g:http_client_bind_hotkey=0
 let g:http_client_json_ft='json'
 let g:http_client_json_escape_utf=0
 let g:http_client_result_vsplit=0
 let g:http_client_focus_output_window=0
-
 au! FileType markdown setlocal tw=80
 let g:vim_markdown_conceal = 0
 au! BufRead,BufNewFile *.rest set filetype=rest
 au! FileType rest nn <buffer> <CR> :HTTPClientDoRequest<CR>
+augroup vimwiki
+  au!
+  au FileType vimwiki setlocal foldlevelstart=3
+  au FileType vimwiki nn <buffer> <localleader>d :VimwikiDeleteLink<CR>
+  au FileType vimwiki nn <buffer> <localleader>r :VimwikiRenameLink<CR>
+  au FileType vimwiki nn <buffer> <localleader>ww :VimwikiIndex<CR>
+  au FileType vimwiki nn <buffer> <localleader>wi :VimwikiDiaryIndex<CR>
+  au FileType vimwiki nn <buffer> <localleader>wn :VimwikiMakeDiaryNote<CR>
+augroup END
 "=================================PLUG END======================================
 call plug#end()
 set background=dark
-colo onedark
-let g:airline_theme='onedark'
+colo apprentice
+let g:airline_theme='alduin'
 filetype plugin indent on
 syntax enable
 " for showbreak
@@ -349,7 +369,8 @@ nn <silent> <leader>ln :ALENext<CR>
 nn <silent> <leader>lp :ALEPrevious<CR>
 nn <leader>m :History<CR>
 nn <leader>n :tabe<CR>
-nn <leader>o :!open /Applications/Notes.app<CR>
+nn <leader>oo :VimwikiIndex<CR>
+nn <leader>of :FZF ~/Documents/vimwiki<CR>
 nn <leader>p :cl<CR>
 nn <leader>q :qa!<CR>
 nn <leader>rr :S/
@@ -380,11 +401,11 @@ nn <C-j> <C-W>j
 nn <C-k> <C-W>k
 nn <C-h> <C-W>h
 nn <C-l> <C-W>l
-" Window resize
-nn <Left> :vertical resize +2<CR>
-nn <Right> :vertical resize -2<CR>
-nn <Up> :resize +2<CR>
-nn <Down> :resize -2<CR>
+" Arrows navigate buffers
+nn <Left> :bp<CR>
+nn <Right> :bn<CR>
+nn <Up> :Buffers<CR>
+nn <Down> :Files<CR>
 " fast macros
 nnoremap Q @@
 " (g)oto (d)efinition
@@ -402,7 +423,7 @@ tnoremap <C-k> <C-\><C-n><C-w>k
 tnoremap <C-l> <C-\><C-n><C-w>l
 au TermOpen * setlocal nonumber norelativenumber bufhidden=hide
 " Easy omni complete
-ino <C-SPACE> <C-X><C-O>
+ino <C-Space> <C-x><C-o>
 " Snippet expansion
 imap <silent> <expr> <C-E>
       \ neosnippet#expandable_or_jumpable() ?  "\<Plug>(neosnippet_expand_or_jump)" :
@@ -414,30 +435,3 @@ endif
 " Autoreload .vimrc
 au! bufwritepost .vimrc source %
 au! bufwritepost .lvimrc source %
-
-" Scratch File
-augroup scratch
-  au!
-  au BufEnter .scratch nn <buffer> <localleader>e :sp \| terminal iex %<CR>
-augroup END
-
-
-if !exists("g:colby_loaded") && filereadable("./README.md") && argc() == 0
-  :silent e! ./README.md
-elseif !exists("g:colby_loaded") && argc() == 0
-  :silent e! ~/.scratch
-  :silent 0,$d
-  call append(0, [
-        \ "defmodule Scratch do",
-        \ "  @moduledoc\"\"\"",
-        \ "  This buffer is for text that is not saved and for",
-        \ "  Elixir evaluation. To create a file, visit it with",
-        \ "  :e and enter the text in its buffer",
-        \ "  \"\"\"",
-        \ "end",
-        \ ])
-  :silent set ft=elixir
-  :silent normal zR
-  :silent w
-endif
-let g:colby_loaded=1

@@ -3,12 +3,57 @@ abbr        React Stateless Functional Component
 options     head
   import React from 'react';
 
-  /** ${2} */
-  export const ${3} = (props) => (
+  export type Props = {
+    ${1}
+  }
+
+  export const ${2} = (props: Props) => (
     <div>${0}</div>
   );
+
+snippet     rc
+abbr        React Component
+options     head
+  import React from 'react';
+
+  export type Props = {
+    ${1}
+  }
+  export default class ${2} extends React.Component<Props> {
+
+    render() {
+      return (
+        ${0}
+      );
+    }
+
+  }
 
 snippet     i
 abbr        import
 options     head
   import { ${0} } from '${2}';
+
+
+snippet     fn
+abbr        arrow function
+options     head
+  (${1}) => ${0}
+
+
+snippet     /
+abbr        jsdoc comment
+options     head
+  /** ${0} */
+
+snippet     cl
+abbr        console.log
+options     head
+  console.log(${0})
+
+snippet     test
+abbr        jest test
+options     head
+  test('${1}', () => {
+    ${0}
+  })
