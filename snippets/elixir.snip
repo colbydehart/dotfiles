@@ -56,3 +56,15 @@ options     head
   def init(state) do
     {:ok, state}
   end
+
+
+snippet     age
+abbr        Agent
+options     head
+  use Agent
+
+  @doc false
+  def start_link do
+    Agent.start_link(%{}, name: __MODULE__)
+  end
+

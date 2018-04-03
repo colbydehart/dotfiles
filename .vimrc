@@ -13,14 +13,14 @@ set softtabstop=2                  "2 spaces for tab
 set expandtab                      "no tabs
 set nowrap                         "no softwrap
 set noshowmode                     "don't show insert in echo area
+set foldlevel=10                   "start with a big fold
 set list                           "show tab characters
-set timeoutlen=1000 ttimeoutlen=-1 "better timeouts"
+set timeoutlen=1000 ttimeoutlen=-1 "better timeouts
 set number                         "line numbers
 set relativenumber                 "line numbers
 set mouse=a                        "use the mouse
 set cindent                        "auto indent
 set foldmethod=syntax              "code folding
-set foldlevelstart=10              "don't fold it all
 set textwidth=80                   "format at 80 lines
 set ls=2                           "better status line
 set clipboard=unnamedplus          "use system clipboard
@@ -32,6 +32,7 @@ set nohlsearch                     "no highlight search after
 set ignorecase                     "ignore case when searching
 set smartcase                      "don't ignore when i specify
 set wildignorecase                 "case insensitive file search
+set inccommand=nosplit             "show replaces while typing
 set backup                         "backups
 set noswapfile
 set backupdir=~/.config/nvim/backup
@@ -75,6 +76,13 @@ func! OpenOrCreateTerminal()
     :terminal
   endif
 endfunc
+
+let flowreadable = filereadable('./.flowconfig')
+
+" override $VISUAL to use nvr inside neovim
+if executable('nvr')
+  let $VISUAL="nvr -cc split --remote-wait +'set bufhidden=wipe'"
+endif
 "===================================PLUGINS=====================================
 call plug#begin()
 "====================================COSMETIC===================================
@@ -82,11 +90,13 @@ Plug 'jacoborus/tender.vim'
 Plug 'nightsense/wonka'
 Plug 'joshdick/onedark.vim'
 Plug 'romainl/Apprentice'
+Plug 'morhetz/gruvbox'
 Plug 'luochen1990/rainbow'
 Plug 'Yggdroot/indentLine'
 Plug 'justinmk/vim-sneak'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+let g:gruvbox_contrast_light="soft"
 let g:rainbow_active = 1
 let g:rainbow_conf = {
       \  'guifgs': ['LightCoral', 'turquoise', 'PeachPuff1', 'SkyBlue1', 'OliveDrab2', 'tomato1', 'chartreuse1', 'MediumPurple1']
@@ -116,10 +126,15 @@ Plug 'w0rp/ale'
 Plug 'janko-m/vim-test'
 Plug 'sbdchd/neoformat'
 let g:ale_linters = {
-      \ 'elixir': ['credo'],
+      \ 'elixir': ['mix', 'credo'],
       \ 'haskell': ['stack-ghc-mod', 'hlint'],
-      \ 'elm': ['elm-make']
+      \ 'elm': ['elm-make'],
+      \ 'javascript': ['flow', 'prettier'],
+      \ 'javascript.jsx': ['flow', 'prettier'],
+      \ 'reason': ['merlin'],
+      \ 'ocaml': ['merlin']
       \ }
+let g:ale_linters_explicit = 1
 let g:test#strategy = 'neovim'
 let g:neoformat_only_msg_on_error = 0
 "==================================NAVIGATION===================================
@@ -140,12 +155,13 @@ let g:deoplete#enable_smart_case = 1
 let g:LanguageClient_autoStart = 1
 let g:LanguageClient_serverCommands = {
       \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
-      \ 'javascript': ['javascript-typescript-stdio'],
-      \ 'javascript.jsx': ['javascript-typescript-stdio'],
-      \ 'typescript': ['javascript-typescript-stdio'],
-      \ 'typescript.tsx': ['javascript-typescript-stdio'],
+      \ 'javascript': flowreadable ? ['flow-language-server', '--stdio', '--try-flow-bin'] : ['javascript-typescript-stdio'],
+      \ 'javascript.jsx': flowreadable ? ['flow-language-server', '--stdio', '--try-flow-bin'] : ['javascript-typescript-stdio'],
+      \ 'typescript': flowreadable ? ['flow-language-server', '--stdio', '--try-flow-bin'] : ['javascript-typescript-stdio'],
+      \ 'typescript.tsx': flowreadable ? ['flow-language-server', '--stdio', '--try-flow-bin'] : ['javascript-typescript-stdio'],
       \ 'python': ['pyls'],
-      \ 'elixir': ['elixir-ls']
+      \ 'reason': ['ocaml-language-server', '--stdio'],
+      \ 'ocaml': ['ocaml-language-server', '--stdio']
       \ }
 let g:neosnippet#snippets_directory = "~/dotfiles/snippets"
 let g:neosnippet#scope_aliases = {}
@@ -171,18 +187,8 @@ let g:jsx_ext_required = 0  "Always use jsx syntax
 autocmd FileType javascript setlocal formatprg=prettier\ --stdin\ --parser\ flow\ --single-quote
 " Use formatprg when available
 let g:neoformat_try_formatprg = 1
-augroup javascript
-  au!
-  au FileType javascript.jsx setlocal omnifunc=LanguageClient#complete
-  au FileType javascript.jsx nn <buffer> K :call LanguageClient_textDocument_hover()<cr>
-  au FileType javascript.jsx nn <buffer> gd :call LanguageClient_textDocument_definition()<cr>
-  au FileType javascript.jsx nn <buffer> <localleader>r :call LanguageClient_textDocument_rename()<cr>
-  au FileType javascript.jsx nn <buffer> <localleader>u :call LanguageClient_textDocument_documentSymbol()<cr>
-  au BufEnter *.js setlocal omnifunc=LanguageClient#complete
-  au BufEnter *.jsx setlocal omnifunc=LanguageClient#complete
-  au BufWritePre *.js Neoformat prettier
-  au BufWritePre *.jsx Neoformat prettier
-augroup END
+au! BufWritePre *.js Neoformat silent! prettier
+au! BufWritePre *.jsx Neoformat silent! prettier
 "==================================TYPESCRIPT===================================
 Plug 'leafgarland/typescript-vim', { 'for': [ 'typescript', 'typescript.tsx' ] }
 Plug 'ianks/vim-tsx'
@@ -192,36 +198,16 @@ let g:neoformat_typescript_tsprettier = {
  \ 'stdin': 1
  \ }
 let g:neoformat_enabled_typescript = ['tsprettier']
-augroup typescript
-  au!
-  au FileType typescript.tsx setlocal omnifunc=LanguageClient#complete
-  au FileType typescript.tsx nn <buffer> K :call LanguageClient_textDocument_hover()<cr>
-  au FileType typescript.tsx nn <buffer> gd :call LanguageClient_textDocument_definition()<cr>
-  au FileType typescript.tsx nn <buffer> <localleader>r :call LanguageClient_textDocument_rename()<cr>
-  au FileType typescript.tsx nn <buffer> <localleader>u :call LanguageClient_textDocument_documentSymbol()<cr>
-  au FileType typescript setlocal omnifunc=LanguageClient#complete
-  au FileType typescript nn <buffer> K :call LanguageClient_textDocument_hover()<cr>
-  au FileType typescript nn <buffer> gd :call LanguageClient_textDocument_definition()<cr>
-  au FileType typescript nn <buffer> <localleader>r :call LanguageClient_textDocument_rename()<cr>
-  au FileType typescript nn <buffer> <localleader>u :call LanguageClient_textDocument_documentSymbol()<cr>
-  au BufWritePre *.ts Neoformat
-  au BufWritePre *.tsx Neoformat
-augroup END
+au! BufWritePre *.ts silent! Neoformat
+au! BufWritePre *.tsx silent! Neoformat
 "==================================ELIXIR=======================================
 Plug 'elixir-lang/vim-elixir'
+Plug 'slashmili/alchemist.vim'
 augroup elixir
   au!
-  au FileType elixir setlocal omnifunc=LanguageClient#complete
-  au FileType elixir nn <buffer> K :call LanguageClient_textDocument_hover()<cr>
-  au FileType elixir nn <buffer> gd :call LanguageClient_textDocument_definition()<cr>
-  au FileType elixir nn <buffer> <localleader>a :A<CR>
-  au FileType elixir nn <buffer> <localleader>f :call LanguageClient_textDocument_formatting()<cr>
   au FileType elixir nn <buffer> <localleader>i :IEx<CR>
-  au FileType elixir nn <buffer> <localleader>r :call LanguageClient_textDocument_rename()<cr>
   au FileType elixir nn <buffer> <localleader>t :Mix test<CR>
-  au FileType elixir nn <buffer> <localleader>u :call LanguageClient_textDocument_documentSymbol()<cr>
   au FileType elixir nn <buffer> <localleader>x :Mix<Space>
-
   au BufWritePre *.ex Neoformat
   au BufWritePre *.exs Neoformat
 augroup END
@@ -233,8 +219,11 @@ Plug 'parsonsmatt/intero-neovim'
 let g:haskellmode_completion_ghc = 0
 let g:intero_start_immediately = 1 " Auto start intero for haskell files ?
 let g:intero_use_neomake = 0 " Don't use neomake because ale is doing it.
-autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
-autocmd BufWritePre *.hs Neoformat
+autocmd! FileType haskell setlocal omnifunc=necoghc#omnifunc
+autocmd! BufWritePre *.hs silent! Neoformat
+"===============================OCAML/REASON====================================
+Plug 'reasonml-editor/vim-reason-plus'
+autocmd! BufWritePre *.re silent! Neoformat
 "===================================ELM=========================================
 Plug 'ElmCast/elm-vim', {'for': 'elm'}
 Plug 'pbogut/deoplete-elm', {'for': 'elm'}
@@ -283,10 +272,6 @@ augroup python
   au!
   au FileType python setlocal tabstop=4 shiftwidth=4 softtabstop=4
   au FileType python nn <buffer> <localleader>f :0,$!yapf<CR>
-  au FileType python setlocal omnifunc=LanguageClient#complete
-  au FileType python nn <buffer> K :call LanguageClient_textDocument_hover()<cr>
-  au FileType python nn <buffer> gd :call LanguageClient_textDocument_definition()<cr>
-  au FileType python nn <buffer> <localleader>r :call LanguageClient_textDocument_rename()<cr>
 augroup END
 "===================================VIML========================================
 Plug 'shougo/neco-vim'
@@ -304,41 +289,37 @@ Plug 'fsharp/vim-fsharp', {
       \ 'do':  'make fsautocomplete',
       \}
 "===================================ETC.========================================
-Plug 'vimwiki/vimwiki', {'branch': 'dev'}
 Plug 'neo4j-contrib/cypher-vim-syntax'
 Plug 'aquach/vim-http-client' "vim rest client
 Plug 'jparise/vim-graphql'
 Plug 'plasticboy/vim-markdown'
+Plug 'godlygeek/tabular'
 Plug 'slim-template/vim-slim'
-let g:vimwiki_list = [{
-      \ 'path': '~/Documents/vimwiki/',
-      \ 'syntax': 'markdown',
-      \ 'ext': '.md'
-      \ }]
-let g:vimwiki_folding='list'
+Plug 'sotte/presenting.vim'
+Plug 'tpope/vim-dadbod'
 let g:http_client_bind_hotkey=0
 let g:http_client_json_ft='json'
 let g:http_client_json_escape_utf=0
 let g:http_client_result_vsplit=0
 let g:http_client_focus_output_window=0
-au! FileType markdown setlocal tw=80
+let g:vim_markdown_folding_disabled = 1
 let g:vim_markdown_conceal = 0
+let g:vim_markdown_autowrite = 1
+let g:vim_markdown_new_list_item_indent = 2
+let g:vim_markdown_fenced_languages = ['elixir', 'js=javascript.jsx', 'clojure']
+augroup markdown
+  au!
+  au FileType markdown setlocal tw=80 foldmethod=indent foldlevel=0
+  au FileType markdown nn <buffer> <localleader>u :Toc<CR>
+  au FileType markdown nn <buffer> <CR> :normal ge<CR>
+augroup END
 au! BufRead,BufNewFile *.rest set filetype=rest
 au! FileType rest nn <buffer> <CR> :HTTPClientDoRequest<CR>
-augroup vimwiki
-  au!
-  au FileType vimwiki setlocal foldlevelstart=3
-  au FileType vimwiki nn <buffer> <localleader>d :VimwikiDeleteLink<CR>
-  au FileType vimwiki nn <buffer> <localleader>r :VimwikiRenameLink<CR>
-  au FileType vimwiki nn <buffer> <localleader>ww :VimwikiIndex<CR>
-  au FileType vimwiki nn <buffer> <localleader>wi :VimwikiDiaryIndex<CR>
-  au FileType vimwiki nn <buffer> <localleader>wn :VimwikiMakeDiaryNote<CR>
-augroup END
 "=================================PLUG END======================================
 call plug#end()
 set background=dark
 colo apprentice
-let g:airline_theme='alduin'
+let g:airline_theme='gruvbox'
 filetype plugin indent on
 syntax enable
 " for showbreak
@@ -349,10 +330,21 @@ if executable('ag')
   set grepprg=ag\ --nogroup\ --nocolor\ --ignore-case\ --column
   set grepformat=%f:%l:%c:%m,%f:%l:%m
 endif
+"===================================AUGROUPS===================================
+augroup lsp
+  au!
+  au FileType python,javascript,javascript.jsx,typescript,typescript.tsx,reason,ocaml setlocal omnifunc=LanguageClient#complete
+  au FileType python,javascript,javascript.jsx,typescript,typescript.tsx,reason,ocaml nn <buffer> K :call LanguageClient_textDocument_hover()<cr>
+  au FileType python,javascript,javascript.jsx,typescript,typescript.tsx,reason,ocaml nn <buffer> gd :call LanguageClient_textDocument_definition()<cr>
+  au FileType python,javascript,javascript.jsx,typescript,typescript.tsx,reason,ocaml nn <buffer> <localleader>f :call LanguageClient_textDocument_formatting()<cr>
+  au FileType python,javascript,javascript.jsx,typescript,typescript.tsx,reason,ocaml nn <buffer> <localleader>r :call LanguageClient_textDocument_rename()<cr>
+  au FileType python,javascript,javascript.jsx,typescript,typescript.tsx,reason,ocaml nn <buffer> <localleader>u :call LanguageClient_textDocument_documentSymbol()<cr>
+augroup END
 "===================================KEYBINDINGS=================================
 " Buffer jumper
 nn [b :bp<CR>
 nn ]b :bn<CR>
+nn <BACKSPACE> :bp<CR>
 " Leader mappings
 nn <leader><leader> :b#<CR>
 " nn <leader>a
@@ -364,12 +356,12 @@ nn <leader>g :Magit<CR>
 nn <leader>h :Helptags<CR>
 nn <leader>i :Tags<CR>
 nn <leader>j <C-]>
-nn <leader>k ZZ
+nn <leader>k :q<CR>
 nn <silent> <leader>ln :ALENext<CR>
 nn <silent> <leader>lp :ALEPrevious<CR>
 nn <leader>m :History<CR>
 nn <leader>n :tabe<CR>
-nn <leader>oo :VimwikiIndex<CR>
+nn <leader>oo :e ~/Documents/vimwiki/index.md<CR>
 nn <leader>of :FZF ~/Documents/vimwiki<CR>
 nn <leader>p :cl<CR>
 nn <leader>q :qa!<CR>
@@ -386,7 +378,7 @@ nn <leader>vl :e ./.lvimrc<CR>
 nn <leader>w :w<CR>
 nn <leader>x :
 nn <leader>y :NeoSnippetEdit<CR>
-" nn <leader>z
+nn <leader>z :set foldlevel=1<cr>
 nn <leader><CR> :
 nn <leader>/ :Ag<CR>
 nn <leader>' :Marks<CR>
@@ -402,12 +394,12 @@ nn <C-k> <C-W>k
 nn <C-h> <C-W>h
 nn <C-l> <C-W>l
 " Arrows navigate buffers
-nn <Left> :bp<CR>
-nn <Right> :bn<CR>
-nn <Up> :Buffers<CR>
-nn <Down> :Files<CR>
+nn <Left> :vertical res -5<CR>
+nn <Right> :vertical res +5<CR>
+nn <Up> :res +5<CR>
+nn <Down> :res -5<CR>
 " fast macros
-nnoremap Q @@
+nnoremap Q @q
 " (g)oto (d)efinition
 nn gd <C-]>
 " Tab navigation
@@ -415,6 +407,8 @@ nn H gT
 nn L gt
 " One button cmds
 nn ! :!
+" I never really use command mode
+nn q: :q
 " Terminal stuff
 tnoremap <Esc> <C-\><C-n>
 tnoremap <C-h> <C-\><C-n><C-w>h

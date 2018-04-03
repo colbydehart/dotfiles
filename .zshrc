@@ -2,7 +2,7 @@
 export ZSH=/Users/colbydehart/.oh-my-zsh
 # If you come from bash you might have to change your $PATH.
 # Local executables
-PATH="$PATH:/usr/local/bin"
+PATH="/usr/local/bin:$PATH"
 #NPM executables
 NPM_BIN_PATH=$(npm -g bin)
 [ -d $NPM_BIN_PATH ] && export PATH="$PATH:$NPM_BIN_PATH"
@@ -23,10 +23,21 @@ export ANDROID_HOME="$HOME/Library/Android/sdk"
 [ -d "$HOME/Library/Haskell/bin" ] && export PATH="$HOME/Library/Haskell/bin:$PATH"
 #Go executables
 [ -d "$HOME/go/bin" ] && export PATH="$PATH:$HOME/go/bin"
+#OCAML executables
+. /Users/colbydehart/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
 
 # Homebrew completions
 BREW_COMPLETIONS=$(brew --prefix)
 [ -f $BREW_COMPLETIONS/share/zsh-completions ] && fpath=($BREW_COMPLETIONS/share/zsh-completions $fpath)
+
+# use nvr to prevent neovim nesting
+if [ -n "$NVIM_LISTEN_ADDRESS" ]; then
+  if [ -x "$(command -v nvr)" ]; then
+    alias nvim=nvr
+  else
+    alias nvim=$(echo "No nesting!")
+  fi
+fi
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.

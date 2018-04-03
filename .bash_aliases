@@ -7,7 +7,7 @@ alias ......=' cd ../../../../..'
 # git stuff
 alias gs='git status'
 alias gl='git log --oneline --graph --decorate $argv'
-alias gri='git rebase -i source/development'
+alias gri='git rebase -i'
 alias grs='git rebase source/development'
 alias ga='git add -p'
 alias gc='git commit -m'
