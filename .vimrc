@@ -59,15 +59,6 @@ set wildignore+=.git
 set wildignore+=.venv
 set wildignore+=*/dist
 "===================================FUNCTIONS===================================
-func! StripTrailingWhitespace()
-  let l = line('.')
-  let c = col('.')
-  %s/\s\+$//e
-  call cursor(l, c)
-endfunc
-"Clear trailing whitespace
-au! BufWritePre * silent call StripTrailingWhitespace()
-
 func! OpenOrCreateTerminal()
   let term = bufname('term://')
   if bufexists(term)
@@ -104,19 +95,21 @@ let g:rainbow_conf = {
 let g:airline#extensions#ale#enabled = 1
 let g:airline_powerline_fonts = 0
 "====================================UTILITY====================================
-Plug 'tpope/vim-vinegar'
 Plug 'jiangmiao/auto-pairs'
 Plug 'powerman/vim-plugin-AnsiEsc'
 Plug 'AndrewRadev/splitjoin.vim'
-Plug 'tpope/vim-abolish'
 Plug 'jreybert/vimagit'
+Plug 'christoomey/vim-tmux-navigator'
+" tpope shrine.
+Plug 'tpope/vim-abolish'
+Plug 'tpope/vim-dadbod'
+Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-speeddating'
-Plug 'christoomey/vim-tmux-navigator'
 augroup magit
   au!
   au FileType magit nn <buffer> <TAB> za
@@ -126,17 +119,26 @@ Plug 'w0rp/ale'
 Plug 'janko-m/vim-test'
 Plug 'sbdchd/neoformat'
 let g:ale_linters = {
-      \ 'elixir': ['mix', 'credo'],
+      \ 'elixir': ['mix', 'credo', 'dialyxir'],
       \ 'haskell': ['stack-ghc-mod', 'hlint'],
+      \ 'typescript': ['tsserver', 'tslint'],
+      \ 'typescript.tsx': ['tsserver', 'tslint'],
       \ 'elm': ['elm-make'],
-      \ 'javascript': ['flow', 'prettier'],
-      \ 'javascript.jsx': ['flow', 'prettier'],
       \ 'reason': ['merlin'],
       \ 'ocaml': ['merlin']
       \ }
 let g:ale_linters_explicit = 1
 let g:test#strategy = 'neovim'
 let g:neoformat_only_msg_on_error = 0
+let g:neoformat_basic_format_trim = 1
+let g:neoformat_try_formatprg = 1
+let g:neoformat_typescript_tsprettier = {
+ \ 'exe': 'prettier',
+ \ 'args': ['--stdin', '--parser', 'typescript', '--single-quote', 'true'],
+ \ 'stdin': 1
+ \ }
+let g:neoformat_enabled_typescript = ['tsprettier']
+au! BufWritePre * Neoformat
 "==================================NAVIGATION===================================
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
@@ -157,8 +159,8 @@ let g:LanguageClient_serverCommands = {
       \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
       \ 'javascript': flowreadable ? ['flow-language-server', '--stdio', '--try-flow-bin'] : ['javascript-typescript-stdio'],
       \ 'javascript.jsx': flowreadable ? ['flow-language-server', '--stdio', '--try-flow-bin'] : ['javascript-typescript-stdio'],
-      \ 'typescript': flowreadable ? ['flow-language-server', '--stdio', '--try-flow-bin'] : ['javascript-typescript-stdio'],
-      \ 'typescript.tsx': flowreadable ? ['flow-language-server', '--stdio', '--try-flow-bin'] : ['javascript-typescript-stdio'],
+      \ 'typescript': ['javascript-typescript-stdio'],
+      \ 'typescript.tsx': ['javascript-typescript-stdio'],
       \ 'python': ['pyls'],
       \ 'reason': ['ocaml-language-server', '--stdio'],
       \ 'ocaml': ['ocaml-language-server', '--stdio']
@@ -179,27 +181,17 @@ let g:user_emmet_settings['typescript'] =  {'extends': 'jsx'}
 let g:user_emmet_settings['typescript.tsx'] =  {'extends': 'jsx'}
 Plug 'elzr/vim-json' "Better JSON highlighting
 let g:vim_json_syntax_conceal=0
-au! BufWritePre *.css,*.scss,*.sass Neoformat
 "==================================JAVASCRIPT===================================
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 let g:jsx_ext_required = 0  "Always use jsx syntax
 autocmd FileType javascript setlocal formatprg=prettier\ --stdin\ --parser\ flow\ --single-quote
-" Use formatprg when available
-let g:neoformat_try_formatprg = 1
-au! BufWritePre *.js Neoformat silent! prettier
-au! BufWritePre *.jsx Neoformat silent! prettier
 "==================================TYPESCRIPT===================================
 Plug 'leafgarland/typescript-vim', { 'for': [ 'typescript', 'typescript.tsx' ] }
-Plug 'ianks/vim-tsx'
-let g:neoformat_typescript_tsprettier = {
- \ 'exe': 'prettier',
- \ 'args': ['--stdin', '--parser', 'typescript', '--single-quote', 'true'],
- \ 'stdin': 1
- \ }
-let g:neoformat_enabled_typescript = ['tsprettier']
-au! BufWritePre *.ts silent! Neoformat
-au! BufWritePre *.tsx silent! Neoformat
+Plug 'HerringtonDarkholme/yats.vim', {'for': ['typescript', 'typescript.tsx']}
+Plug 'ianks/vim-tsx', {'for': ['typescript', 'typescript.tsx']}
+autocmd FileType typescript setlocal formatprg=prettier\ --stdin\ --parser\ typescript\ --single-quote
+autocmd FileType typescript.tsx setlocal formatprg=prettier\ --stdin\ --parser\ typescript\ --single-quote
 "==================================ELIXIR=======================================
 Plug 'elixir-lang/vim-elixir'
 Plug 'slashmili/alchemist.vim'
@@ -208,8 +200,6 @@ augroup elixir
   au FileType elixir nn <buffer> <localleader>i :IEx<CR>
   au FileType elixir nn <buffer> <localleader>t :Mix test<CR>
   au FileType elixir nn <buffer> <localleader>x :Mix<Space>
-  au BufWritePre *.ex Neoformat
-  au BufWritePre *.exs Neoformat
 augroup END
 "=================================HASKELL=======================================
 Plug 'eagletmt/neco-ghc'
@@ -220,10 +210,8 @@ let g:haskellmode_completion_ghc = 0
 let g:intero_start_immediately = 1 " Auto start intero for haskell files ?
 let g:intero_use_neomake = 0 " Don't use neomake because ale is doing it.
 autocmd! FileType haskell setlocal omnifunc=necoghc#omnifunc
-autocmd! BufWritePre *.hs silent! Neoformat
 "===============================OCAML/REASON====================================
 Plug 'reasonml-editor/vim-reason-plus'
-autocmd! BufWritePre *.re silent! Neoformat
 "===================================ELM=========================================
 Plug 'ElmCast/elm-vim', {'for': 'elm'}
 Plug 'pbogut/deoplete-elm', {'for': 'elm'}
@@ -261,10 +249,6 @@ augroup END
 "===================================RUST========================================
 Plug 'sebastianmarkow/deoplete-rust', {'for': 'rust'}
 Plug 'rust-lang/rust.vim', {'for': 'rust'}
-augroup rust
-  au!
-  au BufWritePre *.rs Neoformat
-augroup END
 "===================================RUBY========================================
 Plug 'vim-ruby/vim-ruby', {'for': 'ruby'}
 "==================================PYTHON=======================================
@@ -296,7 +280,6 @@ Plug 'plasticboy/vim-markdown'
 Plug 'godlygeek/tabular'
 Plug 'slim-template/vim-slim'
 Plug 'sotte/presenting.vim'
-Plug 'tpope/vim-dadbod'
 let g:http_client_bind_hotkey=0
 let g:http_client_json_ft='json'
 let g:http_client_json_escape_utf=0
@@ -333,12 +316,12 @@ endif
 "===================================AUGROUPS===================================
 augroup lsp
   au!
-  au FileType python,javascript,javascript.jsx,typescript,typescript.tsx,reason,ocaml setlocal omnifunc=LanguageClient#complete
-  au FileType python,javascript,javascript.jsx,typescript,typescript.tsx,reason,ocaml nn <buffer> K :call LanguageClient_textDocument_hover()<cr>
-  au FileType python,javascript,javascript.jsx,typescript,typescript.tsx,reason,ocaml nn <buffer> gd :call LanguageClient_textDocument_definition()<cr>
-  au FileType python,javascript,javascript.jsx,typescript,typescript.tsx,reason,ocaml nn <buffer> <localleader>f :call LanguageClient_textDocument_formatting()<cr>
-  au FileType python,javascript,javascript.jsx,typescript,typescript.tsx,reason,ocaml nn <buffer> <localleader>r :call LanguageClient_textDocument_rename()<cr>
-  au FileType python,javascript,javascript.jsx,typescript,typescript.tsx,reason,ocaml nn <buffer> <localleader>u :call LanguageClient_textDocument_documentSymbol()<cr>
+  au FileType python,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx setlocal omnifunc=LanguageClient#complete
+  au FileType python,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx nn <buffer> K :call LanguageClient_textDocument_hover()<cr>
+  au FileType python,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx nn <buffer> gd :call LanguageClient_textDocument_definition()<cr>
+  au FileType python,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx nn <buffer> <localleader>f :call LanguageClient_textDocument_formatting()<cr>
+  au FileType python,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx nn <buffer> <localleader>r :call LanguageClient_textDocument_rename()<cr>
+  au FileType python,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx nn <buffer> <localleader>u :call LanguageClient_textDocument_documentSymbol()<cr>
 augroup END
 "===================================KEYBINDINGS=================================
 " Buffer jumper
@@ -357,6 +340,7 @@ nn <leader>h :Helptags<CR>
 nn <leader>i :Tags<CR>
 nn <leader>j <C-]>
 nn <leader>k :q<CR>
+nn <silent> <leader>ld :ALEDetail<CR>
 nn <silent> <leader>ln :ALENext<CR>
 nn <silent> <leader>lp :ALEPrevious<CR>
 nn <leader>m :History<CR>
