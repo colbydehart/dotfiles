@@ -8,7 +8,8 @@ alias ......=' cd ../../../../..'
 alias gs='git status'
 alias gl='git log --oneline --graph --decorate $argv'
 alias gri='git rebase -i'
-alias grs='git rebase source/development'
+alias grs='git rebase source/master'
+alias grsd='git rebase source/development'
 alias ga='git add -p'
 alias gc='git commit -m'
 alias gca='git commit --amend --no-edit'
@@ -40,8 +41,6 @@ alias dc="docker-compose"
 alias rn="react-native"
 # newsbeueter
 alias nb="newsbeuter"
-# kill every tmux alive
-alias kill-tmux="pkill -f tmux"
 # tmux in color mode with unicode
 alias tmux="tmux -u2"
 # arduino CLI tool

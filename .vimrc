@@ -43,9 +43,10 @@ let g:netrw_liststyle = 0          "Tree style netrw
 let g:netrw_browse_split = 4       "open netrw files in other window
 let g:netrw_winsize = 25           "25 column width for netrw
 let g:netrw_altv = 1               "Vertical split on right side
-let g:netrw_localrmdir='rm -rf'     "Remove nonempty directories
-:let mapleader = ' '               "leader is space
-:let maplocalleader = ','          "localleader is comma
+let g:netrw_localrmdir='rm -rf'    "Remove nonempty directories
+let mapleader = ' '                "leader is space
+let maplocalleader = ','           "localleader is comma
+let g:netrw_browsex_viewer="open"  "open stuff with open
 au! QuickFixCmdPost [^l]* cwindow  "open quickfix after search
 au! QuickFixCmdPost l* lwindow     "open quickfix after search
 au! InsertLeave * pc               "close preview on insert leave
@@ -100,7 +101,9 @@ Plug 'powerman/vim-plugin-AnsiEsc'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'jreybert/vimagit'
 Plug 'christoomey/vim-tmux-navigator'
+Plug 'tyru/open-browser.vim'
 " tpope shrine.
+Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-dadbod'
 Plug 'tpope/vim-vinegar'
@@ -110,6 +113,10 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-speeddating'
+" Disable netrw gx mapping.
+let g:netrw_nogx = get(g:, 'netrw_nogx', 1)
+nmap gx <Plug>(openbrowser-open)
+vmap gx <Plug>(openbrowser-open)
 augroup magit
   au!
   au FileType magit nn <buffer> <TAB> za
@@ -322,6 +329,7 @@ augroup lsp
   au FileType python,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx nn <buffer> <localleader>f :call LanguageClient_textDocument_formatting()<cr>
   au FileType python,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx nn <buffer> <localleader>r :call LanguageClient_textDocument_rename()<cr>
   au FileType python,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx nn <buffer> <localleader>u :call LanguageClient_textDocument_documentSymbol()<cr>
+  au FileType python,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx nn <buffer> <localleader>x :LanguageClientStop<cr>:LanguageClientStart<cr>
 augroup END
 "===================================KEYBINDINGS=================================
 " Buffer jumper
@@ -347,7 +355,7 @@ nn <leader>m :History<CR>
 nn <leader>n :tabe<CR>
 nn <leader>oo :e ~/Documents/vimwiki/index.md<CR>
 nn <leader>of :FZF ~/Documents/vimwiki<CR>
-nn <leader>p :cl<CR>
+nn <leader>p :cw<CR>
 nn <leader>q :qa!<CR>
 nn <leader>rr :S/
 nn <leader>ra :%S/
