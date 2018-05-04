@@ -147,12 +147,9 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 "==================================AUTOCOMPLETION===============================
 Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
-Plug 'Shougo/vimproc.vim', {'do': 'make'}
 Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
-" Plug 'Shougo/echodoc.vim'
 Plug 'shougo/neosnippet.vim'
 Plug 'shougo/neosnippet-snippets'
-Plug 'ludovicchabant/vim-gutentags'
 Plug 'ervandew/supertab'
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#file#enable_buffer_path = 1
@@ -172,7 +169,6 @@ let g:neosnippet#snippets_directory = "~/dotfiles/snippets"
 let g:neosnippet#scope_aliases = {}
 let g:deoplete#keyword_patterns = {}
 let g:deoplete#sources = {}
-let g:gutentags_cache_dir = '~/.tags_cache'
 let g:SuperTabDefaultCompletionType = "<c-x><c-o>"
 "===================================WEB=========================================
 Plug 'mattn/emmet-vim' "quick HTML expansion
