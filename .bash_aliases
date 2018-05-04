@@ -7,6 +7,7 @@ alias ......=' cd ../../../../..'
 # git stuff
 alias gs='git status'
 alias gl='git log --oneline --graph --decorate $argv'
+alias grc='git rebase --continue'
 alias gri='git rebase -i'
 alias grs='git rebase source/master'
 alias grsd='git rebase source/development'
@@ -16,6 +17,8 @@ alias gca='git commit --amend --no-edit'
 alias gco='git checkout -b $argv'
 alias gf='git fetch --all --prune'
 alias gpf='git push --force-with-lease'
+alias gpr='hub pull-request -h master -b NavitasLease:master'
+alias gps='git pull source master'
 # git submodule stuff
 alias gsuu='git submodule update --remote --rebase'
 alias gsup='git push --recurse-submodules=on-demand'
@@ -45,7 +48,7 @@ alias nb="newsbeuter"
 alias tmux="tmux -u2"
 # arduino CLI tool
 alias arduino='/Applications/Arduino.app/Contents/MacOS/Arduino'
-# go to work
+# do work
 alias dw="cd ~/dev/work"
 # mix testing
 alias mixtest="mix-test-watch"

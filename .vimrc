@@ -78,11 +78,7 @@ endif
 "===================================PLUGINS=====================================
 call plug#begin()
 "====================================COSMETIC===================================
-Plug 'jacoborus/tender.vim'
-Plug 'nightsense/wonka'
-Plug 'joshdick/onedark.vim'
-Plug 'romainl/Apprentice'
-Plug 'morhetz/gruvbox'
+Plug 'reedes/vim-colors-pencil'
 Plug 'luochen1990/rainbow'
 Plug 'Yggdroot/indentLine'
 Plug 'justinmk/vim-sneak'
@@ -90,9 +86,9 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 let g:gruvbox_contrast_light="soft"
 let g:rainbow_active = 1
-let g:rainbow_conf = {
-      \  'guifgs': ['LightCoral', 'turquoise', 'PeachPuff1', 'SkyBlue1', 'OliveDrab2', 'tomato1', 'chartreuse1', 'MediumPurple1']
-      \ }
+" let g:rainbow_conf = {
+"       \  'guifgs': ['LightCoral', 'turquoise', 'PeachPuff1', 'SkyBlue1', 'OliveDrab2', 'tomato1', 'chartreuse1', 'MediumPurple1']
+"       \ }
 let g:airline#extensions#ale#enabled = 1
 let g:airline_powerline_fonts = 0
 "====================================UTILITY====================================
@@ -153,7 +149,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
 Plug 'Shougo/vimproc.vim', {'do': 'make'}
 Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
-Plug 'Shougo/echodoc.vim'
+" Plug 'Shougo/echodoc.vim'
 Plug 'shougo/neosnippet.vim'
 Plug 'shougo/neosnippet-snippets'
 Plug 'ludovicchabant/vim-gutentags'
@@ -164,10 +160,10 @@ let g:deoplete#enable_smart_case = 1
 let g:LanguageClient_autoStart = 1
 let g:LanguageClient_serverCommands = {
       \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
-      \ 'javascript': flowreadable ? ['flow-language-server', '--stdio', '--try-flow-bin'] : ['javascript-typescript-stdio'],
-      \ 'javascript.jsx': flowreadable ? ['flow-language-server', '--stdio', '--try-flow-bin'] : ['javascript-typescript-stdio'],
-      \ 'typescript': ['javascript-typescript-stdio'],
-      \ 'typescript.tsx': ['javascript-typescript-stdio'],
+      \ 'javascript': flowreadable ? ['flow-language-server', '--stdio', '--try-flow-bin'] : ['typescript-language-server', '--stdio'],
+      \ 'javascript.jsx': flowreadable ? ['flow-language-server', '--stdio', '--try-flow-bin'] : ['typescript-language-server', '--stdio'],
+      \ 'typescript': ['typescript-language-server', '--stdio'],
+      \ 'typescript.tsx': ['typescript-language-server', '--stdio'],
       \ 'python': ['pyls'],
       \ 'reason': ['ocaml-language-server', '--stdio'],
       \ 'ocaml': ['ocaml-language-server', '--stdio']
@@ -177,8 +173,7 @@ let g:neosnippet#scope_aliases = {}
 let g:deoplete#keyword_patterns = {}
 let g:deoplete#sources = {}
 let g:gutentags_cache_dir = '~/.tags_cache'
-let g:SuperTabDefaultCompletionType = "<c-n>"
-let g:SuperTabContextDefaultCompletionType = "<c-n>"
+let g:SuperTabDefaultCompletionType = "<c-x><c-o>"
 "===================================WEB=========================================
 Plug 'mattn/emmet-vim' "quick HTML expansion
 let g:user_emmet_settings = {}
@@ -307,9 +302,10 @@ au! BufRead,BufNewFile *.rest set filetype=rest
 au! FileType rest nn <buffer> <CR> :HTTPClientDoRequest<CR>
 "=================================PLUG END======================================
 call plug#end()
-set background=dark
-colo apprentice
-let g:airline_theme='gruvbox'
+set background=light
+colo pencil
+let g:pencil_higher_contrast_ui = 0
+let g:airline_theme='pencil'
 filetype plugin indent on
 syntax enable
 " for showbreak
@@ -338,7 +334,7 @@ nn ]b :bn<CR>
 nn <BACKSPACE> :bp<CR>
 " Leader mappings
 nn <leader><leader> :b#<CR>
-" nn <leader>a
+nn <leader>a :Lines<CR>
 nn <leader>b :Buffers<CR>
 nn <leader>d :Vexplore! .<CR>
 nn <leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
