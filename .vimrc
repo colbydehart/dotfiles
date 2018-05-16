@@ -39,6 +39,7 @@ set backupdir=~/.config/nvim/backup
 set diffopt=vertical               "vertical diff splits
 set updatetime=2000                "a bit faster updatetime
 set shortmess+=c                   "make that mess shorter?
+set autoread                       "reload files!
 let g:netrw_liststyle = 0          "Tree style netrw
 let g:netrw_browse_split = 4       "open netrw files in other window
 let g:netrw_winsize = 25           "25 column width for netrw
@@ -120,7 +121,6 @@ augroup END
 "====================================BUILD/TEST=================================
 Plug 'w0rp/ale'
 Plug 'janko-m/vim-test'
-Plug 'sbdchd/neoformat'
 let g:ale_linters = {
       \ 'elixir': ['mix', 'credo', 'dialyxir'],
       \ 'haskell': ['stack-ghc-mod', 'hlint'],
@@ -130,18 +130,16 @@ let g:ale_linters = {
       \ 'reason': ['merlin'],
       \ 'ocaml': ['merlin']
       \ }
+let g:ale_fixers = {
+      \ 'javascript': ['prettier'],
+      \ 'javascript.jsx': ['prettier'],
+      \ 'typescript': ['prettier'],
+      \ 'typescript.tsx': ['prettier'],
+      \ 'elixir': ['mix_format']
+      \ }
+let g:ale_fix_on_save=1
 let g:ale_linters_explicit = 1
 let g:test#strategy = 'neovim'
-let g:neoformat_only_msg_on_error = 0
-let g:neoformat_basic_format_trim = 1
-let g:neoformat_try_formatprg = 1
-let g:neoformat_typescript_tsprettier = {
- \ 'exe': 'prettier',
- \ 'args': ['--stdin', '--parser', 'typescript', '--single-quote', 'true'],
- \ 'stdin': 1
- \ }
-let g:neoformat_enabled_typescript = ['tsprettier']
-au! BufWritePre * Neoformat
 "==================================NAVIGATION===================================
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
@@ -151,9 +149,6 @@ Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
 Plug 'shougo/neosnippet.vim'
 Plug 'shougo/neosnippet-snippets'
 Plug 'ervandew/supertab'
-let g:deoplete#enable_at_startup = 1
-let g:deoplete#file#enable_buffer_path = 1
-let g:deoplete#enable_smart_case = 1
 let g:LanguageClient_autoStart = 1
 let g:LanguageClient_serverCommands = {
       \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
@@ -163,10 +158,13 @@ let g:LanguageClient_serverCommands = {
       \ 'typescript.tsx': ['typescript-language-server', '--stdio'],
       \ 'python': ['pyls'],
       \ 'reason': ['ocaml-language-server', '--stdio'],
-      \ 'ocaml': ['ocaml-language-server', '--stdio']
+      \ 'ocaml': ['ocaml-language-server', '--stdio'],
       \ }
 let g:neosnippet#snippets_directory = "~/dotfiles/snippets"
 let g:neosnippet#scope_aliases = {}
+let g:deoplete#enable_at_startup = 1
+let g:deoplete#file#enable_buffer_path = 1
+let g:deoplete#enable_smart_case = 1
 let g:deoplete#keyword_patterns = {}
 let g:deoplete#sources = {}
 let g:SuperTabDefaultCompletionType = "<c-x><c-o>"
@@ -183,13 +181,10 @@ let g:vim_json_syntax_conceal=0
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 let g:jsx_ext_required = 0  "Always use jsx syntax
-autocmd FileType javascript setlocal formatprg=prettier\ --stdin\ --parser\ flow\ --single-quote
 "==================================TYPESCRIPT===================================
 Plug 'leafgarland/typescript-vim', { 'for': [ 'typescript', 'typescript.tsx' ] }
 Plug 'HerringtonDarkholme/yats.vim', {'for': ['typescript', 'typescript.tsx']}
 Plug 'ianks/vim-tsx', {'for': ['typescript', 'typescript.tsx']}
-autocmd FileType typescript setlocal formatprg=prettier\ --stdin\ --parser\ typescript\ --single-quote
-autocmd FileType typescript.tsx setlocal formatprg=prettier\ --stdin\ --parser\ typescript\ --single-quote
 "==================================ELIXIR=======================================
 Plug 'elixir-lang/vim-elixir'
 Plug 'slashmili/alchemist.vim'
@@ -274,7 +269,6 @@ Plug 'fsharp/vim-fsharp', {
 Plug 'neo4j-contrib/cypher-vim-syntax'
 Plug 'aquach/vim-http-client' "vim rest client
 Plug 'jparise/vim-graphql'
-Plug 'plasticboy/vim-markdown'
 Plug 'godlygeek/tabular'
 Plug 'slim-template/vim-slim'
 Plug 'sotte/presenting.vim'
@@ -283,17 +277,7 @@ let g:http_client_json_ft='json'
 let g:http_client_json_escape_utf=0
 let g:http_client_result_vsplit=0
 let g:http_client_focus_output_window=0
-let g:vim_markdown_folding_disabled = 1
-let g:vim_markdown_conceal = 0
-let g:vim_markdown_autowrite = 1
-let g:vim_markdown_new_list_item_indent = 2
-let g:vim_markdown_fenced_languages = ['elixir', 'js=javascript.jsx', 'clojure']
-augroup markdown
-  au!
-  au FileType markdown setlocal tw=80 foldmethod=indent foldlevel=0
-  au FileType markdown nn <buffer> <localleader>u :Toc<CR>
-  au FileType markdown nn <buffer> <CR> :normal ge<CR>
-augroup END
+au! FileType markdown setlocal tw=80 foldmethod=indent foldlevel=0
 au! BufRead,BufNewFile *.rest set filetype=rest
 au! FileType rest nn <buffer> <CR> :HTTPClientDoRequest<CR>
 "=================================PLUG END======================================
@@ -360,7 +344,7 @@ nn <leader>u :BTags<CR>
 nn <leader>vv :e ~/dotfiles/.vimrc<CR>
 nn <leader>vl :e ./.lvimrc<CR>
 nn <leader>w :w<CR>
-nn <leader>x :
+nn <leader>x mzgggqG`z
 nn <leader>y :NeoSnippetEdit<CR>
 nn <leader>z :set foldlevel=1<cr>
 nn <leader><CR> :
@@ -384,6 +368,9 @@ nn <Up> :res +5<CR>
 nn <Down> :res -5<CR>
 " fast macros
 nnoremap Q @q
+" very magic search
+nn / /\v
+nn ? ?\v
 " (g)oto (d)efinition
 nn gd <C-]>
 " Tab navigation

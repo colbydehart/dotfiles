@@ -1,9 +1,3 @@
-snippet     d
-abbr        documentation
-options     head
-  /** ${0} */
-
-
 snippet     re
 abbr        React Element
 options     head
@@ -37,7 +31,25 @@ options     head
   import { ${0} } from '${2}';
 
 
-snippet     /*
+snippet     /
 abbr        Docstring
-options     head
+options     word
   /** ${0} */
+
+
+snippet     ac
+abbr        action creator
+options     head
+  export const ${1} = (${2}): ${3} => ({
+    type: ${4},
+    ${0}
+  })
+
+
+snippet     at
+abbr        action type
+options     head
+  export type ${1} = {
+    type: ${2},
+    ${0}
+  }
