@@ -43,7 +43,7 @@ alias dc="docker-compose"
 # react native
 alias rn="react-native"
 # newsbeueter
-alias nb="newsbeuter"
+alias nb="newsboat"
 # tmux in color mode with unicode
 alias tmux="tmux -u2"
 # arduino CLI tool
@@ -51,7 +51,9 @@ alias arduino='/Applications/Arduino.app/Contents/MacOS/Arduino'
 # do work
 alias dw="cd ~/dev/work"
 # mix testing
-alias mixtest="mix-test-watch"
+alias mixtest="mix test --stale --listen-on-stdin"
+# open phoenix server
+alias imps="iex -S mix phx.server"
 # Open localhost
 olh () {
     open http://localhost:$1;

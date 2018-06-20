@@ -69,6 +69,7 @@ elm-stuff
 _build
 deps
 _build
+.elixir_ls
 
 # ClojureScript
 .cljs_rhino_repl

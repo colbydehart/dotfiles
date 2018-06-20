@@ -60,6 +60,7 @@ set wildignore+=*/bower_components/*
 set wildignore+=.git
 set wildignore+=.venv
 set wildignore+=*/dist
+
 "===================================FUNCTIONS===================================
 func! OpenOrCreateTerminal()
   let term = bufname('term://')
@@ -76,6 +77,12 @@ let flowreadable = filereadable('./.flowconfig')
 if executable('nvr')
   let $VISUAL="nvr -cc split --remote-wait +'set bufhidden=wipe'"
 endif
+
+"===================================ONI===================================
+if exists("g:gui_oni")
+  source "~/.onirc"
+  finish
+endif
 "===================================PLUGINS=====================================
 call plug#begin()
 "====================================COSMETIC===================================
@@ -87,9 +94,6 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 let g:gruvbox_contrast_light="soft"
 let g:rainbow_active = 1
-" let g:rainbow_conf = {
-"       \  'guifgs': ['LightCoral', 'turquoise', 'PeachPuff1', 'SkyBlue1', 'OliveDrab2', 'tomato1', 'chartreuse1', 'MediumPurple1']
-"       \ }
 let g:airline#extensions#ale#enabled = 1
 let g:airline_powerline_fonts = 0
 "====================================UTILITY====================================
@@ -107,6 +111,7 @@ Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-speeddating'
@@ -122,7 +127,7 @@ augroup END
 Plug 'w0rp/ale'
 Plug 'janko-m/vim-test'
 let g:ale_linters = {
-      \ 'elixir': ['mix', 'credo', 'dialyxir'],
+      \ 'elixir': ['credo', 'dialyxir'],
       \ 'haskell': ['stack-ghc-mod', 'hlint'],
       \ 'typescript': ['tsserver', 'tslint'],
       \ 'typescript.tsx': ['tsserver', 'tslint'],
@@ -135,7 +140,11 @@ let g:ale_fixers = {
       \ 'javascript.jsx': ['prettier'],
       \ 'typescript': ['prettier'],
       \ 'typescript.tsx': ['prettier'],
-      \ 'elixir': ['mix_format']
+      \ 'elixir': ['mix_format', 'trim_whitespace'],
+      \ 'reason': ['refmt'],
+      \ 'ocaml': ['refmt'],
+      \ 'python': ['yapf'],
+      \ 'elm': ['elm-format']
       \ }
 let g:ale_fix_on_save=1
 let g:ale_linters_explicit = 1
@@ -150,8 +159,9 @@ Plug 'shougo/neosnippet.vim'
 Plug 'shougo/neosnippet-snippets'
 Plug 'ervandew/supertab'
 let g:LanguageClient_autoStart = 1
+let g:LanguageClient_rootMarkers = {'elixir': ['mix.exs']}
 let g:LanguageClient_serverCommands = {
-      \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
+      \ 'rust': ['rustup', 'run', 'stable', 'rls'],
       \ 'javascript': flowreadable ? ['flow-language-server', '--stdio', '--try-flow-bin'] : ['typescript-language-server', '--stdio'],
       \ 'javascript.jsx': flowreadable ? ['flow-language-server', '--stdio', '--try-flow-bin'] : ['typescript-language-server', '--stdio'],
       \ 'typescript': ['typescript-language-server', '--stdio'],
@@ -159,6 +169,7 @@ let g:LanguageClient_serverCommands = {
       \ 'python': ['pyls'],
       \ 'reason': ['ocaml-language-server', '--stdio'],
       \ 'ocaml': ['ocaml-language-server', '--stdio'],
+      \ 'elixir': ['elixir-ls'],
       \ }
 let g:neosnippet#snippets_directory = "~/dotfiles/snippets"
 let g:neosnippet#scope_aliases = {}
@@ -240,7 +251,6 @@ augroup clojure
   au FileType clojure nn <buffer> <localleader>f :Cljfmt<CR>
 augroup END
 "===================================RUST========================================
-Plug 'sebastianmarkow/deoplete-rust', {'for': 'rust'}
 Plug 'rust-lang/rust.vim', {'for': 'rust'}
 "===================================RUBY========================================
 Plug 'vim-ruby/vim-ruby', {'for': 'ruby'}
@@ -248,17 +258,18 @@ Plug 'vim-ruby/vim-ruby', {'for': 'ruby'}
 augroup python
   au!
   au FileType python setlocal tabstop=4 shiftwidth=4 softtabstop=4
-  au FileType python nn <buffer> <localleader>f :0,$!yapf<CR>
 augroup END
 "===================================VIML========================================
 Plug 'shougo/neco-vim'
 Plug 'thinca/vim-themis'
+Plug 'junegunn/vader.vim'
 augroup vim
   au!
-  au FileType vim setlocal foldmethod=indent
-  au FileType vim setlocal keywordprg=:help
-  au FileType vim vn <buffer> <localleader>e :<C-u>echo eval(getline(".")[col("'<")-1:col("'>")])<CR>
-  au FileType vim nn <buffer> <localleader>e :echo eval(getline("."))<CR>
+  au FileType vim,vader setlocal foldmethod=indent
+  au FileType vim,vader setlocal keywordprg=:help
+  au FileType vim,vader vn <buffer> <localleader>e :<C-u>echo eval(getline('.'))<CR>
+  au FileType vim,vader nn <buffer> <localleader>e :echo eval(getline('.'))<CR>
+  au FileType vader-result set wrap
 augroup END
 "===================================FSHARP======================================
 Plug 'fsharp/vim-fsharp', {
@@ -268,16 +279,20 @@ Plug 'fsharp/vim-fsharp', {
 "===================================ETC.========================================
 Plug 'neo4j-contrib/cypher-vim-syntax'
 Plug 'aquach/vim-http-client' "vim rest client
-Plug 'jparise/vim-graphql'
-Plug 'godlygeek/tabular'
-Plug 'slim-template/vim-slim'
-Plug 'sotte/presenting.vim'
+Plug 'jparise/vim-graphql' " graphql syntax support
+Plug 'godlygeek/tabular' " allows formatting of markdown tables
+Plug 'slim-template/vim-slim' " slim templating language support
+Plug 'sotte/presenting.vim' " for powerpoint style presentations in vim
+Plug 'plasticboy/vim-markdown' " better markdown support
 let g:http_client_bind_hotkey=0
 let g:http_client_json_ft='json'
 let g:http_client_json_escape_utf=0
 let g:http_client_result_vsplit=0
 let g:http_client_focus_output_window=0
-au! FileType markdown setlocal tw=80 foldmethod=indent foldlevel=0
+let g:vim_markdown_conceal = 0
+let g:vim_markdown_no_extensions_in_markdown = 1
+let g:vim_markdown_autowrite = 1
+au! FileType markdown setlocal tw=80 foldmethod=indent spell
 au! BufRead,BufNewFile *.rest set filetype=rest
 au! FileType rest nn <buffer> <CR> :HTTPClientDoRequest<CR>
 "=================================PLUG END======================================
@@ -299,13 +314,13 @@ endif
 "===================================AUGROUPS===================================
 augroup lsp
   au!
-  au FileType python,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx setlocal omnifunc=LanguageClient#complete
-  au FileType python,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx nn <buffer> K :call LanguageClient_textDocument_hover()<cr>
-  au FileType python,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx nn <buffer> gd :call LanguageClient_textDocument_definition()<cr>
-  au FileType python,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx nn <buffer> <localleader>f :call LanguageClient_textDocument_formatting()<cr>
-  au FileType python,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx nn <buffer> <localleader>r :call LanguageClient_textDocument_rename()<cr>
-  au FileType python,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx nn <buffer> <localleader>u :call LanguageClient_textDocument_documentSymbol()<cr>
-  au FileType python,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx nn <buffer> <localleader>x :LanguageClientStop<cr>:LanguageClientStart<cr>
+  au FileType elixir,python,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx setlocal omnifunc=LanguageClient#complete
+  au FileType elixir,python,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx nn <buffer> K :call LanguageClient_textDocument_hover()<cr>
+  au FileType elixir,python,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx nn <buffer> gd :call LanguageClient_textDocument_definition()<cr>
+  au FileType elixir,python,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx nn <buffer> <localleader>f :call LanguageClient_textDocument_formatting()<cr>
+  au FileType elixir,python,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx nn <buffer> <localleader>r :call LanguageClient_textDocument_rename()<cr>
+  au FileType elixir,python,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx nn <buffer> <localleader>u :call LanguageClient_textDocument_documentSymbol()<cr>
+  au FileType elixir,python,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx nn <buffer> <localleader>x :LanguageClientStop<cr>:LanguageClientStart<cr>
 augroup END
 "===================================KEYBINDINGS=================================
 " Buffer jumper
@@ -387,6 +402,7 @@ tnoremap <C-j> <C-\><C-n><C-w>j
 tnoremap <C-k> <C-\><C-n><C-w>k
 tnoremap <C-l> <C-\><C-n><C-w>l
 au TermOpen * setlocal nonumber norelativenumber bufhidden=hide
+autocmd BufWinEnter,WinEnter term://* startinsert
 " Easy omni complete
 ino <C-Space> <C-x><C-o>
 " Snippet expansion

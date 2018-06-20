@@ -4,8 +4,7 @@ export ZSH=/Users/colbydehart/.oh-my-zsh
 # Local executables
 PATH="/usr/local/bin:$PATH"
 #NPM executables
-NPM_BIN_PATH=$(npm -g bin)
-[ -d $NPM_BIN_PATH ] && export PATH="$PATH:$NPM_BIN_PATH"
+export PATH="/usr/local/opt/node@8/bin:$PATH"
 #YARN executables
 YARN_BIN_PATH=$(yarn global bin)
 [ -d $YARN_BIN_PATH ] && export PATH="$PATH:$YARN_BIN_PATH"
@@ -42,7 +41,7 @@ fi
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME=""
+ZSH_THEME="eastwood"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -89,10 +88,6 @@ HYPHEN_INSENSITIVE="true"
 plugins=(git docker docker-compose heroku lein mix npm yarn zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
-
-# Pure theme
-autoload -U promptinit; promptinit
-prompt pure
 
 # User configuration
 
