@@ -71,37 +71,39 @@ func! OpenOrCreateTerminal()
   endif
 endfunc
 
+" Conditionally load vim plugins.
+function! Cond(cond, ...)
+  let opts = get(a:000, 0, {})
+  return a:cond ? opts : extend(opts, {'on': [], 'for': [] })
+endfunction
+
 let flowreadable = filereadable('./.flowconfig')
+let isOni = exists('g:gui_oni')
 
 " override $VISUAL to use nvr inside neovim
 if executable('nvr')
   let $VISUAL="nvr -cc split --remote-wait +'set bufhidden=wipe'"
 endif
 
-"===================================ONI===================================
-if exists("g:gui_oni")
-  source "~/.onirc"
-  finish
-endif
 "===================================PLUGINS=====================================
 call plug#begin()
 "====================================COSMETIC===================================
-Plug 'reedes/vim-colors-pencil'
+Plug 'joshdick/onedark.vim', Cond(!isOni)
 Plug 'luochen1990/rainbow'
 Plug 'Yggdroot/indentLine'
 Plug 'justinmk/vim-sneak'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+Plug 'vim-airline/vim-airline', Cond(!isOni)
+Plug 'vim-airline/vim-airline-themes', Cond(!isOni)
 let g:gruvbox_contrast_light="soft"
-let g:rainbow_active = 1
-let g:airline#extensions#ale#enabled = 1
+let g:rainbow_active = !isOni
+let g:airline#extensions#ale#enabled = !isOni
 let g:airline_powerline_fonts = 0
 "====================================UTILITY====================================
 Plug 'jiangmiao/auto-pairs'
-Plug 'powerman/vim-plugin-AnsiEsc'
+Plug 'powerman/vim-plugin-AnsiEsc', Cond(!isOni)
 Plug 'AndrewRadev/splitjoin.vim'
-Plug 'jreybert/vimagit'
-Plug 'christoomey/vim-tmux-navigator'
+Plug 'jreybert/vimagit', Cond(!isOni)
+Plug 'christoomey/vim-tmux-navigator', Cond(!isOni)
 Plug 'tyru/open-browser.vim'
 " tpope shrine.
 Plug 'tpope/vim-fugitive'
@@ -146,19 +148,19 @@ let g:ale_fixers = {
       \ 'python': ['yapf'],
       \ 'elm': ['elm-format']
       \ }
-let g:ale_fix_on_save=1
+let g:ale_fix_on_save = 1
 let g:ale_linters_explicit = 1
 let g:test#strategy = 'neovim'
 "==================================NAVIGATION===================================
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf', Cond(!isOni, { 'dir': '~/.fzf', 'do': './install --all' })
+Plug 'junegunn/fzf.vim', Cond(!isOni)
 "==================================AUTOCOMPLETION===============================
-Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
-Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
+Plug 'Shougo/deoplete.nvim', Cond(!isOni, {'do': ':UpdateRemotePlugins'})
+Plug 'autozimu/LanguageClient-neovim', Cond(!isOni, { 'do': ':UpdateRemotePlugins' })
 Plug 'shougo/neosnippet.vim'
 Plug 'shougo/neosnippet-snippets'
-Plug 'ervandew/supertab'
-let g:LanguageClient_autoStart = 1
+Plug 'ervandew/supertab', Cond(!isOni)
+let g:LanguageClient_autoStart = !isOni
 let g:LanguageClient_rootMarkers = {'elixir': ['mix.exs']}
 let g:LanguageClient_serverCommands = {
       \ 'rust': ['rustup', 'run', 'stable', 'rls'],
@@ -173,9 +175,9 @@ let g:LanguageClient_serverCommands = {
       \ }
 let g:neosnippet#snippets_directory = "~/dotfiles/snippets"
 let g:neosnippet#scope_aliases = {}
-let g:deoplete#enable_at_startup = 1
-let g:deoplete#file#enable_buffer_path = 1
-let g:deoplete#enable_smart_case = 1
+let g:deoplete#enable_at_startup = !isOni
+let g:deoplete#file#enable_buffer_path = !isOni
+let g:deoplete#enable_smart_case = !isOni
 let g:deoplete#keyword_patterns = {}
 let g:deoplete#sources = {}
 let g:SuperTabDefaultCompletionType = "<c-x><c-o>"
@@ -218,7 +220,7 @@ autocmd! FileType haskell setlocal omnifunc=necoghc#omnifunc
 Plug 'reasonml-editor/vim-reason-plus'
 "===================================ELM=========================================
 Plug 'ElmCast/elm-vim', {'for': 'elm'}
-Plug 'pbogut/deoplete-elm', {'for': 'elm'}
+Plug 'pbogut/deoplete-elm', Cond(!isOni, {'for': 'elm'})
 let g:elm_setup_keybindings = 0
 let g:elm_format_autosave=1
 augroup elm
@@ -238,10 +240,12 @@ Plug 'tpope/vim-sexp-mappings-for-regular-people', {'for': ['clojure', 'clojures
 Plug 'venantius/vim-cljfmt', {'for': ['clojure', 'clojurescript']}
 let g:clojure_align_multiline_strings = 1
 let g:clojure_align_subforms = 1
-let g:deoplete#keyword_patterns.clojure = '[\w!$%&*+/:<=>?@\^_~\-\.#]*'
-let g:deoplete#keyword_patterns.clojurescript = '[\w!$%&*+/:<=>?@\^_~\-\.#]*'
-let g:deoplete#sources.clojure = ['async_clj', 'buffer', 'file', 'tag']
-let g:deoplete#sources.clojurescript = ['async_clj', 'buffer', 'file', 'tag']
+if !isOni
+  let g:deoplete#keyword_patterns.clojure = '[\w!$%&*+/:<=>?@\^_~\-\.#]*'
+  let g:deoplete#keyword_patterns.clojurescript = '[\w!$%&*+/:<=>?@\^_~\-\.#]*'
+  let g:deoplete#sources.clojure = ['async_clj', 'buffer', 'file', 'tag']
+  let g:deoplete#sources.clojurescript = ['async_clj', 'buffer', 'file', 'tag']
+endif
 let g:clj_fmt_autosave = 0
 augroup clojure
   au!
@@ -297,57 +301,64 @@ au! BufRead,BufNewFile *.rest set filetype=rest
 au! FileType rest nn <buffer> <CR> :HTTPClientDoRequest<CR>
 "=================================PLUG END======================================
 call plug#end()
-set background=light
-colo pencil
-let g:pencil_higher_contrast_ui = 0
-let g:airline_theme='pencil'
+if !isOni
+  colo onedark
+  let g:airline_theme='onedark'
+endif
 filetype plugin indent on
 syntax enable
 " for showbreak
 hi! NonText guifg=#337755
 hi! link EndOfBuffer deusBg2
 "===================================FAST=SEARCH=================================
-if executable('ag')
+if executable('ag') 
   set grepprg=ag\ --nogroup\ --nocolor\ --ignore-case\ --column
   set grepformat=%f:%l:%c:%m,%f:%l:%m
 endif
-"===================================AUGROUPS===================================
-augroup lsp
-  au!
-  au FileType elixir,python,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx setlocal omnifunc=LanguageClient#complete
-  au FileType elixir,python,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx nn <buffer> K :call LanguageClient_textDocument_hover()<cr>
-  au FileType elixir,python,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx nn <buffer> gd :call LanguageClient_textDocument_definition()<cr>
-  au FileType elixir,python,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx nn <buffer> <localleader>f :call LanguageClient_textDocument_formatting()<cr>
-  au FileType elixir,python,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx nn <buffer> <localleader>r :call LanguageClient_textDocument_rename()<cr>
-  au FileType elixir,python,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx nn <buffer> <localleader>u :call LanguageClient_textDocument_documentSymbol()<cr>
-  au FileType elixir,python,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx nn <buffer> <localleader>x :LanguageClientStop<cr>:LanguageClientStart<cr>
-augroup END
+"===================================LSP Bindings===================================
+if !isOni
+  augroup lsp
+    au!
+    au FileType elixir,python,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx setlocal omnifunc=LanguageClient#complete
+    au FileType elixir,python,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx nn <buffer> K :call LanguageClient_textDocument_hover()<cr>
+    au FileType elixir,python,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx nn <buffer> gd :call LanguageClient_textDocument_definition()<cr>
+    au FileType elixir,python,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx nn <buffer> <localleader>f :call LanguageClient_textDocument_formatting()<cr>
+    au FileType elixir,python,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx nn <buffer> <localleader>r :call LanguageClient_textDocument_rename()<cr>
+    au FileType elixir,python,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx nn <buffer> <localleader>u :call LanguageClient_textDocument_documentSymbol()<cr>
+    au FileType elixir,python,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx nn <buffer> <localleader>x :LanguageClientStop<cr>:LanguageClientStart<cr>
+  augroup END
+endif
 "===================================KEYBINDINGS=================================
 " Buffer jumper
-nn [b :bp<CR>
-nn ]b :bn<CR>
 nn <BACKSPACE> :bp<CR>
 " Leader mappings
+if !isOni
+  " Fzf
+  nn <leader>a :Lines<CR>
+  nn <leader>b :Buffers<CR>
+  nn <leader>f :Files<CR>
+  nn <leader>h :Helptags<CR>
+  nn <leader>i :Tags<CR>
+  nn <leader>m :History<CR>
+  nn <leader>of :FZF ~/Documents/vimwiki<CR>
+  nn <leader>u :BTags<CR>
+  nn <leader>/ :Ag<CR>
+  nn <leader>' :Marks<CR>
+  " Ale 
+  nn <silent> <leader>ld :ALEDetail<CR>
+  nn <silent> <leader>ln :ALENext<CR>
+  nn <silent> <leader>lp :ALEPrevious<CR>
+endif
 nn <leader><leader> :b#<CR>
-nn <leader>a :Lines<CR>
-nn <leader>b :Buffers<CR>
 nn <leader>d :Vexplore! .<CR>
 nn <leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
-nn <leader>f :Files<CR>
 nn <leader>g :Magit<CR>
-nn <leader>h :Helptags<CR>
-nn <leader>i :Tags<CR>
 nn <leader>j <C-]>
 nn <leader>k :q<CR>
-nn <silent> <leader>ld :ALEDetail<CR>
-nn <silent> <leader>ln :ALENext<CR>
-nn <silent> <leader>lp :ALEPrevious<CR>
-nn <leader>m :History<CR>
 nn <leader>n :tabe<CR>
 nn <leader>oo :e ~/Documents/vimwiki/index.md<CR>
-nn <leader>of :FZF ~/Documents/vimwiki<CR>
 nn <leader>p :cw<CR>
-nn <leader>q :qa!<CR>
+nn <leader>q :qa<CR>
 nn <leader>rr :S/
 nn <leader>ra :%S/
 nn <leader>sk :split<CR>
@@ -355,16 +366,14 @@ nn <leader>sj :split<CR><C-W>j
 nn <leader>sh :vsplit<CR>
 nn <leader>sl :vsplit<CR><C-W>l
 nn <silent> <leader>t :call OpenOrCreateTerminal()<CR>
-nn <leader>u :BTags<CR>
 nn <leader>vv :e ~/dotfiles/.vimrc<CR>
+nn <leader>vo :e ~/.config/oni/config.tsx<CR>
 nn <leader>vl :e ./.lvimrc<CR>
 nn <leader>w :w<CR>
 nn <leader>x mzgggqG`z
 nn <leader>y :NeoSnippetEdit<CR>
 nn <leader>z :set foldlevel=1<cr>
 nn <leader><CR> :
-nn <leader>/ :Ag<CR>
-nn <leader>' :Marks<CR>
 " Open netrw for current file
 nn - :Vexplore!<CR>
 " Refresh netrw
@@ -387,7 +396,9 @@ nnoremap Q @q
 nn / /\v
 nn ? ?\v
 " (g)oto (d)efinition
-nn gd <C-]>
+if !isOni
+  nn gd <C-]>
+endif
 " Tab navigation
 nn H gT
 nn L gt
@@ -403,8 +414,10 @@ tnoremap <C-k> <C-\><C-n><C-w>k
 tnoremap <C-l> <C-\><C-n><C-w>l
 au TermOpen * setlocal nonumber norelativenumber bufhidden=hide
 autocmd BufWinEnter,WinEnter term://* startinsert
-" Easy omni complete
-ino <C-Space> <C-x><C-o>
+if !isOni
+  " Easy omni complete
+  ino <C-Space> <C-x><C-o>
+endif
 " Snippet expansion
 imap <silent> <expr> <C-E>
       \ neosnippet#expandable_or_jumpable() ?  "\<Plug>(neosnippet_expand_or_jump)" :
