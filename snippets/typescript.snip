@@ -1,22 +1,53 @@
-snippet     re
-abbr        React Element
+snippet     rc
+abbr        React Component
 options     head
   import React from 'react';
 
-  export class ${1} extends React.Component {
+  interface Props {
+    ${1}
+  }
+
+  export class ${2} extends React.Component<Props> {
     render() {
       return (
-        <div>${0}</div>
+        ${0}
       );
     }
   }
+
+
+snippet     rcs
+abbr        React Component with State
+options     head
+  import React from 'react';
+
+  interface Props {
+    ${1}
+  }
+
+  interface State {
+    ${2}
+  }
+
+  export class ${3} extends React.Component<Props, State> {
+    state = {
+      ${4}
+    }
+
+    render() {
+      return (
+        ${0}
+      );
+    }
+  }
+
 
 snippet     sfc
 abbr        React Stateless Functional Component
 options     head
   import React from 'react';
 
-  export interface PropsType {
+  interface Props {
     ${1}
   }
 
@@ -46,10 +77,9 @@ options     head
   })
 
 
-snippet     at
-abbr        action type
+snippet     int
+abbr        interface
 options     head
-  export type ${1} = {
-    type: ${2},
+  interface ${1} {
     ${0}
   }

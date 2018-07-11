@@ -54,6 +54,8 @@ alias dw="cd ~/dev/work"
 alias mixtest="mix test --stale --listen-on-stdin"
 # open phoenix server
 alias imps="iex -S mix phx.server"
+# killall zsh
+alias killzsh="ps ax -o pid,command,ppid | grep 'zsh' | awk '{print $1}' | xargs kill -9"
 # Open localhost
 olh () {
     open http://localhost:$1;

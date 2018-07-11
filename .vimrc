@@ -4,6 +4,7 @@
 "===================================HORRIBLE===================================
 "====================================VIMRC=====================================
 "==============================================================================
+let isOni = exists('g:gui_oni')
 "===================================GENERAL====================================
 set t_Co=256                       "256 colors
 set termguicolors                  "true color
@@ -23,7 +24,9 @@ set cindent                        "auto indent
 set foldmethod=syntax              "code folding
 set textwidth=80                   "format at 80 lines
 set ls=2                           "better status line
-set clipboard=unnamedplus          "use system clipboard
+if !isOni
+  set clipboard=unnamedplus          "use system clipboard
+endif
 set hidden                         "allow jumping back and forth
                                    "between multiple unsaved buffers
 set noshowmode                     "because airline...
@@ -78,7 +81,6 @@ function! Cond(cond, ...)
 endfunction
 
 let flowreadable = filereadable('./.flowconfig')
-let isOni = exists('g:gui_oni')
 
 " override $VISUAL to use nvr inside neovim
 if executable('nvr')
@@ -180,7 +182,7 @@ let g:deoplete#file#enable_buffer_path = !isOni
 let g:deoplete#enable_smart_case = !isOni
 let g:deoplete#keyword_patterns = {}
 let g:deoplete#sources = {}
-let g:SuperTabDefaultCompletionType = "<c-x><c-o>"
+let g:SuperTabDefaultCompletionType = "<c-n>"
 "===================================WEB=========================================
 Plug 'mattn/emmet-vim' "quick HTML expansion
 let g:user_emmet_settings = {}
