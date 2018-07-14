@@ -131,7 +131,7 @@ augroup END
 Plug 'w0rp/ale'
 Plug 'janko-m/vim-test'
 let g:ale_linters = {
-      \ 'elixir': ['credo', 'dialyxir'],
+      \ 'elixir': ['credo', 'dialyxir', 'mix'],
       \ 'haskell': ['stack-ghc-mod', 'hlint'],
       \ 'typescript': ['tsserver', 'tslint'],
       \ 'typescript.tsx': ['tsserver', 'tslint'],
@@ -298,7 +298,12 @@ let g:http_client_focus_output_window=0
 let g:vim_markdown_conceal = 0
 let g:vim_markdown_no_extensions_in_markdown = 1
 let g:vim_markdown_autowrite = 1
-au! FileType markdown setlocal tw=80 foldmethod=indent spell
+
+augroup markdown
+  au!
+  au FileType markdown setlocal tw=80 foldmethod=indent 
+  au FileType markdown nmap <buffer> <CR> <Plug>Markdown_EditUrlUnderCursor
+augroup END
 au! BufRead,BufNewFile *.rest set filetype=rest
 au! FileType rest nn <buffer> <CR> :HTTPClientDoRequest<CR>
 "=================================PLUG END======================================
@@ -332,7 +337,7 @@ if !isOni
 endif
 "===================================KEYBINDINGS=================================
 " Buffer jumper
-nn <BACKSPACE> :bp<CR>
+nn <BACKSPACE> <C-o>
 " Leader mappings
 if !isOni
   " Fzf
