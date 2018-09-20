@@ -15,9 +15,12 @@ alias ga='git add -p'
 alias gc='git commit -m'
 alias gca='git commit --amend --no-edit'
 alias gco='git checkout -b $argv'
+alias gcod='git checkout development'
+alias gcom='git checkout master'
 alias gf='git fetch --all --prune'
 alias gpf='git push --force-with-lease'
 alias gpr='hub pull-request -h master -b NavitasLease:master'
+alias gprd='hub pull-request -h master -b NavitasLease:development'
 alias gps='git pull source master'
 # git submodule stuff
 alias gsuu='git submodule update --remote --rebase'
@@ -42,6 +45,10 @@ alias myip="ifconfig | grep en0 -A 3 | grep \"inet \" | cut -d \" \" -f 2"
 alias dc="docker-compose"
 # react native
 alias rn="react-native"
+# clojure cider
+alias cider="clj -Sdeps '{:deps {cider/cider-nrepl {:mvn/version \"0.18.0\"} }}' -e '(require (quote cider-nrepl.main)) (cider-nrepl.main/init [\"cider.nrepl/cider-middleware\"])'"
+# clojure piggieback
+alias piggieback="clj -R:nrepl -m nrepl.cmdline --middleware \"[cider.piggieback/wrap-cljs-repl]\""
 # newsbeueter
 alias nb="newsboat"
 # tmux in color mode with unicode

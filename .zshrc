@@ -24,6 +24,13 @@ export ANDROID_HOME="$HOME/Library/Android/sdk"
 [ -d "$HOME/go/bin" ] && export PATH="$PATH:$HOME/go/bin"
 #OCAML executables
 . /Users/colbydehart/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
+#Java executables
+export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk-10.0.2.jdk"
+export PATH="$PATH:$JAVA_HOME/Contents/Home/bin"
+#Rbenv
+eval "$(rbenv init -)"
+# OCI (oracle drivers)
+export OCI_DIR=$(brew --prefix)/lib
 
 # Homebrew completions
 BREW_COMPLETIONS=$(brew --prefix)
