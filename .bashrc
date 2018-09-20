@@ -51,3 +51,6 @@ export ERL_AFLAGS="-kernel shell_history enabled"
 
 # Set up Travis
 [ -f $HOME/.travis/travis.sh ] && source $HOME/.travis/travis.sh
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"

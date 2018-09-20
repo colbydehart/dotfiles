@@ -1,12 +1,10 @@
-"==============================================================================
+
 "================================COLBY=DEHART'S================================
 "==================================WONDERFUL===================================
 "===================================HORRIBLE===================================
 "====================================VIMRC=====================================
 "==============================================================================
-let isOni = exists('g:gui_oni')
 "===================================GENERAL====================================
-set t_Co=256                       "256 colors
 set termguicolors                  "true color
 set tabstop=2                      "2 spaces for tab
 set shiftwidth=2                   "2 spaces for tab
@@ -17,6 +15,7 @@ set noshowmode                     "don't show insert in echo area
 set foldlevel=10                   "start with a big fold
 set list                           "show tab characters
 set timeoutlen=1000 ttimeoutlen=-1 "better timeouts
+set updatetime=2000                "a bit faster updatetime
 set number                         "line numbers
 set relativenumber                 "line numbers
 set mouse=a                        "use the mouse
@@ -24,26 +23,18 @@ set cindent                        "auto indent
 set foldmethod=syntax              "code folding
 set textwidth=80                   "format at 80 lines
 set ls=2                           "better status line
-if !isOni
-  set clipboard=unnamedplus          "use system clipboard
-endif
-set hidden                         "allow jumping back and forth
-                                   "between multiple unsaved buffers
-set noshowmode                     "because airline...
+set clipboard=unnamedplus          "use system clipboard
+set hidden                         "allow jumping back and forth between multiple unsaved buffers
 set visualbell                     "no sounds!
 set nohlsearch                     "no highlight search after
 set ignorecase                     "ignore case when searching
 set smartcase                      "don't ignore when i specify
 set wildignorecase                 "case insensitive file search
 set inccommand=nosplit             "show replaces while typing
-set backup                         "backups
-set noswapfile
-set backupdir=~/.config/nvim/backup
+set noswapfile                     "no swap files
 set diffopt=vertical               "vertical diff splits
-set updatetime=2000                "a bit faster updatetime
 set shortmess+=c                   "make that mess shorter?
 set autoread                       "reload files!
-let g:netrw_liststyle = 0          "Tree style netrw
 let g:netrw_browse_split = 4       "open netrw files in other window
 let g:netrw_winsize = 25           "25 column width for netrw
 let g:netrw_altv = 1               "Vertical split on right side
@@ -54,7 +45,7 @@ let g:netrw_browsex_viewer="open"  "open stuff with open
 au! QuickFixCmdPost [^l]* cwindow  "open quickfix after search
 au! QuickFixCmdPost l* lwindow     "open quickfix after search
 au! InsertLeave * pc               "close preview on insert leave
-"===================================IGNORE======================================
+""===================================IGNORE======================================
 set wildignore+=*/_build
 set wildignore+=*/.cljs_rhino_repl
 set wildignore+=*.pyc
@@ -63,7 +54,6 @@ set wildignore+=*/bower_components/*
 set wildignore+=.git
 set wildignore+=.venv
 set wildignore+=*/dist
-
 "===================================FUNCTIONS===================================
 func! OpenOrCreateTerminal()
   let term = bufname('term://')
@@ -80,8 +70,6 @@ function! Cond(cond, ...)
   return a:cond ? opts : extend(opts, {'on': [], 'for': [] })
 endfunction
 
-let flowreadable = filereadable('./.flowconfig')
-
 " override $VISUAL to use nvr inside neovim
 if executable('nvr')
   let $VISUAL="nvr -cc split --remote-wait +'set bufhidden=wipe'"
@@ -90,22 +78,21 @@ endif
 "===================================PLUGINS=====================================
 call plug#begin()
 "====================================COSMETIC===================================
-Plug 'joshdick/onedark.vim', Cond(!isOni)
+Plug 'reedes/vim-colors-pencil'
+Plug 'joshdick/onedark.vim'
 Plug 'luochen1990/rainbow'
 Plug 'Yggdroot/indentLine'
-Plug 'justinmk/vim-sneak'
-Plug 'vim-airline/vim-airline', Cond(!isOni)
-Plug 'vim-airline/vim-airline-themes', Cond(!isOni)
-let g:gruvbox_contrast_light="soft"
-let g:rainbow_active = !isOni
-let g:airline#extensions#ale#enabled = !isOni
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+let g:rainbow_active = 1
+let g:airline#extensions#ale#enabled = 1
 let g:airline_powerline_fonts = 0
 "====================================UTILITY====================================
 Plug 'jiangmiao/auto-pairs'
-Plug 'powerman/vim-plugin-AnsiEsc', Cond(!isOni)
+Plug 'powerman/vim-plugin-AnsiEsc'
 Plug 'AndrewRadev/splitjoin.vim'
-Plug 'jreybert/vimagit', Cond(!isOni)
-Plug 'christoomey/vim-tmux-navigator', Cond(!isOni)
+Plug 'jreybert/vimagit'
+Plug 'christoomey/vim-tmux-navigator'
 Plug 'tyru/open-browser.vim'
 " tpope shrine.
 Plug 'tpope/vim-fugitive'
@@ -135,9 +122,12 @@ let g:ale_linters = {
       \ 'haskell': ['stack-ghc-mod', 'hlint'],
       \ 'typescript': ['tsserver', 'tslint'],
       \ 'typescript.tsx': ['tsserver', 'tslint'],
+      \ 'javascript': ['tsserver'],
+      \ 'javascript.jsx': ['tsserver'],
       \ 'elm': ['elm-make'],
       \ 'reason': ['merlin'],
-      \ 'ocaml': ['merlin']
+      \ 'ocaml': ['merlin'],
+      \ 'cs': ['OmniSharp']
       \ }
 let g:ale_fixers = {
       \ 'javascript': ['prettier'],
@@ -153,36 +143,34 @@ let g:ale_fixers = {
 let g:ale_fix_on_save = 1
 let g:ale_linters_explicit = 1
 let g:test#strategy = 'neovim'
+au! FileType ale-preview set wrap
 "==================================NAVIGATION===================================
-Plug 'junegunn/fzf', Cond(!isOni, { 'dir': '~/.fzf', 'do': './install --all' })
-Plug 'junegunn/fzf.vim', Cond(!isOni)
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 "==================================AUTOCOMPLETION===============================
-Plug 'Shougo/deoplete.nvim', Cond(!isOni, {'do': ':UpdateRemotePlugins'})
-Plug 'autozimu/LanguageClient-neovim', Cond(!isOni, { 'do': ':UpdateRemotePlugins' })
+Plug 'Shougo/deoplete.nvim'
+Plug 'Shougo/echodoc.vim'
+Plug 'autozimu/LanguageClient-neovim'
 Plug 'shougo/neosnippet.vim'
 Plug 'shougo/neosnippet-snippets'
-Plug 'ervandew/supertab', Cond(!isOni)
-let g:LanguageClient_autoStart = !isOni
+" Plug 'ervandew/supertab'
+let g:LanguageClient_autoStart = 1
 let g:LanguageClient_rootMarkers = {'elixir': ['mix.exs']}
 let g:LanguageClient_serverCommands = {
       \ 'rust': ['rustup', 'run', 'stable', 'rls'],
-      \ 'javascript': flowreadable ? ['flow-language-server', '--stdio', '--try-flow-bin'] : ['typescript-language-server', '--stdio'],
-      \ 'javascript.jsx': flowreadable ? ['flow-language-server', '--stdio', '--try-flow-bin'] : ['typescript-language-server', '--stdio'],
-      \ 'typescript': ['typescript-language-server', '--stdio'],
-      \ 'typescript.tsx': ['typescript-language-server', '--stdio'],
       \ 'python': ['pyls'],
       \ 'reason': ['ocaml-language-server', '--stdio'],
       \ 'ocaml': ['ocaml-language-server', '--stdio'],
-      \ 'elixir': ['elixir-ls'],
+      \ 'ruby': ['solargraph', 'stdio']
       \ }
 let g:neosnippet#snippets_directory = "~/dotfiles/snippets"
 let g:neosnippet#scope_aliases = {}
-let g:deoplete#enable_at_startup = !isOni
-let g:deoplete#file#enable_buffer_path = !isOni
-let g:deoplete#enable_smart_case = !isOni
+let g:deoplete#enable_at_startup = 1
+let g:deoplete#file#enable_buffer_path = 1
+let g:deoplete#enable_smart_case = 1
 let g:deoplete#keyword_patterns = {}
 let g:deoplete#sources = {}
-let g:SuperTabDefaultCompletionType = "<c-n>"
+" let g:SuperTabDefaultCompletionType = "<c-n>"
 "===================================WEB=========================================
 Plug 'mattn/emmet-vim' "quick HTML expansion
 let g:user_emmet_settings = {}
@@ -193,16 +181,25 @@ let g:user_emmet_settings['typescript.tsx'] =  {'extends': 'jsx'}
 Plug 'elzr/vim-json' "Better JSON highlighting
 let g:vim_json_syntax_conceal=0
 "==================================JAVASCRIPT===================================
-Plug 'pangloss/vim-javascript'
-Plug 'mxw/vim-jsx'
+Plug 'pangloss/vim-javascript', {'for': ['javascript', 'javascript.jsx']}
+Plug 'mxw/vim-jsx', {'for': ['javascript', 'javascript.jsx']}
 let g:jsx_ext_required = 0  "Always use jsx syntax
 "==================================TYPESCRIPT===================================
-Plug 'leafgarland/typescript-vim', { 'for': [ 'typescript', 'typescript.tsx' ] }
+" Plug 'leafgarland/typescript-vim', { 'for': [ 'typescript', 'typescript.tsx' ] }
 Plug 'HerringtonDarkholme/yats.vim', {'for': ['typescript', 'typescript.tsx']}
 Plug 'ianks/vim-tsx', {'for': ['typescript', 'typescript.tsx']}
+Plug 'mhartington/nvim-typescript', {'do': './install.sh'}
+let g:nvim_typescript#javascript_support = 1
+augroup typescript
+  au FileType javacript,javascript.jsx,typescript,typescript.tsx nn <buffer> K :TSType<CR>
+  au FileType javacript,javascript.jsx,typescript,typescript.tsx nn <buffer> gd :TSDef<CR>
+  au FileType javacript,javascript.jsx,typescript,typescript.tsx nn <buffer> <localleader>d :TSDoc<CR>
+  au FileType javacript,javascript.jsx,typescript,typescript.tsx nn <buffer> <localleader>r :TSRename<CR>
+  au FileType javacript,javascript.jsx,typescript,typescript.tsx nn <buffer> <localleader>u :TSGetDocSymbols<CR>
+augroup END
 "==================================ELIXIR=======================================
-Plug 'elixir-lang/vim-elixir'
-Plug 'slashmili/alchemist.vim'
+Plug 'elixir-lang/vim-elixir', {'for': ['elixir']}
+Plug 'slashmili/alchemist.vim', {'for': ['elixir']}
 augroup elixir
   au!
   au FileType elixir nn <buffer> <localleader>i :IEx<CR>
@@ -210,19 +207,19 @@ augroup elixir
   au FileType elixir nn <buffer> <localleader>x :Mix<Space>
 augroup END
 "=================================HASKELL=======================================
-Plug 'eagletmt/neco-ghc'
-Plug 'eagletmt/ghcmod-vim'
-Plug 'neovimhaskell/haskell-vim'
-Plug 'parsonsmatt/intero-neovim'
+Plug 'eagletmt/neco-ghc', {'for': ['haskell']}
+Plug 'eagletmt/ghcmod-vim', {'for': ['haskell']}
+Plug 'neovimhaskell/haskell-vim', {'for': ['haskell']}
+Plug 'parsonsmatt/intero-neovim', {'for': ['haskell']}
 let g:haskellmode_completion_ghc = 0
 let g:intero_start_immediately = 1 " Auto start intero for haskell files ?
 let g:intero_use_neomake = 0 " Don't use neomake because ale is doing it.
 autocmd! FileType haskell setlocal omnifunc=necoghc#omnifunc
 "===============================OCAML/REASON====================================
-Plug 'reasonml-editor/vim-reason-plus'
+Plug 'reasonml-editor/vim-reason-plus', {'for': ['reason', 'ocaml']}
 "===================================ELM=========================================
 Plug 'ElmCast/elm-vim', {'for': 'elm'}
-Plug 'pbogut/deoplete-elm', Cond(!isOni, {'for': 'elm'})
+Plug 'pbogut/deoplete-elm', {'for': 'elm'}
 let g:elm_setup_keybindings = 0
 let g:elm_format_autosave=1
 augroup elm
@@ -233,42 +230,36 @@ augroup elm
   au FileType elm nn <buffer> <localleader>r :ElmRepl<CR>
 augroup END
 "===================================CLOJURE=====================================
-Plug 'tpope/vim-fireplace'
-Plug 'tpope/vim-classpath'
-Plug 'tpope/vim-salve'
-Plug 'clojure-vim/async-clj-omni', {'for': ['clojure', 'clojurescript']}
+Plug 'tpope/vim-fireplace', {'for': ['clojure', 'clojurescript']}
+Plug 'tpope/vim-classpath', {'for': ['clojure', 'clojurescript']}
+Plug 'tpope/vim-salve', {'for': ['clojure', 'clojurescript']}
+Plug 'guns/vim-clojure-static', {'for': ['clojure', 'clojurescript']}
 Plug 'guns/vim-sexp', {'for': ['clojure', 'clojurescript']}
 Plug 'tpope/vim-sexp-mappings-for-regular-people', {'for': ['clojure', 'clojurescript']}
-Plug 'venantius/vim-cljfmt', {'for': ['clojure', 'clojurescript']}
+let g:deoplete#keyword_patterns = {}
+let g:deoplete#keyword_patterns.clojure = '[\w!$%&*+/:<=>?@\^_~\-\.#]*'
 let g:clojure_align_multiline_strings = 1
 let g:clojure_align_subforms = 1
-if !isOni
-  let g:deoplete#keyword_patterns.clojure = '[\w!$%&*+/:<=>?@\^_~\-\.#]*'
-  let g:deoplete#keyword_patterns.clojurescript = '[\w!$%&*+/:<=>?@\^_~\-\.#]*'
-  let g:deoplete#sources.clojure = ['async_clj', 'buffer', 'file', 'tag']
-  let g:deoplete#sources.clojurescript = ['async_clj', 'buffer', 'file', 'tag']
-endif
-let g:clj_fmt_autosave = 0
 augroup clojure
   au!
   au BufEnter build.boot set filetype=clojure
   au FileType clojure nn <buffer> <LocalLeader>C
-        \ :Piggieback (figwheel-sidecar.repl-api/repl-env)
-  au FileType clojure nn <buffer> <localleader>f :Cljfmt<CR>
+        \ :Piggieback (adzerk.boot-cljs-repl/repl-env)
 augroup END
 "===================================RUST========================================
 Plug 'rust-lang/rust.vim', {'for': 'rust'}
 "===================================RUBY========================================
 Plug 'vim-ruby/vim-ruby', {'for': 'ruby'}
+Plug 'tpope/vim-rbenv', { 'for': 'ruby' }
 "==================================PYTHON=======================================
 augroup python
   au!
   au FileType python setlocal tabstop=4 shiftwidth=4 softtabstop=4
 augroup END
 "===================================VIML========================================
-Plug 'shougo/neco-vim'
-Plug 'thinca/vim-themis'
-Plug 'junegunn/vader.vim'
+Plug 'shougo/neco-vim', {'for': ['vim']}
+Plug 'thinca/vim-themis', {'for': ['vim']}
+Plug 'junegunn/vader.vim', {'for': ['vim']}
 augroup vim
   au!
   au FileType vim,vader setlocal foldmethod=indent
@@ -277,11 +268,21 @@ augroup vim
   au FileType vim,vader nn <buffer> <localleader>e :echo eval(getline('.'))<CR>
   au FileType vader-result set wrap
 augroup END
+"===================================CSHARP======================================
+Plug 'OmniSharp/omnisharp-vim', {'for': ['cs']}
+augroup csharp
+  au FileType cs nn <buffer> K :OmniSharpDocumentation<CR>
+  au FileType cs nn <buffer> gd :OmniSharpGotoDefinition<CR>
+  au FileType cs nn <buffer> <localleader>f :OmniSharpCodeFormat<CR>
+  au FileType cs nn <buffer> <localleader>r :OmniSharpRename<CR>
+  au FileType cs nn <buffer> <localleader>u :OmniSharpFindSymbol<CR>
+augroup END
 "===================================FSHARP======================================
 Plug 'fsharp/vim-fsharp', {
-      \ 'for': 'fsharp',
+      \ 'for':['fsharp'],
       \ 'do':  'make fsautocomplete',
       \}
+Plug 'callmekohei/deoplete-fsharp', {'for':['fsharp']}
 "===================================ETC.========================================
 Plug 'neo4j-contrib/cypher-vim-syntax'
 Plug 'aquach/vim-http-client' "vim rest client
@@ -290,6 +291,7 @@ Plug 'godlygeek/tabular' " allows formatting of markdown tables
 Plug 'slim-template/vim-slim' " slim templating language support
 Plug 'sotte/presenting.vim' " for powerpoint style presentations in vim
 Plug 'plasticboy/vim-markdown' " better markdown support
+Plug 'vim-scripts/fountain.vim' " fountain syntax
 let g:http_client_bind_hotkey=0
 let g:http_client_json_ft='json'
 let g:http_client_json_escape_utf=0
@@ -301,61 +303,53 @@ let g:vim_markdown_autowrite = 1
 
 augroup markdown
   au!
-  au FileType markdown setlocal tw=80 foldmethod=indent 
-  au FileType markdown nmap <buffer> <CR> <Plug>Markdown_EditUrlUnderCursor
+  au BufEnter *.md setlocal tw=80 foldmethod=indent
+  au BufEnter *.md nmap <buffer> <CR> <Plug>Markdown_EditUrlUnderCursor
 augroup END
 au! BufRead,BufNewFile *.rest set filetype=rest
 au! FileType rest nn <buffer> <CR> :HTTPClientDoRequest<CR>
 "=================================PLUG END======================================
 call plug#end()
-if !isOni
-  colo onedark
-  let g:airline_theme='onedark'
-endif
+
+colo onedark
+let g:airline_theme='onedark'
 filetype plugin indent on
 syntax enable
-" for showbreak
-hi! NonText guifg=#337755
-hi! link EndOfBuffer deusBg2
-"===================================FAST=SEARCH=================================
+""===================================FAST=SEARCH=================================
 if executable('ag') 
   set grepprg=ag\ --nogroup\ --nocolor\ --ignore-case\ --column
   set grepformat=%f:%l:%c:%m,%f:%l:%m
 endif
 "===================================LSP Bindings===================================
-if !isOni
-  augroup lsp
-    au!
-    au FileType elixir,python,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx setlocal omnifunc=LanguageClient#complete
-    au FileType elixir,python,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx nn <buffer> K :call LanguageClient_textDocument_hover()<cr>
-    au FileType elixir,python,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx nn <buffer> gd :call LanguageClient_textDocument_definition()<cr>
-    au FileType elixir,python,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx nn <buffer> <localleader>f :call LanguageClient_textDocument_formatting()<cr>
-    au FileType elixir,python,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx nn <buffer> <localleader>r :call LanguageClient_textDocument_rename()<cr>
-    au FileType elixir,python,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx nn <buffer> <localleader>u :call LanguageClient_textDocument_documentSymbol()<cr>
-    au FileType elixir,python,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx nn <buffer> <localleader>x :LanguageClientStop<cr>:LanguageClientStart<cr>
-  augroup END
-endif
+augroup lsp
+  au!
+  au FileType ruby,python,reason,ocaml,rust setlocal omnifunc=LanguageClient#complete
+  au FileType ruby,python,reason,ocaml,rust nn <buffer> K :call LanguageClient_textDocument_hover()<cr>
+  au FileType ruby,python,reason,ocaml,rust nn <buffer> gd :call LanguageClient_textDocument_definition()<cr>
+  au FileType ruby,python,reason,ocaml,rust nn <buffer> <localleader>f :call LanguageClient_textDocument_formatting()<cr>
+  au FileType ruby,python,reason,ocaml,rust nn <buffer> <localleader>r :call LanguageClient_textDocument_rename()<cr>
+  au FileType ruby,python,reason,ocaml,rust nn <buffer> <localleader>u :call LanguageClient_textDocument_documentSymbol()<cr>
+  au FileType ruby,python,reason,ocaml,rust nn <buffer> <localleader>x :LanguageClientStop<cr>:LanguageClientStart<cr>
+augroup END
 "===================================KEYBINDINGS=================================
 " Buffer jumper
-nn <BACKSPACE> <C-o>
+nn <BS> :bp<CR>
 " Leader mappings
-if !isOni
   " Fzf
-  nn <leader>a :Lines<CR>
-  nn <leader>b :Buffers<CR>
-  nn <leader>f :Files<CR>
-  nn <leader>h :Helptags<CR>
-  nn <leader>i :Tags<CR>
-  nn <leader>m :History<CR>
-  nn <leader>of :FZF ~/Documents/vimwiki<CR>
-  nn <leader>u :BTags<CR>
-  nn <leader>/ :Ag<CR>
-  nn <leader>' :Marks<CR>
-  " Ale 
-  nn <silent> <leader>ld :ALEDetail<CR>
-  nn <silent> <leader>ln :ALENext<CR>
-  nn <silent> <leader>lp :ALEPrevious<CR>
-endif
+nn <leader>a :Lines<CR>
+nn <leader>b :Buffers<CR>
+nn <leader>f :Files<CR>
+nn <leader>h :Helptags<CR>
+nn <leader>i :Tags<CR>
+nn <leader>m :History<CR>
+nn <leader>of :FZF ~/Documents/vimwiki<CR>
+nn <leader>u :BTags<CR>
+nn <leader>/ :Ag<CR>
+nn <leader>' :Marks<CR>
+" Ale 
+nn <silent> <leader>ld :ALEDetail<CR>
+nn <silent> <leader>ln :ALENext<CR>
+nn <silent> <leader>lp :ALEPrevious<CR>
 nn <leader><leader> :b#<CR>
 nn <leader>d :Vexplore! .<CR>
 nn <leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
@@ -379,7 +373,8 @@ nn <leader>vl :e ./.lvimrc<CR>
 nn <leader>w :w<CR>
 nn <leader>x mzgggqG`z
 nn <leader>y :NeoSnippetEdit<CR>
-nn <leader>z :set foldlevel=1<cr>
+nn <leader>zc :set foldlevel=1<cr>
+nn <leader>zo :set foldlevel=99<cr>
 nn <leader><CR> :
 " Open netrw for current file
 nn - :Vexplore!<CR>
@@ -403,9 +398,7 @@ nnoremap Q @q
 nn / /\v
 nn ? ?\v
 " (g)oto (d)efinition
-if !isOni
-  nn gd <C-]>
-endif
+nn gd <C-]>
 " Tab navigation
 nn H gT
 nn L gt
@@ -421,10 +414,16 @@ tnoremap <C-k> <C-\><C-n><C-w>k
 tnoremap <C-l> <C-\><C-n><C-w>l
 au TermOpen * setlocal nonumber norelativenumber bufhidden=hide
 autocmd BufWinEnter,WinEnter term://* startinsert
-if !isOni
-  " Easy omni complete
-  ino <C-Space> <C-x><C-o>
-endif
+" Deoplete completion
+inoremap <silent><expr> <S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
+inoremap <silent><expr> <TAB>
+\ pumvisible() ? "\<C-n>" :
+\ <SID>check_back_space() ? "\<TAB>" :
+\ deoplete#mappings#manual_complete()
+function! s:check_back_space() abort "{{{
+let col = col('.') - 1
+return !col || getline('.')[col - 1]  =~ '\s'
+endfunction"}}}
 " Snippet expansion
 imap <silent> <expr> <C-E>
       \ neosnippet#expandable_or_jumpable() ?  "\<Plug>(neosnippet_expand_or_jump)" :
