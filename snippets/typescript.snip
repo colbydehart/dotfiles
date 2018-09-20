@@ -3,7 +3,7 @@ abbr        React Component
 options     head
   import React from 'react';
 
-  interface Props {
+  export type Props = {
     ${1}
   }
 
@@ -21,11 +21,11 @@ abbr        React Component with State
 options     head
   import React from 'react';
 
-  interface Props {
+  export type Props = {
     ${1}
   }
 
-  interface State {
+  export type State = {
     ${2}
   }
 
@@ -47,25 +47,25 @@ abbr        React Stateless Functional Component
 options     head
   import React from 'react';
 
-  interface Props {
+  export type Props = {
     ${1}
   }
 
-  /** ${2} */
-  export const ${3}: React.SFC<PropsType> = (props) => (
-    <div>${0}</div>
+  export const ${2}: React.SFC<Props> = (props) => (
+    ${0}
   );
 
 snippet     i
 abbr        import
 options     head
-  import { ${0} } from '${2}';
+  import { ${0} } from '${1}';
 
 
 snippet     /
 abbr        Docstring
 options     word
   /** ${0} */
+
 
 
 snippet     ac
@@ -80,6 +80,30 @@ options     head
 snippet     int
 abbr        interface
 options     head
-  interface ${1} {
+  export interface ${1} {
     ${0}
   }
+
+snippet     typ
+abbr        type
+options     head
+  export type ${1} = {
+    ${0}
+  };
+
+
+snippet     view
+abbr        ramda view
+options     word
+  view(LP([${1}]), ${2});
+
+
+snippet     over
+abbr        ramda over
+options     word
+  over(LP([${1}]), (${3}) => ${0}, ${2});
+
+snippet     set
+abbr        ramda set
+options     word
+  set(LP([${1}]), ${2}, ${3});
