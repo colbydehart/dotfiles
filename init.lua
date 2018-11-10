@@ -23,7 +23,7 @@ hs.hotkey.bind(mash, "return", function()
 end)
 -- USB watcher for mech keyboards
 hs.usb.watcher.new(function(event)
-  local mechboards = {"ErgoDox EZ", "Planck"}
+  local mechboards = {"ErgoDox EZ", "Planck", "Planck Light"}
   if fn.contains(mechboards, event.productName) then
     if event.eventType == "added" then
       hs.keycodes.setLayout("U.S.")

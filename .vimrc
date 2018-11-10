@@ -1,5 +1,5 @@
 
-"================================COLBY=DEHART'S================================
+"===============================COLBY=DEHART'S================================
 "==================================WONDERFUL===================================
 "===================================HORRIBLE===================================
 "====================================VIMRC=====================================
@@ -54,6 +54,7 @@ set wildignore+=*/bower_components/*
 set wildignore+=.git
 set wildignore+=.venv
 set wildignore+=*/dist
+set wildignore+=*.bs.js
 "===================================FUNCTIONS===================================
 func! OpenOrCreateTerminal()
   let term = bufname('term://')
@@ -79,14 +80,14 @@ endif
 call plug#begin()
 "====================================COSMETIC===================================
 Plug 'reedes/vim-colors-pencil'
+Plug 'xero/nord-vim-mod'
 Plug 'joshdick/onedark.vim'
+Plug 'morhetz/gruvbox'
 Plug 'luochen1990/rainbow'
 Plug 'Yggdroot/indentLine'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+Plug 'itchyny/lightline.vim'
+let g:lightline = {'colorscheme': 'gruvbox'}
 let g:rainbow_active = 1
-let g:airline#extensions#ale#enabled = 1
-let g:airline_powerline_fonts = 0
 "====================================UTILITY====================================
 Plug 'jiangmiao/auto-pairs'
 Plug 'powerman/vim-plugin-AnsiEsc'
@@ -125,13 +126,12 @@ let g:ale_linters = {
       \ 'javascript': ['tsserver'],
       \ 'javascript.jsx': ['tsserver'],
       \ 'elm': ['elm-make'],
-      \ 'reason': ['merlin'],
-      \ 'ocaml': ['merlin'],
       \ 'cs': ['OmniSharp']
       \ }
 let g:ale_fixers = {
       \ 'javascript': ['prettier'],
       \ 'javascript.jsx': ['prettier'],
+      \ 'json': ['prettier'],
       \ 'typescript': ['prettier'],
       \ 'typescript.tsx': ['prettier'],
       \ 'elixir': ['mix_format', 'trim_whitespace'],
@@ -153,14 +153,13 @@ Plug 'Shougo/echodoc.vim'
 Plug 'autozimu/LanguageClient-neovim'
 Plug 'shougo/neosnippet.vim'
 Plug 'shougo/neosnippet-snippets'
-" Plug 'ervandew/supertab'
 let g:LanguageClient_autoStart = 1
 let g:LanguageClient_rootMarkers = {'elixir': ['mix.exs']}
 let g:LanguageClient_serverCommands = {
       \ 'rust': ['rustup', 'run', 'stable', 'rls'],
-      \ 'python': ['pyls'],
-      \ 'reason': ['ocaml-language-server', '--stdio'],
-      \ 'ocaml': ['ocaml-language-server', '--stdio'],
+      \ 'python': ['python', '-m', 'pyls'],
+      \ 'reason': ['/Users/colbydehart/.config/nvim/reason-language-server/reason-language-server.exe'],
+      \ 'ocaml': ['/Users/colbydehart/.config/nvim/reason-language-server/reason-language-server.exe'],
       \ 'ruby': ['solargraph', 'stdio']
       \ }
 let g:neosnippet#snippets_directory = "~/dotfiles/snippets"
@@ -170,7 +169,6 @@ let g:deoplete#file#enable_buffer_path = 1
 let g:deoplete#enable_smart_case = 1
 let g:deoplete#keyword_patterns = {}
 let g:deoplete#sources = {}
-" let g:SuperTabDefaultCompletionType = "<c-n>"
 "===================================WEB=========================================
 Plug 'mattn/emmet-vim' "quick HTML expansion
 let g:user_emmet_settings = {}
@@ -185,11 +183,11 @@ Plug 'pangloss/vim-javascript', {'for': ['javascript', 'javascript.jsx']}
 Plug 'mxw/vim-jsx', {'for': ['javascript', 'javascript.jsx']}
 let g:jsx_ext_required = 0  "Always use jsx syntax
 "==================================TYPESCRIPT===================================
-" Plug 'leafgarland/typescript-vim', { 'for': [ 'typescript', 'typescript.tsx' ] }
 Plug 'HerringtonDarkholme/yats.vim', {'for': ['typescript', 'typescript.tsx']}
 Plug 'ianks/vim-tsx', {'for': ['typescript', 'typescript.tsx']}
 Plug 'mhartington/nvim-typescript', {'do': './install.sh'}
 let g:nvim_typescript#javascript_support = 1
+let g:nvim_typescript#diagnostics_enable = 0
 augroup typescript
   au FileType javacript,javascript.jsx,typescript,typescript.tsx nn <buffer> K :TSType<CR>
   au FileType javacript,javascript.jsx,typescript,typescript.tsx nn <buffer> gd :TSDef<CR>
@@ -200,11 +198,14 @@ augroup END
 "==================================ELIXIR=======================================
 Plug 'elixir-lang/vim-elixir', {'for': ['elixir']}
 Plug 'slashmili/alchemist.vim', {'for': ['elixir']}
+let g:deoplete#sources['elixir'] = [ 'buffer', 'file', 'alchemist']
 augroup elixir
   au!
   au FileType elixir nn <buffer> <localleader>i :IEx<CR>
+  au FileType elixir nn <buffer> <localleader>d :ExDoc 
   au FileType elixir nn <buffer> <localleader>t :Mix test<CR>
   au FileType elixir nn <buffer> <localleader>x :Mix<Space>
+  au FileType elixir nn <buffer> gd :ExDef<CR>>
 augroup END
 "=================================HASKELL=======================================
 Plug 'eagletmt/neco-ghc', {'for': ['haskell']}
@@ -310,9 +311,9 @@ au! BufRead,BufNewFile *.rest set filetype=rest
 au! FileType rest nn <buffer> <CR> :HTTPClientDoRequest<CR>
 "=================================PLUG END======================================
 call plug#end()
+set background=dark
+colo gruvbox
 
-colo onedark
-let g:airline_theme='onedark'
 filetype plugin indent on
 syntax enable
 ""===================================FAST=SEARCH=================================
@@ -330,52 +331,53 @@ augroup lsp
   au FileType ruby,python,reason,ocaml,rust nn <buffer> <localleader>r :call LanguageClient_textDocument_rename()<cr>
   au FileType ruby,python,reason,ocaml,rust nn <buffer> <localleader>u :call LanguageClient_textDocument_documentSymbol()<cr>
   au FileType ruby,python,reason,ocaml,rust nn <buffer> <localleader>x :LanguageClientStop<cr>:LanguageClientStart<cr>
+  au FileType ruby,python,reason,ocaml,rust nn <buffer> <leader>ln :cc<cr>
+  au FileType ruby,python,reason,ocaml,rust nn <buffer> <leader>lp :cp<cr>
 augroup END
 "===================================KEYBINDINGS=================================
 " Buffer jumper
-nn <BS> :bp<CR>
+nn <BS> :b#<CR>
+
 " Leader mappings
-  " Fzf
+nn <leader>' :Marks<CR>
+nn <leader>/ :Ag<CR>
+nn <leader><CR> :
+nn <leader><leader> :b#<CR>
 nn <leader>a :Lines<CR>
 nn <leader>b :Buffers<CR>
+nn <leader>d :Vexplore! .<CR>
+nn <leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
 nn <leader>f :Files<CR>
+nn <leader>g :Magit<CR>
 nn <leader>h :Helptags<CR>
 nn <leader>i :Tags<CR>
-nn <leader>m :History<CR>
-nn <leader>of :FZF ~/Documents/vimwiki<CR>
-nn <leader>u :BTags<CR>
-nn <leader>/ :Ag<CR>
-nn <leader>' :Marks<CR>
-" Ale 
+nn <leader>j <C-]>
+nn <leader>k :q<CR>
 nn <silent> <leader>ld :ALEDetail<CR>
 nn <silent> <leader>ln :ALENext<CR>
 nn <silent> <leader>lp :ALEPrevious<CR>
-nn <leader><leader> :b#<CR>
-nn <leader>d :Vexplore! .<CR>
-nn <leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
-nn <leader>g :Magit<CR>
-nn <leader>j <C-]>
-nn <leader>k :q<CR>
+nn <leader>m :History<CR>
 nn <leader>n :tabe<CR>
+nn <leader>of :FZF ~/Documents/vimwiki<CR>
 nn <leader>oo :e ~/Documents/vimwiki/index.md<CR>
 nn <leader>p :cw<CR>
 nn <leader>q :qa<CR>
-nn <leader>rr :S/
-nn <leader>ra :%S/
-nn <leader>sk :split<CR>
-nn <leader>sj :split<CR><C-W>j
+nn <leader>ra :%s/
+nn <leader>rr :s/
 nn <leader>sh :vsplit<CR>
+nn <leader>sj :split<CR><C-W>j
+nn <leader>sk :split<CR>
 nn <leader>sl :vsplit<CR><C-W>l
-nn <silent> <leader>t :call OpenOrCreateTerminal()<CR>
-nn <leader>vv :e ~/dotfiles/.vimrc<CR>
-nn <leader>vo :e ~/.config/oni/config.tsx<CR>
+nn <leader>u :BTags<CR>
 nn <leader>vl :e ./.lvimrc<CR>
+nn <leader>vo :e ~/.config/oni/config.tsx<CR>
+nn <leader>vv :e ~/dotfiles/.vimrc<CR>
 nn <leader>w :w<CR>
 nn <leader>x mzgggqG`z
 nn <leader>y :NeoSnippetEdit<CR>
 nn <leader>zc :set foldlevel=1<cr>
 nn <leader>zo :set foldlevel=99<cr>
-nn <leader><CR> :
+nn <silent> <leader>t :call OpenOrCreateTerminal()<CR>
 " Open netrw for current file
 nn - :Vexplore!<CR>
 " Refresh netrw

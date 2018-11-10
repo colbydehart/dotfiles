@@ -95,15 +95,15 @@ options     head
 snippet     view
 abbr        ramda view
 options     word
-  view(LP([${1}]), ${2});
+  R.view(R.lensPath([${1}]), ${2})
 
 
 snippet     over
 abbr        ramda over
 options     word
-  over(LP([${1}]), (${3}) => ${0}, ${2});
+  R.over(R.lensPath([${1}]), (${3}) => ${0}, ${2})
 
 snippet     set
 abbr        ramda set
 options     word
-  set(LP([${1}]), ${2}, ${3});
+  R.set(R.lensPath([${1}]), ${2}, ${3})

@@ -1,5 +1,7 @@
 # Path to your oh-my-zsh installation.
 export ZSH=/Users/colbydehart/.oh-my-zsh
+# Set config home.
+export XDG_CONFIG_HOME=~/.config
 # If you come from bash you might have to change your $PATH.
 # Local executables
 PATH="/usr/local/bin:$PATH"
@@ -140,3 +142,6 @@ export ERL_AFLAGS="-kernel shell_history enabled"
 
 # NVIM COLORS
 export NVIM_TUI_ENABLE_TRUE_COLOR=1 # Neovim colors
+
+# added by travis gem
+[ -f /Users/colbydehart/.travis/travis.sh ] && source /Users/colbydehart/.travis/travis.sh

@@ -17,8 +17,10 @@ export LP_PS1_POSTFIX="\n🙇  "
 NPM_BIN_PATH=$(npm -g bin) # Add node_modules to PATH
 [ -d $NPM_BIN_PATH ] && export PATH="$PATH:$NPM_BIN_PATH"
 #Python executables
-PYTHON_BIN_PATH="/usr/local/opt/python/libexec/bin"
+PYTHON3_BIN_PATH="$HOME/Library/Python/2.7/bin"
 [ -d $PYTHON_BIN_PATH ] && export PATH="$PYTHON_BIN_PATH:$PATH"
+PYTHON3_BIN_PATH="$HOME/Library/Python/3.7/bin"
+[ -d $PYTHON3_BIN_PATH ] && export PATH="$PYTHON3_BIN_PATH:$PATH"
 #Android executables
 export ANDROID_HOME="$HOME/Library/Android/sdk"
 [ -d $ANDROID_HOME ] && export PATH="$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools"
@@ -54,3 +56,6 @@ export ERL_AFLAGS="-kernel shell_history enabled"
 
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$PATH:$HOME/.rvm/bin"
+
+# added by travis gem
+[ -f /Users/colbydehart/.travis/travis.sh ] && source /Users/colbydehart/.travis/travis.sh
