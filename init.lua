@@ -38,3 +38,5 @@ local configWatcher = hs.pathwatcher.new(
 ):start()
 hs.alert.show("Config loaded")
 
+
+

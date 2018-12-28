@@ -107,3 +107,11 @@ snippet     set
 abbr        ramda set
 options     word
   R.set(R.lensPath([${1}]), ${2}, ${3})
+
+
+snippet     test
+abbr        jest test
+options     head
+  test('${1}', ${2}() => {
+    ${0}
+  })

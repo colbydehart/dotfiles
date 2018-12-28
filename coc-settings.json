@@ -1,0 +1,25 @@
+{
+  "coc.preferences.diagnostic.enableMessage": false,
+  "coc.preferences.formatOnSaveFiletypes": [
+    "css",
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "markdown",
+    "json",
+    "elixir",
+    "eelixir"
+  ],
+  "tsserver.formatOnType": false,
+  "languageserver": {
+    "elixir-ls": {
+      "command": "/Users/colbydehart/.config/nvim/elixir-ls/release/language_server.sh",
+      "filetypes": ["elixir", "eelixir"]
+    },
+    "reason": {
+      "command": "/Users/colbydehart/.config/nvim/reason-language-server/reason-language-server.exe",
+      "filetypes": ["reason"]
+    }
+  }
+}

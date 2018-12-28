@@ -1,0 +1,32 @@
+[
+	{
+		"name": "lapis",
+		"rootPath": "/Users/colbydehart/dev/work/lapis",
+		"paths": [],
+		"group": ""
+	},
+	{
+		"name": "broker-portal-frontend",
+		"rootPath": "/Users/colbydehart/dev/work/broker-portal-frontend",
+		"paths": [],
+		"group": ""
+	},
+	{
+		"name": "optimalist-api",
+		"rootPath": "/Users/colbydehart/dev/optimalist/api",
+		"paths": [],
+		"group": ""
+	},
+	{
+		"name": "optimalist-client",
+		"rootPath": "/Users/colbydehart/dev/optimalist/client",
+		"paths": [],
+		"group": ""
+	},
+	{
+		"name": "formation",
+		"rootPath": "/Users/colbydehart/dev/work/new-formation",
+		"paths": [],
+		"group": ""
+	}
+]
