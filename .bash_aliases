@@ -7,10 +7,11 @@ alias ......=' cd ../../../../..'
 # git stuff
 alias gs='git status'
 alias gl='git log --oneline --graph --decorate $argv'
+grs () {
+    git rebase source/${1:-master};
+}
 alias grc='git rebase --continue'
 alias gri='git rebase -i'
-alias grs='git rebase source/master'
-alias grsd='git rebase source/development'
 alias ga='git add -p'
 alias gc='git commit -m'
 alias gca='git commit --amend --no-edit'
@@ -20,7 +21,7 @@ alias gcom='git checkout master'
 alias gf='git fetch --all --prune'
 alias gpf='git push --force-with-lease'
 alias gpr='hub pull-request -h master -b NavitasLease:master'
-alias gprd='hub pull-request -h master -b NavitasLease:development'
+alias gprd='hub pull-request -h development -b NavitasLease:development'
 alias gps='git pull source master'
 # git submodule stuff
 alias gsuu='git submodule update --remote --rebase'
@@ -28,9 +29,9 @@ alias gsup='git push --recurse-submodules=on-demand'
 # no time to type "nvim"
 alias nv="nvim"
 # Config files
-alias edit-kitty="nvim ~/.config/kitty/kitty.conf"
-alias edit-nvim="nvim ~/dotfiles/.vimrc"
-alias edit-aliases="nvim ~/.bash_aliases"
+alias e-kitty="nvim ~/.config/kitty/kitty.conf"
+alias e-nvim="nvim ~/dotfiles/.vimrc"
+alias e-aliases="nvim ~/.bash_aliases"
 # serve current directory
 alias srvdir="live-server"
 # easier xclipping
@@ -51,8 +52,6 @@ alias dm="docker-machine"
 alias dcl="docker container ls"
 # react native
 alias rn="react-native"
-# newsbeueter
-alias nb="newsboat"
 # tmux in color mode with unicode
 alias tmux="tmux -u2"
 # arduino CLI tool

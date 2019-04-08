@@ -70,6 +70,7 @@ _build
 deps
 _build
 .elixir_ls
+.mix_tasks
 
 # ClojureScript
 .cljs_rhino_repl
@@ -90,10 +91,10 @@ GRTAGS
 GPATH
 tags*
 .tags*
-.ac-php-conf.json
-
 .cljs-rhino-repl
-# Rest Client
-*.rest
+
+# Vial Http Client
+*.http
+
 # ag ingore file
 .ignore

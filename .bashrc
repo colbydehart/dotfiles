@@ -17,10 +17,12 @@ export LP_PS1_POSTFIX="\n🙇  "
 NPM_BIN_PATH=$(npm -g bin) # Add node_modules to PATH
 [ -d $NPM_BIN_PATH ] && export PATH="$PATH:$NPM_BIN_PATH"
 #Python executables
-PYTHON3_BIN_PATH="$HOME/Library/Python/2.7/bin"
+PYTHON_BIN_PATH="$HOME/Library/Python/2.7/bin"
+echo $PYTHON_BIN_PATH
 [ -d $PYTHON_BIN_PATH ] && export PATH="$PYTHON_BIN_PATH:$PATH"
 PYTHON3_BIN_PATH="$HOME/Library/Python/3.7/bin"
 [ -d $PYTHON3_BIN_PATH ] && export PATH="$PYTHON3_BIN_PATH:$PATH"
+
 #Android executables
 export ANDROID_HOME="$HOME/Library/Android/sdk"
 [ -d $ANDROID_HOME ] && export PATH="$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools"

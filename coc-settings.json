@@ -1,9 +1,17 @@
 {
-  "coc.preferences.diagnostic.enableMessage": false,
+  "diagnostic.enableMessage": "jump",
+  "list.source.files.command": "fzf",
+  "list.source.grep.command": "rg",
+  "list.insertMappings": {
+    "<C-n>": "normal:j",
+    "<C-p>": "normal:k",
+    "<Space>": "feedkeys:<SPACE>",
+  },
   "coc.preferences.formatOnSaveFiletypes": [
     "css",
     "javascript",
     "javascriptreact",
+    "javascript.jsx",
     "typescript",
     "typescriptreact",
     "markdown",
@@ -12,11 +20,12 @@
     "eelixir"
   ],
   "tsserver.formatOnType": false,
+  "tslint.enable": true,
   "languageserver": {
-    "elixir-ls": {
-      "command": "/Users/colbydehart/.config/nvim/elixir-ls/release/language_server.sh",
-      "filetypes": ["elixir", "eelixir"]
-    },
+     "elixirLs": {
+       "command": "/Users/colbydehart/.config/nvim/elixir-ls/release/language_server.sh",
+       "filetypes": ["elixir", "eelixir"]
+     },
     "reason": {
       "command": "/Users/colbydehart/.config/nvim/reason-language-server/reason-language-server.exe",
       "filetypes": ["reason"]

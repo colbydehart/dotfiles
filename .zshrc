@@ -15,8 +15,10 @@ RUST_BIN_PATH="~/.cargo/bin"
 [ -d $RUST_BIN_PATH ] && export PATH="$PATH:$RUST_BIN_PATH"
 [ -f ~/.cargo/env ] && source ~/.cargo/env
 #Python executables
-PYTHON_BIN_PATH="/usr/local/opt/python/libexec/bin"
+PYTHON_BIN_PATH="$HOME/Library/Python/2.7/bin"
 [ -d $PYTHON_BIN_PATH ] && export PATH="$PATH:$PYTHON_BIN_PATH"
+PYTHON3_BIN_PATH="$HOME/Library/Python/3.7/bin"
+[ -d $PYTHON3_BIN_PATH ] && export PATH="$PATH:$PYTHON3_BIN_PATH"
 #Android executables
 export ANDROID_HOME="$HOME/Library/Android/sdk"
 [ -d $ANDROID_HOME ] && export PATH="$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools"
@@ -29,6 +31,9 @@ export ANDROID_HOME="$HOME/Library/Android/sdk"
 #Java executables
 export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk-10.0.2.jdk"
 export PATH="$PATH:$JAVA_HOME/Contents/Home/bin"
+# icu4c for node
+export PATH="/usr/local/opt/icu4c/bin:$PATH"
+export PATH="/usr/local/opt/icu4c/sbin:$PATH"
 #Rbenv
 eval "$(rbenv init -)"
 # OCI (oracle drivers)
@@ -50,7 +55,7 @@ fi
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="eastwood"
+ZSH_THEME="lambda"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -94,7 +99,7 @@ HYPHEN_INSENSITIVE="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git docker docker-compose heroku lein mix npm yarn zsh-syntax-highlighting)
+plugins=(git heroku mix-fast npm yarn)
 
 source $ZSH/oh-my-zsh.sh
 

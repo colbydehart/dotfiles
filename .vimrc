@@ -1,4 +1,3 @@
-
 "===============================COLBY=DEHART'S================================
 "==================================WONDERFUL===================================
 "===================================HORRIBLE===================================
@@ -9,7 +8,7 @@ set cindent                        "auto indent
 set clipboard=unnamedplus          "use system clipboard
 set diffopt=vertical               "vertical diff splits
 set expandtab                      "no tabs
-set foldlevel=10                   "start with a big fold
+set foldlevel=20                   "start with a big fold
 set foldmethod=syntax              "code folding
 set hidden                         "allow jumping back and forth between multiple unsaved buffers
 set ignorecase                     "ignore case when searching
@@ -82,22 +81,27 @@ call plug#begin()
 
 "====================================COSMETIC===================================
 Plug 'joshdick/onedark.vim'
+Plug 'romainl/flattened'
 Plug 'Yggdroot/indentLine'
 Plug 'itchyny/lightline.vim'
 
 "====================================UTILITY====================================
-Plug 'jiangmiao/auto-pairs'
+Plug 'Raimondi/delimitMate'
 Plug 'powerman/vim-plugin-AnsiEsc'
 Plug 'AndrewRadev/splitjoin.vim'
-Plug 'jreybert/vimagit'
 Plug 'tyru/open-browser.vim'
 Plug 'justinmk/vim-sneak'
+let delimitMate_expand_cr=1
+let delimitMate_jump_expansion=1
+let delimitMate_balance_matchpairs=1
 let g:sneak#use_ic_scs = 1
 let g:sneak#map_netrw = 0
 " tpope shrine.
+Plug 'tpope/vim-rsi'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-dadbod'
+Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-endwise'
@@ -111,10 +115,7 @@ Plug 'tpope/vim-eunuch'
 let g:netrw_nogx = get(g:, 'netrw_nogx', 1)
 nmap gx <Plug>(openbrowser-open)
 vmap gx <Plug>(openbrowser-open)
-augroup magit
-  au!
-  au FileType magit nn <buffer> <TAB> za
-augroup END
+au! FileType fugitive nm <buffer> <TAB> =
 
 "==================================NAVIGATION===================================
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -136,8 +137,10 @@ let g:user_emmet_settings['javascript'] =  {'extends': 'jsx'}
 let g:user_emmet_settings['javascript.jsx'] =  {'extends': 'jsx'}
 let g:user_emmet_settings['typescript'] =  {'extends': 'jsx'}
 let g:user_emmet_settings['typescript.tsx'] =  {'extends': 'jsx'}
+let g:user_emmet_settings['reason'] =  {'extends': 'jsx'}
 Plug 'elzr/vim-json' "Better JSON highlighting
 let g:vim_json_syntax_conceal=0
+au! BufEnter .babelrc setlocal ft=json
 
 "==================================JAVASCRIPT===================================
 Plug 'pangloss/vim-javascript', {'for': ['javascript', 'javascript.jsx']}
@@ -193,17 +196,22 @@ Plug 'neo4j-contrib/cypher-vim-syntax'
 Plug 'jparise/vim-graphql' " graphql syntax support
 Plug 'godlygeek/tabular' " allows formatting of markdown tables
 Plug 'plasticboy/vim-markdown' " better markdown support
+Plug 'figitaki/vim-dune'
+Plug 'chr4/nginx.vim'
+Plug 'vim-scripts/applescript.vim'
+Plug 'baverman/vial'
+Plug 'baverman/vial-http'
 let g:vim_markdown_conceal = 0
 let g:vim_markdown_no_extensions_in_markdown = 1
 let g:vim_markdown_autowrite = 1
-au! BufEnter *.md setlocal tw=80 foldmethod=indent
+au! BufEnter *.md setlocal tw=80 foldmethod=indent cole=0
 au! BufEnter *.md nmap <buffer> <CR> <Plug>Markdown_EditUrlUnderCursor
+au! BufEnter dune setlocal ft=dune
 
 "=================================PLUG END======================================
 call plug#end()
 set background=dark
 colo onedark
-
 filetype plugin indent on
 syntax enable
 
@@ -296,6 +304,7 @@ nn H gT
 nn L gt
 nn ! :!
 nn q: :q
+im <C-c> <ESC>
 
 " Terminal stuff
 tnoremap <Esc> <C-\><C-n>
