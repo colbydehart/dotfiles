@@ -3,30 +3,56 @@
 		"name": "lapis",
 		"rootPath": "/Users/colbydehart/dev/work/lapis",
 		"paths": [],
-		"group": ""
+		"group": "",
+		"enabled": true
 	},
 	{
 		"name": "broker-portal-frontend",
 		"rootPath": "/Users/colbydehart/dev/work/broker-portal-frontend",
 		"paths": [],
-		"group": ""
+		"group": "",
+		"enabled": true
 	},
 	{
 		"name": "optimalist-api",
 		"rootPath": "/Users/colbydehart/dev/optimalist/api",
 		"paths": [],
-		"group": ""
+		"group": "",
+		"enabled": true
 	},
 	{
 		"name": "optimalist-client",
 		"rootPath": "/Users/colbydehart/dev/optimalist/client",
 		"paths": [],
-		"group": ""
+		"group": "",
+		"enabled": true
 	},
 	{
 		"name": "formation",
 		"rootPath": "/Users/colbydehart/dev/work/new-formation",
 		"paths": [],
-		"group": ""
+		"group": "",
+		"enabled": true
+	},
+	{
+		"name": "org",
+		"rootPath": "/Users/colbydehart/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org",
+		"paths": [],
+		"group": "",
+		"enabled": true
+	},
+	{
+		"name": "optimalist-reason",
+		"rootPath": "/Users/colbydehart/dev/optimalist/reason",
+		"paths": [],
+		"group": "",
+		"enabled": true
+	},
+	{
+		"name": "navitex",
+		"rootPath": "/Users/colbydehart/dev/work/navitex",
+		"paths": [],
+		"group": "",
+		"enabled": true
 	}
 ]

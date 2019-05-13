@@ -7,7 +7,6 @@
 
 (add-to-list 'load-path "~/.emacs.d/lisp")
 ;; Secretssss
-(load-file "~/secrets.el")
 (require 'cl)
 (require 'init-package)
 (require 'init-fun)

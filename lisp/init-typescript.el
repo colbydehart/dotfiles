@@ -2,7 +2,6 @@
   (interactive)
   (tide-setup)
   (flycheck-mode +1)
-  (add-hook 'before-save-hook 'tide-format-before-save)
   (setq company-tooltip-align-annotations t)
   (setq flycheck-check-syntax-automatically '(save mode-enabled))
   (eldoc-mode +1)
@@ -21,8 +20,10 @@
                               nil
                               :tabSize 2 :indentSize 2)))
 (use-package typescript-mode :defer t :mode "\\.tsx?$")
+(use-package prettier-js)
 
 (add-hook 'typescript-mode-hook 'cool/ts-hook)
+(add-hook 'typescript-mode-hook 'prettier-js-mode)
 (add-hook 'tide-references-mode 'evil-emacs-state)
 
 (provide 'init-typescript)

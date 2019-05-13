@@ -47,7 +47,7 @@
   :init (sml/setup))
 ;; dope font
 (if (display-graphic-p)
-    (set-default-font "mononoki 22"))
+    (set-default-font "Fira Code-22"))
 ;; scratch stuff
 (setq initial-major-mode 'elixir-mode)
 (setq initial-scratch-message "defmodule Scratch do

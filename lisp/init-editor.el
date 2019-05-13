@@ -4,7 +4,7 @@
 (use-package yaml-mode :defer t)
 (use-package ansible :defer t)
 (use-package dockerfile-mode :defer t)
-(use-package docker :config (docker-global-mode))
+(use-package docker :defer t)
 (use-package fountain-mode :defer t)
 (use-package olivetti
   :init (add-hook 'fountain-mode-hook 'olivetti-mode))

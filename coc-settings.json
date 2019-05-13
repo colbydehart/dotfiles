@@ -5,7 +5,7 @@
   "list.insertMappings": {
     "<C-n>": "normal:j",
     "<C-p>": "normal:k",
-    "<Space>": "feedkeys:<SPACE>",
+    // "<space>": "feedkeys:<SPACE>",
   },
   "coc.preferences.formatOnSaveFiletypes": [
     "css",
@@ -16,16 +16,10 @@
     "typescriptreact",
     "markdown",
     "json",
-    "elixir",
-    "eelixir"
   ],
   "tsserver.formatOnType": false,
   "tslint.enable": true,
   "languageserver": {
-     "elixirLs": {
-       "command": "/Users/colbydehart/.config/nvim/elixir-ls/release/language_server.sh",
-       "filetypes": ["elixir", "eelixir"]
-     },
     "reason": {
       "command": "/Users/colbydehart/.config/nvim/reason-language-server/reason-language-server.exe",
       "filetypes": ["reason"]

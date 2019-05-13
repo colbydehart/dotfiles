@@ -78,7 +78,7 @@
     "n" 'eyebrowse-create-window-config
     "oo" (lambda () (interactive) (find-file "~/org/gtd.org"))
     "oj" (lambda () (interactive) (find-file "~/org/journal.org"))
-    "oa" 'org-agenda
+
     ;; Projects
     "pp" 'helm-projectile-switch-project
     "pt" 'projectile-regenerate-tags

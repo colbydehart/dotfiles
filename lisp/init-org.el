@@ -4,8 +4,7 @@
   :init
   (global-set-key (kbd "C-c c") 'org-capture)
   (add-hook 'org-agenda-finalize-hook 'evil-normal-state)
-  (setq org-refile-targets '(("gtd.org" :maxlevel . 2)
-                             ("someday.org" :maxlevel . 2)))
+  
   (setq org-src-fontify-natively t)
   (setq org-log-done 1)
   (setq org-use-fast-todo-selection t)

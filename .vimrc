@@ -4,6 +4,7 @@
 "====================================VIMRC=====================================
 "==============================================================================
 "===================================GENERAL====================================
+set autoread                       "auto relaod
 set cindent                        "auto indent
 set clipboard=unnamedplus          "use system clipboard
 set diffopt=vertical               "vertical diff splits
@@ -33,6 +34,7 @@ set timeoutlen=1000 ttimeoutlen=-1 "better timeouts
 set updatetime=2000                "a bit faster updatetime
 set visualbell                     "no sounds!
 set wildignorecase                 "case insensitive file search
+set conceallevel=0                 "no concealing, confusing
 let g:netrw_browse_split = 4       "open netrw files in other window
 let g:netrw_winsize = 25           "25 column width for netrw
 let g:netrw_altv = 1               "Vertical split on right side
@@ -146,13 +148,24 @@ au! BufEnter .babelrc setlocal ft=json
 Plug 'pangloss/vim-javascript', {'for': ['javascript', 'javascript.jsx']}
 Plug 'mxw/vim-jsx', {'for': ['javascript', 'javascript.jsx']}
 let g:jsx_ext_required = 0  "Always use jsx syntax
+au! FileType typescript set foldmethod=indent
+au! FileType typescript.tsx set foldmethod=indent
 
 "==================================TYPESCRIPT===================================
 Plug 'leafgarland/typescript-vim', {'for': ['typescript', 'typescript.tsx']}
 Plug 'peitalin/vim-jsx-typescript', {'for': ['typescript', 'typescript.tsx']}
 
 "==================================ELIXIR=======================================
-Plug 'elixir-lang/vim-elixir', {'for': ['elixir']}
+Plug 'elixir-lang/vim-elixir', {'for': ['elixir', 'eelixir']}
+Plug 'slashmili/alchemist.vim', {'for': ['elixir', 'eelixir']}
+Plug 'mhinz/vim-mix-format'
+let g:mix_format_on_save = 1
+au BufEnter *.leex set filetype=eelixir
+augroup elixir
+  au!
+  au FileType elixir,eelixir nn gd :ExDef<CR>
+augroup END
+
 
 "===============================OCAML/REASON====================================
 Plug 'reasonml-editor/vim-reason-plus', {'for': ['reason', 'ocaml']}
@@ -224,12 +237,12 @@ endif
 "===================================LSP Bindings===================================
 augroup lsp
   au!
-  au FileType reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx,elixir nn <silent> <buffer> K :call CocAction("doHover")<CR>
-  au FileType reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx,elixir nn <silent> <buffer> gd :call CocAction("jumpDefinition")<CR>
-  au FileType reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx,elixir nn <silent> <buffer> gr :call CocAction("jumpReferences")<CR>
-  au FileType reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx,elixir nn <buffer> <localleader>i :call CocAction("workspaceSymbols")<CR>
-  au FileType reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx,elixir nn <buffer> <localleader>r :call CocAction("rename")<CR>
-  au CursorHoldI,CursorMovedI * call CocAction('showSignatureHelp')
+  au FileType reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx nn <silent> <buffer> K :call CocAction("doHover")<CR>
+  au FileType reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx nn <silent> <buffer> gd :call CocAction("jumpDefinition")<CR>
+  au FileType reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx nn <silent> <buffer> gr :call CocAction("jumpReferences")<CR>
+  au FileType reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx nn <buffer> <localleader>i :call CocAction("workspaceSymbols")<CR>
+  au FileType reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx nn <buffer> <localleader>r :call CocAction("rename")<CR>
+  au CursorHoldI,CursorMovedI * call CocActionAsync('showSignatureHelp')
   au! bufwritepre *.tsx :CocCommand prettier.formatFile
   au! bufwritepre *.jsx :CocCommand prettier.formatFile
   au! bufwritepre *.ts :CocCommand prettier.formatFile
@@ -251,7 +264,7 @@ nn <leader>b :Buffers<CR>
 nn <leader>d :Vexplore! .<CR>
 nn <leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
 nn <leader>f :Files<CR>
-nn <leader>g :Magit<CR>
+nn <leader>g :Gstatus<CR>
 nn <leader>h :Helptags<CR>
 nn <leader>i :Tags<CR>
 nn <leader>j <C-]>
@@ -318,12 +331,10 @@ autocmd BufWinEnter,WinEnter term://* startinsert
 " Tab completion
 inoremap <silent><expr> <S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
 inoremap <silent><expr> <TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-imap <C-space> coc#refresh();
+inoremap <silent><expr> <c-space> coc#refresh()
 
 " Snippet expansion
-imap <silent> <expr> <C-E>
-      \ neosnippet#expandable_or_jumpable() ?  "\<Plug>(neosnippet_expand_or_jump)" :
-      \ "\<C-E>"
+imap <C-e> <Plug>(neosnippet_expand_or_jump)
 
 " Local Vimrc
 if filereadable('./.lvimrc')

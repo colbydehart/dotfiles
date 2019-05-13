@@ -6,7 +6,8 @@
   "vim.enableNeovim": true,
   "editor.formatOnSave": true,
   "emmet.includeLanguages": {
-    "javascript": "jsx"
+    "javascript": "jsx",
+    "reason": "javascriptreact"
   },
   "vim.handleKeys": {
     "<C-f>": false,
@@ -127,7 +128,7 @@
       "before": ["<leader>", "e"],
       "commands": [
         {
-          "command": "newFile.createNewFile",
+          "command": "extension.advancedNewFile",
           "args": []
         }
       ]
@@ -262,9 +263,14 @@
   "workbench.iconTheme": "material-icon-theme",
   "git.autofetch": true,
   "prettier.trailingComma": "all",
-  "elm.analyseEnabled": true,
   "workbench.sideBar.location": "right",
   "editor.lineNumbers": "relative",
   "csharp.referencesCodeLens.enabled": false,
-  "liveshare.audio.joinCallBehavior": "accept"
+  "liveshare.audio.joinCallBehavior": "accept",
+  "liveshare.audio.startCallOnShare": true,
+  "files.exclude": {
+    "**/.shadow-cljs": true,
+    "**/nashhorn_code_cache": true
+  },
+  "explorer.autoReveal": false
 }
