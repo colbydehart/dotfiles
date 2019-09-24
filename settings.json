@@ -272,5 +272,6 @@
     "**/.shadow-cljs": true,
     "**/nashhorn_code_cache": true
   },
-  "explorer.autoReveal": false
+  "explorer.autoReveal": false,
+  "liveshare.featureSet": "stable"
 }

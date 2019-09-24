@@ -15,25 +15,17 @@ alias gri='git rebase -i'
 alias ga='git add -p'
 alias gc='git commit -m'
 alias gca='git commit --amend --no-edit'
-alias gco='git checkout -b $argv'
-alias gcod='git checkout development'
-alias gcom='git checkout master'
+alias gco='git checkout'
 alias gf='git fetch --all --prune'
 alias gpf='git push --force-with-lease'
-alias gpr='hub pull-request -h master -b NavitasLease:master'
-alias gprd='hub pull-request -h development -b NavitasLease:development'
+alias gpr='hub pull-request -b NavitasLease:master'
 alias gps='git pull source master'
+alias grhh='git reset --hard HEAD'
 # git submodule stuff
 alias gsuu='git submodule update --remote --rebase'
 alias gsup='git push --recurse-submodules=on-demand'
 # no time to type "nvim"
 alias nv="nvim"
-# Config files
-alias e-kitty="nvim ~/.config/kitty/kitty.conf"
-alias e-nvim="nvim ~/dotfiles/.vimrc"
-alias e-aliases="nvim ~/.bash_aliases"
-# serve current directory
-alias srvdir="live-server"
 # easier xclipping
 alias xclip="xclip -selection c"
 # clear the screen
@@ -56,8 +48,6 @@ alias rn="react-native"
 alias tmux="tmux -u2"
 # arduino CLI tool
 alias arduino='/Applications/Arduino.app/Contents/MacOS/Arduino'
-# mix testing
-alias mixtest="mix test --stale --listen-on-stdin"
 # iex with mix
 alias ism="iex -S mix"
 # open phoenix server

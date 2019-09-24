@@ -1,59 +1,28 @@
+snippet     ir
+abbr        Import react
+options     head
+  import React from 'react';
+
 snippet     rc
 abbr        React Component
 options     head
-  import React from 'react';
-
   type Props = {
     ${1}
   }
 
-  export class ${2} extends React.Component<Props> {
-    render() {
-      return (
-        ${0}
-      );
-    }
+  export const ${2}: React.FC<Props> = (props) => {
+
+    return (
+      ${0}
+    );
   }
 
-
-snippet     rcs
-abbr        React Component with State
+snippet     rcl
+abbr        React Component Light
 options     head
-  import React from 'react';
-
-  type Props = {
-    ${1}
-  }
-
-  type State = {
-    ${2}
-  }
-
-  export class ${3} extends React.Component<Props, State> {
-    state = {
-      ${4}
-    }
-
-    render() {
-      return (
-        ${0}
-      );
-    }
-  }
-
-
-snippet     sfc
-abbr        React Stateless Functional Component
-options     head
-  import React from 'react';
-
-  type Props = {
-    ${1}
-  }
-
-  export const ${2}: React.SFC<Props> = (props) => (
+  export const ${1}: React.FC = () => (
     ${0}
-  );
+  )
 
 snippet     i
 abbr        import

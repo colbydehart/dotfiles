@@ -50,7 +50,7 @@ options     head
 
   @doc false
   def start_link do
-    GenServer.start_link(__MODULE__, ${1:Map.new})
+    GenServer.start_link(__MODULE__, ${1:Map.new}, name: __MODULE__)
   end
 
   @impl true
@@ -69,3 +69,40 @@ options     head
     Agent.start_link(%{}, name: __MODULE__)
   end
 
+snippet     hi
+abbr        handle_info
+options     head
+  def handle_info(${1}, ${2:state}) do
+    ${0}
+  end
+
+
+snippet     hc
+abbr        handle_call
+options     head
+  def handle_call(${1}, _from, ${2:state}) do
+    ${0}
+  end
+
+
+snippet     hca
+abbr        handle_cast
+options     head
+  def handle_cast(${1}, ${2:state}) do
+    ${0}
+  end
+
+snippet     he
+abbr        handle_event
+options     head
+  def handle_event(${1}, ${2}, socket) do
+    ${0}
+    {:noreply, socket}
+  end
+
+
+snippet     pry
+abbr        IEx.pry
+options     head
+  import IEx
+  IEx.pry()

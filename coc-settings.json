@@ -5,24 +5,31 @@
   "list.insertMappings": {
     "<C-n>": "normal:j",
     "<C-p>": "normal:k",
-    // "<space>": "feedkeys:<SPACE>",
   },
   "coc.preferences.formatOnSaveFiletypes": [
     "css",
     "javascript",
     "javascriptreact",
-    "javascript.jsx",
     "typescript",
     "typescriptreact",
-    "markdown",
     "json",
   ],
+  "eslint.filetypes": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
   "tsserver.formatOnType": false,
   "tslint.enable": true,
   "languageserver": {
-    "reason": {
+    "reason-language-server": {
       "command": "/Users/colbydehart/.config/nvim/reason-language-server/reason-language-server.exe",
       "filetypes": ["reason"]
+    },
+    "elixirLS": {
+      "command": "/Users/colbydehart/.config/nvim/elixir-ls/language_server.sh",
+      "filetypes": ["elixir", "eelixir"]
+    },
+    "terraform-lsp": {
+      "command": "/Users/colbydehart/.config/nvim/terraform-lsp",
+      "filetypes": ["terraform"],
+      "initializationOptions": {}
     }
   }
 }

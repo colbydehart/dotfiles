@@ -21,22 +21,8 @@ end)
 hs.hotkey.bind(mash, "return", function()
   hs.reload()
 end)
--- USB watcher for mech keyboards
-hs.usb.watcher.new(function(event)
-  local mechboards = {"ErgoDox EZ", "Planck", "Planck Light"}
-  if fn.contains(mechboards, event.productName) then
-    if event.eventType == "added" then
-      hs.keycodes.setLayout("U.S.")
-    else
-      hs.keycodes.setLayout("Colemak")
-    end
-  end
-end):start()
 
 local configWatcher = hs.pathwatcher.new(
   os.getenv("HOME") .. "/.hammerspoon/", hs.reload
 ):start()
 hs.alert.show("Config loaded")
-
-
-

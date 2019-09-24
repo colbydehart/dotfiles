@@ -35,8 +35,9 @@ set updatetime=2000                "a bit faster updatetime
 set visualbell                     "no sounds!
 set wildignorecase                 "case insensitive file search
 set conceallevel=0                 "no concealing, confusing
+let g:netrw_banner = 0
 let g:netrw_browse_split = 4       "open netrw files in other window
-let g:netrw_winsize = 25           "25 column width for netrw
+let g:netrw_winsize = 35           "25 column width for netrw
 let g:netrw_altv = 1               "Vertical split on right side
 let g:netrw_localrmdir='rm -rf'    "Remove nonempty directories
 let mapleader = ' '                "leader is space
@@ -56,6 +57,7 @@ set wildignore+=.git
 set wildignore+=.venv
 set wildignore+=*/dist
 set wildignore+=*.bs.js
+set wildignore+=.DS_Store
 
 "===================================FUNCTIONS===================================
 func! OpenOrCreateTerminal()
@@ -82,10 +84,23 @@ endif
 call plug#begin()
 
 "====================================COSMETIC===================================
-Plug 'joshdick/onedark.vim'
-Plug 'romainl/flattened'
+Plug 'sainnhe/gruvbox-material'
 Plug 'Yggdroot/indentLine'
 Plug 'itchyny/lightline.vim'
+let g:gruvbox_material_background = 'hard'
+let g:lightline = {
+      \ 'colorscheme': 'gruvbox_material',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'gitbranch', 'readonly', 'filename', 'modified', "calendar"] ]
+      \ },
+      \ 'component': {
+      \   'calendar': "%{strftime('%H:%M')}"
+      \ },
+      \ 'component_function': {
+      \   'gitbranch': 'fugitive#head'
+      \ },
+      \ }
 
 "====================================UTILITY====================================
 Plug 'Raimondi/delimitMate'
@@ -93,11 +108,13 @@ Plug 'powerman/vim-plugin-AnsiEsc'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'tyru/open-browser.vim'
 Plug 'justinmk/vim-sneak'
+Plug 'christoomey/vim-tmux-navigator'
 let delimitMate_expand_cr=1
 let delimitMate_jump_expansion=1
 let delimitMate_balance_matchpairs=1
 let g:sneak#use_ic_scs = 1
 let g:sneak#map_netrw = 0
+let g:sneak#label = 1
 " tpope shrine.
 Plug 'tpope/vim-rsi'
 Plug 'tpope/vim-fugitive'
@@ -122,56 +139,71 @@ au! FileType fugitive nm <buffer> <TAB> =
 "==================================NAVIGATION===================================
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+Plug 'vim-voom/VOoM'
+command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, {'options': '--delimiter : --nth 4..'}, <bang>0)
+
+"======================================LINTING==================================
 
 "==================================AUTOCOMPLETION===============================
-Plug 'shougo/neosnippet.vim'
-Plug 'shougo/neosnippet-snippets'
-Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'liuchengxu/vista.vim'
+Plug 'Shougo/neosnippet.vim'
+Plug 'Shougo/neosnippet-snippets'
+Plug 'Shougo/echodoc.vim'
+let g:vista_default_executive = 'coc'
 let g:neosnippet#snippets_directory = "~/dotfiles/snippets"
 let g:neosnippet#scope_aliases = {}
-let g:coc_auto_copen = 0
-autocmd User CocQuickfixChange :call fzf_quickfix#run()
+let g:neosnippet#enable_completed_snippet = 1
 
 "===================================WEB=========================================
-Plug 'mattn/emmet-vim' "quick HTML expansion
-let g:user_emmet_settings = {}
-let g:user_emmet_settings['javascript'] =  {'extends': 'jsx'}
-let g:user_emmet_settings['javascript.jsx'] =  {'extends': 'jsx'}
-let g:user_emmet_settings['typescript'] =  {'extends': 'jsx'}
-let g:user_emmet_settings['typescript.tsx'] =  {'extends': 'jsx'}
-let g:user_emmet_settings['reason'] =  {'extends': 'jsx'}
+Plug 'stephenway/postcss.vim'
+Plug 'mattn/emmet-vim'
+let g:user_emmet_settings = {
+\  'javascript' : {'extends' : 'jsx'},
+\  'javascript.jsx' : {'extends' : 'jsx'},
+\  'typescript' : {'extends' : 'jsx'},
+\  'typescript.tsx' : {'extends' : 'jsx'},
+\  'slime': {'extends': 'slim'}
+\}
 Plug 'elzr/vim-json' "Better JSON highlighting
 let g:vim_json_syntax_conceal=0
 au! BufEnter .babelrc setlocal ft=json
+au! BufEnter .prettierrc setlocal ft=json
+au! BufEnter *.postcss,*.pcss setlocal ft=postcss
 
 "==================================JAVASCRIPT===================================
 Plug 'pangloss/vim-javascript', {'for': ['javascript', 'javascript.jsx']}
 Plug 'mxw/vim-jsx', {'for': ['javascript', 'javascript.jsx']}
+Plug 'posva/vim-vue'
 let g:jsx_ext_required = 0  "Always use jsx syntax
-au! FileType typescript set foldmethod=indent
-au! FileType typescript.tsx set foldmethod=indent
+let g:vue_disable_pre_processors=1
 
 "==================================TYPESCRIPT===================================
-Plug 'leafgarland/typescript-vim', {'for': ['typescript', 'typescript.tsx']}
-Plug 'peitalin/vim-jsx-typescript', {'for': ['typescript', 'typescript.tsx']}
-
-"==================================ELIXIR=======================================
-Plug 'elixir-lang/vim-elixir', {'for': ['elixir', 'eelixir']}
-Plug 'slashmili/alchemist.vim', {'for': ['elixir', 'eelixir']}
-Plug 'mhinz/vim-mix-format'
-let g:mix_format_on_save = 1
-au BufEnter *.leex set filetype=eelixir
-augroup elixir
+Plug 'leafgarland/typescript-vim'
+Plug 'peitalin/vim-jsx-typescript'
+au! FileType typescript set foldmethod=indent
+au! FileType typescript.tsx set foldmethod=indent
+augroup typescript
   au!
-  au FileType elixir,eelixir nn gd :ExDef<CR>
+  au FileType typescript,typescript.tsx nn <buffer> K :TSType<CR>
+  au FileType typescript,typescript.tsx nn <buffer> gd :TSDef<CR>
+  au FileType typescript,typescript.tsx nn <buffer> <localleader>d :TSDoc<CR>
+  au FileType typescript,typescript.tsx nn <buffer> <localleader>r :TSRename<CR>
 augroup END
 
+"==================================ELIXIR=======================================
+Plug 'elixir-lang/vim-elixir'
+Plug 'mhinz/vim-mix-format'
+Plug 'slime-lang/vim-slime-syntax'
+au BufEnter *.leex set filetype=eelixir
+let g:mix_format_on_save = 1
+au! BufNewFile,BufRead *.slimleex set filetype=slime
 
 "===============================OCAML/REASON====================================
 Plug 'reasonml-editor/vim-reason-plus', {'for': ['reason', 'ocaml']}
 
 "===================================ELM=========================================
-Plug 'ElmCast/elm-vim', {'for': 'elm'}
+Plug 'ElmCast/elm-vim'
 let g:elm_setup_keybindings = 0
 let g:elm_format_autosave=1
 au! FileType elm setlocal tabstop=4 shiftwidth=4 softtabstop=4 foldmethod=indent
@@ -208,28 +240,22 @@ au! FileType vim setlocal foldmethod=indent keywordprg=:help
 Plug 'neo4j-contrib/cypher-vim-syntax'
 Plug 'jparise/vim-graphql' " graphql syntax support
 Plug 'godlygeek/tabular' " allows formatting of markdown tables
-Plug 'plasticboy/vim-markdown' " better markdown support
-Plug 'figitaki/vim-dune'
 Plug 'chr4/nginx.vim'
-Plug 'vim-scripts/applescript.vim'
+Plug 'hashivim/vim-terraform'
 Plug 'baverman/vial'
 Plug 'baverman/vial-http'
-let g:vim_markdown_conceal = 0
-let g:vim_markdown_no_extensions_in_markdown = 1
-let g:vim_markdown_autowrite = 1
-au! BufEnter *.md setlocal tw=80 foldmethod=indent cole=0
-au! BufEnter *.md nmap <buffer> <CR> <Plug>Markdown_EditUrlUnderCursor
-au! BufEnter dune setlocal ft=dune
+au! BufEnter,BufRead *.md set tw=80 foldmethod=indent cole=0 wrap
+au! FileType qf setlocal wrap
 
 "=================================PLUG END======================================
 call plug#end()
 set background=dark
-colo onedark
+colo gruvbox-material
 filetype plugin indent on
 syntax enable
 
 ""===================================FAST=SEARCH=================================
-if executable('ag') 
+if executable('ag')
   set grepprg=ag\ --nogroup\ --nocolor\ --ignore-case\ --column
   set grepformat=%f:%l:%c:%m,%f:%l:%m
 endif
@@ -237,17 +263,16 @@ endif
 "===================================LSP Bindings===================================
 augroup lsp
   au!
-  au FileType reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx nn <silent> <buffer> K :call CocAction("doHover")<CR>
-  au FileType reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx nn <silent> <buffer> gd :call CocAction("jumpDefinition")<CR>
-  au FileType reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx nn <silent> <buffer> gr :call CocAction("jumpReferences")<CR>
-  au FileType reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx nn <buffer> <localleader>i :call CocAction("workspaceSymbols")<CR>
-  au FileType reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx nn <buffer> <localleader>r :call CocAction("rename")<CR>
+  au FileType terraform,cs,vue,json,elixir,eelixir,reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx nn <silent> <buffer> K :call CocAction("doHover")<CR>
+  au FileType terraform,cs,vue,json,elixir,eelixir,reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx nn <silent> <buffer> gd :call CocAction("jumpDefinition")<CR>
+  au FileType terraform,cs,vue,json,elixir,eelixir,reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx nn <silent> <buffer> gr :call CocAction("jumpReferences")<CR>
+  au FileType terraform,cs,vue,json,elixir,eelixir,reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx nn <buffer> <localleader>i :call CocAction("workspaceSymbols")<CR>
+  au FileType terraform,cs,vue,json,elixir,eelixir,reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx nn <buffer> <localleader>r :call CocAction("rename")<CR>
+  au FileType terraform,cs,vue,json,elixir,eelixir,reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx nn <buffer> gs :Vista finder coc<CR>
   au CursorHoldI,CursorMovedI * call CocActionAsync('showSignatureHelp')
-  au! bufwritepre *.tsx :CocCommand prettier.formatFile
-  au! bufwritepre *.jsx :CocCommand prettier.formatFile
-  au! bufwritepre *.ts :CocCommand prettier.formatFile
-  au! bufwritepre *.js :CocCommand prettier.formatFile
 augroup END
+
+
 
 "===================================KEYBINDINGS=================================
 " Buffer jumper
@@ -259,7 +284,7 @@ nn <leader>/ :Ag<CR>
 nn <leader>; :Commands<CR>
 nn <leader><CR> :
 nn <leader><leader> :b#<CR>
-nn <leader>a :Lines<CR>
+nn <leader>a :Vista coc<CR>
 nn <leader>b :Buffers<CR>
 nn <leader>d :Vexplore! .<CR>
 nn <leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
@@ -274,9 +299,8 @@ nmap <silent> <leader>ln <Plug>(coc-diagnostic-next)
 nmap <silent> <leader>lp <Plug>(coc-diagnostic-prev)
 nn <leader>m :History<CR>
 nn <leader>n :tabe<CR>
-nn <leader>of :FZF ~/Documents/vimwiki<CR>
-nn <leader>oo :e ~/Documents/vimwiki/index.md<CR>
-nn <leader>p :lw<CR>
+nn <leader>o :e /tmp/todo.md<CR>
+nn <leader>p :cw<CR>
 nn <leader>q :qa<CR>
 nn <leader>ra :%s/
 nn <leader>rr :s/
@@ -284,16 +308,24 @@ nn <leader>sh :vsplit<CR>
 nn <leader>sj :split<CR><C-W>j
 nn <leader>sk :split<CR>
 nn <leader>sl :vsplit<CR><C-W>l
+nn <silent> <leader>t :call OpenOrCreateTerminal()<CR>
 nn <leader>u :BTags<CR>
 nn <leader>vl :e ./.lvimrc<CR>
 nn <leader>vo :e ~/.config/oni/config.tsx<CR>
-nn <leader>vv :e ~/dotfiles/.vimrc<CR>
+nn <leader>vv :e ~/.config/nvim/init.vim<CR>
+
+
 nn <leader>w :w<CR>
 nn <leader>x mzgggqG`z
 nn <leader>y :NeoSnippetEdit<CR>
-nn <leader>zc :set foldlevel=1<cr>
-nn <leader>zo :set foldlevel=99<cr>
-nn <silent> <leader>t :call OpenOrCreateTerminal()<CR>
+function! ToggleFold() abort
+  if &foldlevel == 1
+    set foldlevel=99
+  else
+    set foldlevel=1
+  endif
+endfunction
+nn <leader>z :call ToggleFold()<cr>
 
 " Window navigation
 nn <C-j> <C-W>j
@@ -307,6 +339,9 @@ nn <Right> :vertical res +5<CR>
 nn <Up> :res +5<CR>
 nn <Down> :res -5<CR>
 
+" C-space refreshes autocomplete
+inoremap <silent><expr> <c-space> coc#refresh()
+
 " Etc. keymappings
 nn - :Vexplore!<CR>
 nnoremap Q @q
@@ -317,6 +352,7 @@ nn H gT
 nn L gt
 nn ! :!
 nn q: :q
+nn Z zA
 im <C-c> <ESC>
 
 " Terminal stuff
@@ -328,13 +364,16 @@ tnoremap <C-l> <C-\><C-n><C-w>l
 au TermOpen * setlocal nonumber norelativenumber bufhidden=hide
 autocmd BufWinEnter,WinEnter term://* startinsert
 
-" Tab completion
-inoremap <silent><expr> <S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
-inoremap <silent><expr> <TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-inoremap <silent><expr> <c-space> coc#refresh()
 
-" Snippet expansion
-imap <C-e> <Plug>(neosnippet_expand_or_jump)
+" SuperTab like behavior.
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+inoremap <expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<S-TAB>"
+
+" Trigger neosnippet with <C-l>
+imap <C-l> <Plug>(neosnippet_expand_or_jump)
+smap <C-l> <Plug>(neosnippet_expand_or_jump)
+xmap <C-l> <Plug>(neosnippet_expand_target)
+
 
 " Local Vimrc
 if filereadable('./.lvimrc')
@@ -342,5 +381,5 @@ if filereadable('./.lvimrc')
 endif
 
 " Autoreload .vimrc
-au! bufwritepost .vimrc source %
+au! bufwritepost .vimrc source ~/.config/nvim/init.vim
 au! bufwritepost .lvimrc source %

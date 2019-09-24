@@ -23,8 +23,11 @@ echo $PYTHON_BIN_PATH
 PYTHON3_BIN_PATH="$HOME/Library/Python/3.7/bin"
 [ -d $PYTHON3_BIN_PATH ] && export PATH="$PYTHON3_BIN_PATH:$PATH"
 
+#Yay Java
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home
+
 #Android executables
-export ANDROID_HOME="$HOME/Library/Android/sdk"
+export ANDROID_HOME=/usr/local/share/android-sdk
 [ -d $ANDROID_HOME ] && export PATH="$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools"
 #Haskell executables
 [ -d "$HOME/Library/Haskell/bin" ] && export PATH="$HOME/Library/Haskell/bin:$PATH"
