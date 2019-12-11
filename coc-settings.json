@@ -1,7 +1,10 @@
 {
   "diagnostic.enableMessage": "jump",
-  "list.source.files.command": "fzf",
-  "list.source.grep.command": "rg",
+  "coc.source.around.priority": 9,
+  "coc.source.buffer.priority": 9,
+  "eslint.options": {"configFile": "./.eslintrc"},
+  "json.format.enable": false,
+  "prettier.requireConfig": true,
   "list.insertMappings": {
     "<C-n>": "normal:j",
     "<C-p>": "normal:k",
@@ -12,11 +15,10 @@
     "javascriptreact",
     "typescript",
     "typescriptreact",
-    "json",
+    "json"
   ],
   "eslint.filetypes": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
   "tsserver.formatOnType": false,
-  "tslint.enable": true,
   "languageserver": {
     "reason-language-server": {
       "command": "/Users/colbydehart/.config/nvim/reason-language-server/reason-language-server.exe",

@@ -1,3 +1,90 @@
-snippet imp "Import" b
-import { $0 } from '$1';
+snippet i "Import" b
+import ${2:{ $0 }} from '$1';
+endsnippet
+
+snippet ir "Import React" b
+import React from 'react';
+endsnippet
+
+snippet rc "React Component" b
+type Props = {
+	$1
+}
+export const $2: React.FC<Props> = (props) => {
+	return (
+		$0
+	);
+}
+endsnippet
+
+snippet rcl "React Component Light" b
+export const $1: React.FC = () => {
+	return (
+		$0
+	)
+}
+endsnippet
+
+snippet / "Docstring" w
+/** $0 */
+endsnippet
+
+snippet typ "Type" b
+export type $1 = {
+	$0
+};
+endsnippet
+
+snippet view "Ramda view" b
+R.view(R.lensPath([$1]), $2)
+endsnippet
+
+snippet over "Ramda over" b
+R.over(R.lensPath([$1]), ($3) => $0, $2)
+endsnippet
+
+snippet test "Jest Test" b
+test('$1', $2() => {
+	$0
+})
+endsnippet
+
+snippet ur "useReducer" b
+const [${1:state}, ${2:dispatch}] = React.useReducer(${3:reducer}, ${4: initialState});
+endsnippet
+
+snippet us "useState" b
+const [$1, ${1/.*/set\u$0/}] = React.useState${3:<${4:State}>}($0);
+endsnippet
+
+snippet ue "useEffect" b
+React.useEffect(() => {
+	$0
+}, [$1]);
+endsnippet
+
+snippet um "useMemo" b
+const $1 = React.useMemo(() => $0, [$2]);
+endsnippet
+
+snippet fn "Arrow Function"
+($1) => $0
+endsnippet
+
+snippet fun "Arrow Function with Braces"
+($1) => {
+	$0
+}
+endsnippet
+
+snippet cl "console.log"
+console.log($0)
+endsnippet
+
+snippet esd "eslint disable next line"
+// eslint-disable-next-line
+endsnippet
+
+snippet relno "rel noopener noreferrer" b
+rel="noopener noreferrer"
 endsnippet

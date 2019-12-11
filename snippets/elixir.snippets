@@ -1,0 +1,105 @@
+snippet defm "defmodule" b
+defmodule $1 do
+	$0
+end
+endsnippet
+
+snippet def "def" b
+def $1($2) do
+	$0
+end
+endsnippet
+
+snippet @t "@type" b
+@type $1 :: $0
+endsnippet
+
+snippet @s "@spec" b
+@spec $1($2) :: $3
+endsnippet
+
+snippet @md "@moduledoc" b
+@moduledoc """
+$0
+"""
+endsnippet
+
+snippet @d "doc" b
+@doc """
+$0
+"""
+endsnippet
+
+snippet for "for" b
+for $1 <- $2 do
+	$0
+end
+endsnippet
+
+snippet with "with" b
+with $1 <- $2 do
+	$0
+end
+endsnippet
+
+snippet withe "with else" b
+with $1 <- $2 do
+	$0
+else
+	$3 ->
+		$4
+end
+endsnippet
+
+snippet gens "GenServer" b
+use GenServer
+
+@doc false
+def start_link(_) do
+	GenServer.start_link(__MODULE__, ${1:%{}}, name: __MODULE__)
+end
+
+@impl true
+def init(state) do
+	{:ok, state}
+end
+endsnippet
+
+snippet age "Agent" b
+use Agent
+
+@doc false
+def start_link(_) do
+	Agent.start_link(${0:%{}}, name: __MODULE__)
+end
+endsnippet
+
+snippet hi "handle_info" b
+def handle_info(${1::msg}, ${2:state}) do
+	$0
+end
+endsnippet
+
+snippet hc "handle_call" b
+def handle_call(${1::msg}, ${2:_from}, ${3:state}) do
+	$0
+end
+endsnippet
+
+snippet hca "handle_cast" b
+def handle_cast(${1::msg}, ${2:state}) do
+	$0
+end
+endsnippet
+
+snippet he "handle_event" b
+def handle_event("${1:event}", ${2:value}, socket) do
+	$0
+	{:noreply, socket}
+end
+endsnippet
+
+snippet pry "IEx.pry" b
+import IEx
+IEx.pry()
+endsnippet

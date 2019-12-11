@@ -35,11 +35,12 @@ set updatetime=2000                "a bit faster updatetime
 set visualbell                     "no sounds!
 set wildignorecase                 "case insensitive file search
 set conceallevel=0                 "no concealing, confusing
-let g:netrw_banner = 0
+let g:netrw_banner = 0             "no banner
 let g:netrw_browse_split = 4       "open netrw files in other window
 let g:netrw_winsize = 35           "25 column width for netrw
 let g:netrw_altv = 1               "Vertical split on right side
-let g:netrw_localrmdir='rm -rf'    "Remove nonempty directories
+let g:netrw_rmf_cmd="rm -rf"       "Remove nonempty directories
+let g:netrw_rmdir_cmd="rm -rf"
 let mapleader = ' '                "leader is space
 let maplocalleader = ','           "localleader is comma
 let g:netrw_browsex_viewer="open"  "open stuff with open
@@ -58,6 +59,7 @@ set wildignore+=.venv
 set wildignore+=*/dist
 set wildignore+=*.bs.js
 set wildignore+=.DS_Store
+set wildignore+=.rts2_*
 
 "===================================FUNCTIONS===================================
 func! OpenOrCreateTerminal()
@@ -87,7 +89,6 @@ call plug#begin()
 Plug 'sainnhe/gruvbox-material'
 Plug 'Yggdroot/indentLine'
 Plug 'itchyny/lightline.vim'
-let g:gruvbox_material_background = 'hard'
 let g:lightline = {
       \ 'colorscheme': 'gruvbox_material',
       \ 'active': {
@@ -108,7 +109,6 @@ Plug 'powerman/vim-plugin-AnsiEsc'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'tyru/open-browser.vim'
 Plug 'justinmk/vim-sneak'
-Plug 'christoomey/vim-tmux-navigator'
 let delimitMate_expand_cr=1
 let delimitMate_jump_expansion=1
 let delimitMate_balance_matchpairs=1
@@ -123,7 +123,7 @@ Plug 'tpope/vim-dadbod'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-rhubarb'
-Plug 'tpope/vim-endwise'
+" Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-commentary'
@@ -132,6 +132,8 @@ Plug 'tpope/vim-speeddating'
 Plug 'tpope/vim-eunuch'
 " Disable netrw gx mapping.
 let g:netrw_nogx = get(g:, 'netrw_nogx', 1)
+" tpope trying to take over my dang <CR>
+let g:endwise_no_mappings = 1
 nmap gx <Plug>(openbrowser-open)
 vmap gx <Plug>(openbrowser-open)
 au! FileType fugitive nm <buffer> <TAB> =
@@ -142,18 +144,12 @@ Plug 'junegunn/fzf.vim'
 Plug 'vim-voom/VOoM'
 command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, {'options': '--delimiter : --nth 4..'}, <bang>0)
 
-"======================================LINTING==================================
-
 "==================================AUTOCOMPLETION===============================
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'liuchengxu/vista.vim'
-Plug 'Shougo/neosnippet.vim'
-Plug 'Shougo/neosnippet-snippets'
 Plug 'Shougo/echodoc.vim'
-let g:vista_default_executive = 'coc'
-let g:neosnippet#snippets_directory = "~/dotfiles/snippets"
-let g:neosnippet#scope_aliases = {}
-let g:neosnippet#enable_completed_snippet = 1
+Plug 'SirVer/ultisnips'
+let g:UltiSnipsSnippetDirectories = [$HOME.'/dotfiles/snippets']
+let g:UltiSnipsExpandTrigger = "<C-l>"
 
 "===================================WEB=========================================
 Plug 'stephenway/postcss.vim'
@@ -169,6 +165,7 @@ Plug 'elzr/vim-json' "Better JSON highlighting
 let g:vim_json_syntax_conceal=0
 au! BufEnter .babelrc setlocal ft=json
 au! BufEnter .prettierrc setlocal ft=json
+au! BufEnter .eslintrc setlocal ft=json
 au! BufEnter *.postcss,*.pcss setlocal ft=postcss
 
 "==================================JAVASCRIPT===================================
@@ -183,13 +180,6 @@ Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
 au! FileType typescript set foldmethod=indent
 au! FileType typescript.tsx set foldmethod=indent
-augroup typescript
-  au!
-  au FileType typescript,typescript.tsx nn <buffer> K :TSType<CR>
-  au FileType typescript,typescript.tsx nn <buffer> gd :TSDef<CR>
-  au FileType typescript,typescript.tsx nn <buffer> <localleader>d :TSDoc<CR>
-  au FileType typescript,typescript.tsx nn <buffer> <localleader>r :TSRename<CR>
-augroup END
 
 "==================================ELIXIR=======================================
 Plug 'elixir-lang/vim-elixir'
@@ -198,6 +188,7 @@ Plug 'slime-lang/vim-slime-syntax'
 au BufEnter *.leex set filetype=eelixir
 let g:mix_format_on_save = 1
 au! BufNewFile,BufRead *.slimleex set filetype=slime
+au! BufNewFile,BufRead *.slim set filetype=slime
 
 "===============================OCAML/REASON====================================
 Plug 'reasonml-editor/vim-reason-plus', {'for': ['reason', 'ocaml']}
@@ -268,7 +259,6 @@ augroup lsp
   au FileType terraform,cs,vue,json,elixir,eelixir,reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx nn <silent> <buffer> gr :call CocAction("jumpReferences")<CR>
   au FileType terraform,cs,vue,json,elixir,eelixir,reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx nn <buffer> <localleader>i :call CocAction("workspaceSymbols")<CR>
   au FileType terraform,cs,vue,json,elixir,eelixir,reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx nn <buffer> <localleader>r :call CocAction("rename")<CR>
-  au FileType terraform,cs,vue,json,elixir,eelixir,reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx nn <buffer> gs :Vista finder coc<CR>
   au CursorHoldI,CursorMovedI * call CocActionAsync('showSignatureHelp')
 augroup END
 
@@ -317,7 +307,7 @@ nn <leader>vv :e ~/.config/nvim/init.vim<CR>
 
 nn <leader>w :w<CR>
 nn <leader>x mzgggqG`z
-nn <leader>y :NeoSnippetEdit<CR>
+nn <leader>y :UltiSnipsEdit<CR>
 function! ToggleFold() abort
   if &foldlevel == 1
     set foldlevel=99
@@ -339,8 +329,6 @@ nn <Right> :vertical res +5<CR>
 nn <Up> :res +5<CR>
 nn <Down> :res -5<CR>
 
-" C-space refreshes autocomplete
-inoremap <silent><expr> <c-space> coc#refresh()
 
 " Etc. keymappings
 nn - :Vexplore!<CR>
@@ -362,17 +350,31 @@ tnoremap <C-j> <C-\><C-n><C-w>j
 tnoremap <C-k> <C-\><C-n><C-w>k
 tnoremap <C-l> <C-\><C-n><C-w>l
 au TermOpen * setlocal nonumber norelativenumber bufhidden=hide
-autocmd BufWinEnter,WinEnter term://* startinsert
 
 
-" SuperTab like behavior.
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-inoremap <expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<S-TAB>"
+" C-space refreshes autocomplete
+inoremap <silent><expr> <c-n> coc#refresh()
 
-" Trigger neosnippet with <C-l>
-imap <C-l> <Plug>(neosnippet_expand_or_jump)
-smap <C-l> <Plug>(neosnippet_expand_or_jump)
-xmap <C-l> <Plug>(neosnippet_expand_target)
+" Use tab completion
+" :help coc-completion
+function! Check_back_space() abort
+  let col = col('.') - 1
+  echom(col)
+  echom(getline('.')[col - 1])
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+
+inoremap <silent><expr> <TAB>
+  \ pumvisible() ? "\<C-n>" :
+  \ Check_back_space() ? "\<TAB>" :
+  \ coc#refresh()
+
+" Insert ultisnip snippet on Enter
+" https://github.com/neoclide/coc.nvim/wiki/Using-snippets
+inoremap <silent><expr> <CR>
+      \ pumvisible() ?
+      \ coc#_select_confirm() : 
+      \ "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
 
 " Local Vimrc

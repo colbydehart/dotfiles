@@ -19,6 +19,8 @@ PYTHON_BIN_PATH="$HOME/Library/Python/2.7/bin"
 [ -d $PYTHON_BIN_PATH ] && export PATH="$PATH:$PYTHON_BIN_PATH"
 PYTHON3_BIN_PATH="$HOME/Library/Python/3.7/bin"
 [ -d $PYTHON3_BIN_PATH ] && export PATH="$PATH:$PYTHON3_BIN_PATH"
+#Postgres executables
+export PATH="/usr/local/opt/postgresql@10/bin:$PATH"
 #Android executables
 export ANDROID_HOME="$HOME/Library/Android/sdk"
 [ -d $ANDROID_HOME ] && export PATH="$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools"
@@ -38,6 +40,8 @@ export PATH="/usr/local/opt/icu4c/sbin:$PATH"
 eval "$(rbenv init -)"
 # OCI (oracle drivers)
 export OCI_DIR=$(brew --prefix)/lib
+# Mono homebrew prefix
+export MONO_GAC_PREFIX="/usr/local"
 
 # Homebrew completions
 BREW_COMPLETIONS=$(brew --prefix)

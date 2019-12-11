@@ -50,6 +50,7 @@ Session.vim
 .env
 *.sublime-project
 .vagrant
+.vim
 
 # JavaScript
 #############
@@ -98,3 +99,6 @@ tags*
 
 # ag ingore file
 .ignore
+
+# Typescript incremental cache
+.rts2_cache*

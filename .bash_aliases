@@ -34,6 +34,8 @@ alias cl=clear
 alias la='ls -la'
 # git grep
 alias gag="git --no-pager grep --heading --break --line-number"
+# fzf rg grep!
+alias rf="rg . | fzf"
 # give me my ip
 alias haz="curl -4 icanhazip.com"
 # copy local ip
@@ -51,7 +53,10 @@ alias arduino='/Applications/Arduino.app/Contents/MacOS/Arduino'
 # iex with mix
 alias ism="iex -S mix"
 # open phoenix server
-alias imps="iex -S mix phx.server"
+alias imps="elixir --sname server -S mix phx.server"
+alias imp="iex --sname imp --remsh \"server@mbp\""
+# mix test
+alias mixtest="mix test --listen-on-stdin --stale"
 # killall zsh
 alias killzsh="ps ax -o pid,command,ppid | grep 'zsh' | awk '{print $1}' | xargs kill -9"
 # Open localhost
