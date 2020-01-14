@@ -1,5 +1,6 @@
 {
-  "diagnostic.enableMessage": "jump",
+  "diagnostic.virtualText": true,
+  "diagnostic.messageTarget": "echo",
   "coc.source.around.priority": 9,
   "coc.source.buffer.priority": 9,
   "eslint.options": {"configFile": "./.eslintrc"},
@@ -7,7 +8,7 @@
   "prettier.requireConfig": true,
   "list.insertMappings": {
     "<C-n>": "normal:j",
-    "<C-p>": "normal:k",
+    "<C-p>": "normal:k"
   },
   "coc.preferences.formatOnSaveFiletypes": [
     "css",
@@ -26,7 +27,8 @@
     },
     "elixirLS": {
       "command": "/Users/colbydehart/.config/nvim/elixir-ls/language_server.sh",
-      "filetypes": ["elixir", "eelixir"]
+      "filetypes": ["elixir", "eelixir"],
+      "settings": { "dialyzerEnabled": false}
     },
     "terraform-lsp": {
       "command": "/Users/colbydehart/.config/nvim/terraform-lsp",

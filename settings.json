@@ -273,5 +273,6 @@
     "**/nashhorn_code_cache": true
   },
   "explorer.autoReveal": false,
-  "liveshare.featureSet": "stable"
+  "liveshare.featureSet": "stable",
+  "elixirLS.dialyzerEnabled": false
 }

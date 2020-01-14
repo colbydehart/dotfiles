@@ -86,11 +86,12 @@ endif
 call plug#begin()
 
 "====================================COSMETIC===================================
+Plug 'nightsense/snow'
 Plug 'sainnhe/gruvbox-material'
 Plug 'Yggdroot/indentLine'
 Plug 'itchyny/lightline.vim'
 let g:lightline = {
-      \ 'colorscheme': 'gruvbox_material',
+      \ 'colorscheme': 'snow_dark',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
       \             [ 'gitbranch', 'readonly', 'filename', 'modified', "calendar"] ]
@@ -241,7 +242,7 @@ au! FileType qf setlocal wrap
 "=================================PLUG END======================================
 call plug#end()
 set background=dark
-colo gruvbox-material
+colo snow
 filetype plugin indent on
 syntax enable
 
