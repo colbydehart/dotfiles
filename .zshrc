@@ -5,8 +5,10 @@ export XDG_CONFIG_HOME=~/.config
 # If you come from bash you might have to change your $PATH.
 # Local executables
 PATH="/usr/local/bin:$PATH"
-#NPM executables
-export PATH="/usr/local/opt/node@8/bin:$PATH"
+#NVM executables
+ export NVM_DIR="$HOME/.nvm"
+  [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
+  [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 #YARN executables
 YARN_BIN_PATH=$(yarn global bin)
 [ -d $YARN_BIN_PATH ] && export PATH="$PATH:$YARN_BIN_PATH"
@@ -19,6 +21,8 @@ PYTHON_BIN_PATH="$HOME/Library/Python/2.7/bin"
 [ -d $PYTHON_BIN_PATH ] && export PATH="$PATH:$PYTHON_BIN_PATH"
 PYTHON3_BIN_PATH="$HOME/Library/Python/3.7/bin"
 [ -d $PYTHON3_BIN_PATH ] && export PATH="$PATH:$PYTHON3_BIN_PATH"
+# Bison; needed for wine.
+export PATH="/usr/local/opt/bison/bin:$PATH"
 #Postgres executables
 export PATH="/usr/local/opt/postgresql@10/bin:$PATH"
 #Android executables

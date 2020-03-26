@@ -274,5 +274,9 @@
   },
   "explorer.autoReveal": false,
   "liveshare.featureSet": "stable",
-  "elixirLS.dialyzerEnabled": false
+  "elixirLS.dialyzerEnabled": false,
+  "workbench.colorTheme": "Community Material Theme",
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }

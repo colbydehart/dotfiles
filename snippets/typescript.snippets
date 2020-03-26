@@ -29,7 +29,21 @@ snippet / "Docstring" w
 /** $0 */
 endsnippet
 
+snippet con "Const" b
+const $1 = $0;
+endsnippet
+
+snippet exc "Export const" b
+export const $1 = $0;
+endsnippet
+
 snippet typ "Type" b
+type $1 = {
+	$0
+};
+endsnippet
+
+snippet ety "Export Type" b
 export type $1 = {
 	$0
 };

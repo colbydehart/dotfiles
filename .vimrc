@@ -40,7 +40,7 @@ let g:netrw_browse_split = 4       "open netrw files in other window
 let g:netrw_winsize = 35           "25 column width for netrw
 let g:netrw_altv = 1               "Vertical split on right side
 let g:netrw_rmf_cmd="rm -rf"       "Remove nonempty directories
-let g:netrw_rmdir_cmd="rm -rf"
+let g:netrw_localrmdir="rm -rf"
 let mapleader = ' '                "leader is space
 let maplocalleader = ','           "localleader is comma
 let g:netrw_browsex_viewer="open"  "open stuff with open
@@ -110,6 +110,7 @@ Plug 'powerman/vim-plugin-AnsiEsc'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'tyru/open-browser.vim'
 Plug 'justinmk/vim-sneak'
+Plug 'roman/golden-ratio'
 let delimitMate_expand_cr=1
 let delimitMate_jump_expansion=1
 let delimitMate_balance_matchpairs=1
@@ -124,7 +125,6 @@ Plug 'tpope/vim-dadbod'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-rhubarb'
-" Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-commentary'
@@ -146,11 +146,16 @@ Plug 'vim-voom/VOoM'
 command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, {'options': '--delimiter : --nth 4..'}, <bang>0)
 
 "==================================AUTOCOMPLETION===============================
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
+let g:coc_global_extensions = ['coc-json', 'coc-tsserver', 'coc-css', 'coc-eslint', 'coc-rls',
+                             \ 'coc-html', 'coc-json', 'coc-prettier', 'coc-python', 'coc-syntax',
+                             \ 'coc-tsserver', 'coc-ultisnips', 'coc-elixir']
+Plug 'liuchengxu/vista.vim'
 Plug 'Shougo/echodoc.vim'
 Plug 'SirVer/ultisnips'
 let g:UltiSnipsSnippetDirectories = [$HOME.'/dotfiles/snippets']
 let g:UltiSnipsExpandTrigger = "<C-l>"
+let g:vista_default_executive = 'coc'
 
 "===================================WEB=========================================
 Plug 'stephenway/postcss.vim'
@@ -234,6 +239,7 @@ Plug 'jparise/vim-graphql' " graphql syntax support
 Plug 'godlygeek/tabular' " allows formatting of markdown tables
 Plug 'chr4/nginx.vim'
 Plug 'hashivim/vim-terraform'
+Plug 'cespare/vim-toml'
 Plug 'baverman/vial'
 Plug 'baverman/vial-http'
 au! BufEnter,BufRead *.md set tw=80 foldmethod=indent cole=0 wrap
@@ -252,6 +258,7 @@ if executable('ag')
   set grepformat=%f:%l:%c:%m,%f:%l:%m
 endif
 
+
 "===================================LSP Bindings===================================
 augroup lsp
   au!
@@ -269,28 +276,34 @@ augroup END
 " Buffer jumper
 nn <BS> :b#<CR>
 
+function! OpenLog()
+  silent exe ":e ~/notes/log/" . strftime("%Y/%m/%d") . ".md"
+  silent exe ":!mkdir -p %:h"
+endfunction
+
 " Leader mappings
 nn <leader>' :Marks<CR>
 nn <leader>/ :Ag<CR>
 nn <leader>; :Commands<CR>
 nn <leader><CR> :
 nn <leader><leader> :b#<CR>
-nn <leader>a :Vista coc<CR>
+nn <leader>a :Vista finder fzf:coc<CR>
 nn <leader>b :Buffers<CR>
+nn <leader>c :Lines<CR>
 nn <leader>d :Vexplore! .<CR>
 nn <leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
 nn <leader>f :Files<CR>
 nn <leader>g :Gstatus<CR>
 nn <leader>h :Helptags<CR>
 nn <leader>i :Tags<CR>
-nn <leader>j <C-]>
+nn <silent> <leader>j :call OpenLog()<CR>
 nn <leader>k :q<CR>
 nmap <silent> <leader>ld <Plug>(coc-diagnostic-info)
 nmap <silent> <leader>ln <Plug>(coc-diagnostic-next)
 nmap <silent> <leader>lp <Plug>(coc-diagnostic-prev)
 nn <leader>m :History<CR>
 nn <leader>n :tabe<CR>
-nn <leader>o :e /tmp/todo.md<CR>
+nn <leader>o :Vista<CR>
 nn <leader>p :cw<CR>
 nn <leader>q :qa<CR>
 nn <leader>ra :%s/
@@ -304,8 +317,6 @@ nn <leader>u :BTags<CR>
 nn <leader>vl :e ./.lvimrc<CR>
 nn <leader>vo :e ~/.config/oni/config.tsx<CR>
 nn <leader>vv :e ~/.config/nvim/init.vim<CR>
-
-
 nn <leader>w :w<CR>
 nn <leader>x mzgggqG`z
 nn <leader>y :UltiSnipsEdit<CR>
@@ -353,7 +364,7 @@ tnoremap <C-l> <C-\><C-n><C-w>l
 au TermOpen * setlocal nonumber norelativenumber bufhidden=hide
 
 
-" C-space refreshes autocomplete
+" C-n refreshes autocomplete
 inoremap <silent><expr> <c-n> coc#refresh()
 
 " Use tab completion
@@ -384,5 +395,5 @@ if filereadable('./.lvimrc')
 endif
 
 " Autoreload .vimrc
-au! bufwritepost .vimrc source ~/.config/nvim/init.vim
+au! bufwritepost init.vim source %
 au! bufwritepost .lvimrc source %

@@ -7,9 +7,8 @@ alias ......=' cd ../../../../..'
 # git stuff
 alias gs='git status'
 alias gl='git log --oneline --graph --decorate $argv'
-grs () {
-    git rebase source/${1:-master};
-}
+alias grs='git rebase source/`git branch --show-current`'
+alias gro='git rebase origin/`git branch --show-current`'
 alias grc='git rebase --continue'
 alias gri='git rebase -i'
 alias ga='git add -p'
@@ -17,6 +16,7 @@ alias gc='git commit -m'
 alias gca='git commit --amend --no-edit'
 alias gco='git checkout'
 alias gf='git fetch --all --prune'
+alias gfs='git fetch source --prune'
 alias gpf='git push --force-with-lease'
 alias gpr='hub pull-request -b NavitasLease:master'
 alias gps='git pull source master'
@@ -53,8 +53,7 @@ alias arduino='/Applications/Arduino.app/Contents/MacOS/Arduino'
 # iex with mix
 alias ism="iex -S mix"
 # open phoenix server
-alias imps="elixir --sname server -S mix phx.server"
-alias imp="iex --sname imp --remsh \"server@mbp\""
+alias imps="iex -S mix phx.server"
 # mix test
 alias mixtest="mix test --listen-on-stdin --stale"
 # killall zsh
