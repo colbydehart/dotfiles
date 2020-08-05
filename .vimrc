@@ -97,7 +97,7 @@ let g:gruvbox_material_enable_italic = 1
 let g:gruvbox_material_disable_italic_comment = 1
 
 let g:lightline = {
-      \ 'colorscheme': 'snow_dark',
+      \ 'colorscheme': 'embark',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
       \             [ 'gitbranch', 'readonly', 'filename', 'modified', "calendar"] ]
@@ -248,8 +248,10 @@ au! FileType vim setlocal foldmethod=indent keywordprg=:help
 
 "===================================ETC.========================================
 Plug 'editorconfig/editorconfig-vim'
-Plug 'neo4j-contrib/cypher-vim-syntax'
-Plug 'jparise/vim-graphql' " graphql syntax support
+Plug 'freitass/todo.txt-vim' " Todos
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'neo4j-contrib/cypher-vim-syntax' " neo4j cypher syntax
+Plug 'jparise/vim-graphql' " graphql syntax
 Plug 'godlygeek/tabular' " allows formatting of markdown tables
 Plug 'plasticboy/vim-markdown'
 Plug 'chr4/nginx.vim'
@@ -267,14 +269,15 @@ au! FileType qf setlocal wrap
 "=================================PLUG END======================================
 call plug#end()
 set background=dark
-colo snow
+colo embark
 filetype plugin indent on
 syntax enable
 
 ""===================================FAST=SEARCH=================================
 if executable('ag')
-  set grepprg=ag\ --nogroup\ --nocolor\ --ignore-case\ --column
+  set grepprg=ag\ -g\ --nogroup\ --nocolor\ --ignore-case\ --column
   set grepformat=%f:%l:%c:%m,%f:%l:%m
+  let $FZF_DEFAULT_COMMAND = 'ag -g ""'
 endif
 
 
@@ -296,6 +299,8 @@ augroup END
 " Buffer jumper
 nn <BS> :b#<CR>
 
+
+" Daily log
 function! OpenLog()
   silent exe ":e ~/notes/log/" . strftime("%Y/%m/%d") . ".md"
   silent exe ":!mkdir -p %:h"
@@ -355,8 +360,8 @@ nn <leader>w :w<CR>
 nn <leader>x mzgggqG`z
 nn <leader>y :UltiSnipsEdit<CR>
 function! ToggleFold() abort
-  if &foldlevel == 0
-    setlocal foldlevel=99
+  if &foldlevel < 99
+    set foldlevel=99
   else
     setlocal foldlevel=0
   endif
