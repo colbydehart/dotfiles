@@ -18,7 +18,6 @@ alias gco='git checkout'
 alias gf='git fetch --all --prune'
 alias gfs='git fetch source --prune'
 alias gpf='git push --force-with-lease'
-alias gpr='hub pull-request -b NavitasLease:master'
 alias gps='git pull source master'
 alias grhh='git reset --hard HEAD'
 # git submodule stuff

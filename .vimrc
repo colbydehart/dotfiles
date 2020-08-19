@@ -86,12 +86,18 @@ endif
 call plug#begin()
 
 "====================================COSMETIC===================================
+Plug 'skbolton/embark'
 Plug 'nightsense/snow'
 Plug 'sainnhe/gruvbox-material'
 Plug 'Yggdroot/indentLine'
 Plug 'itchyny/lightline.vim'
+
+let g:gruvbox_material_background = 'hard'
+let g:gruvbox_material_enable_italic = 1
+let g:gruvbox_material_disable_italic_comment = 1
+
 let g:lightline = {
-      \ 'colorscheme': 'snow_dark',
+      \ 'colorscheme': 'gruvbox_material',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
       \             [ 'gitbranch', 'readonly', 'filename', 'modified', "calendar"] ]
@@ -110,7 +116,8 @@ Plug 'powerman/vim-plugin-AnsiEsc'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'tyru/open-browser.vim'
 Plug 'justinmk/vim-sneak'
-Plug 'roman/golden-ratio'
+" ai and ii indent level text objects
+Plug 'michaeljsmith/vim-indent-object'
 let delimitMate_expand_cr=1
 let delimitMate_jump_expansion=1
 let delimitMate_balance_matchpairs=1
@@ -122,6 +129,7 @@ Plug 'tpope/vim-rsi'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-dadbod'
+Plug 'kristijanhusak/vim-dadbod-ui'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-rhubarb'
@@ -149,7 +157,8 @@ command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, {'options': '--delimiter : 
 Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
 let g:coc_global_extensions = ['coc-json', 'coc-tsserver', 'coc-css', 'coc-eslint', 'coc-rls',
                              \ 'coc-html', 'coc-json', 'coc-prettier', 'coc-python', 'coc-syntax',
-                             \ 'coc-tsserver', 'coc-ultisnips', 'coc-elixir']
+                             \ 'coc-tsserver', 'coc-ultisnips', 'coc-elixir', 'coc-omnisharp',
+                             \ 'coc-db']
 Plug 'liuchengxu/vista.vim'
 Plug 'Shougo/echodoc.vim'
 Plug 'SirVer/ultisnips'
@@ -227,28 +236,37 @@ Plug 'vim-ruby/vim-ruby', {'for': 'ruby'}
 Plug 'tpope/vim-rbenv', { 'for': 'ruby' }
 
 "==================================PYTHON=======================================
-au! FileType python setlocal tabstop=4 shiftwidth=4 softtabstop=4
+au! FileType python setlocal tabstop=4 shiftwidth=4 softtabstop=4 foldmethod=indent textwidth=120
+Plug 'tweekmonster/django-plus.vim'
+
+"==================================CSHARP=======================================
 
 "===================================VIML========================================
 Plug 'shougo/neco-vim', {'for': ['vim']}
 au! FileType vim setlocal foldmethod=indent keywordprg=:help
 
 "===================================ETC.========================================
+Plug 'editorconfig/editorconfig-vim'
 Plug 'neo4j-contrib/cypher-vim-syntax'
 Plug 'jparise/vim-graphql' " graphql syntax support
 Plug 'godlygeek/tabular' " allows formatting of markdown tables
+Plug 'plasticboy/vim-markdown'
 Plug 'chr4/nginx.vim'
 Plug 'hashivim/vim-terraform'
 Plug 'cespare/vim-toml'
 Plug 'baverman/vial'
 Plug 'baverman/vial-http'
+Plug 'freitass/todo.txt-vim'
+let g:ftplugin_sql_omni_key = 0
+au! BufEnter,BufRead someday.txt set ft=todo
 au! BufEnter,BufRead *.md set tw=80 foldmethod=indent cole=0 wrap
+au! FileType yaml setlocal foldmethod=indent
 au! FileType qf setlocal wrap
 
 "=================================PLUG END======================================
 call plug#end()
 set background=dark
-colo snow
+colo gruvbox-material
 filetype plugin indent on
 syntax enable
 
@@ -281,6 +299,18 @@ function! OpenLog()
   silent exe ":!mkdir -p %:h"
 endfunction
 
+function! CondenseLog()
+  let logfiles = expand('~/notes/log/**/*.md', 0, 1)
+  let journal = expand('~/notes/journal.md')
+  silent exec ':e ' . journal
+  for f in logfiles
+    call append(line('.'), readfile(f))
+    call append(line('.'), '')
+    call append(line('.'), "## " . split(f, 'log/')[1][:-4])
+    call append(line('.'), '')
+  endfor
+endfunction
+
 " Leader mappings
 nn <leader>' :Marks<CR>
 nn <leader>/ :Ag<CR>
@@ -296,7 +326,9 @@ nn <leader>f :Files<CR>
 nn <leader>g :Gstatus<CR>
 nn <leader>h :Helptags<CR>
 nn <leader>i :Tags<CR>
-nn <silent> <leader>j :call OpenLog()<CR>
+nn <silent> <leader>jc :call CondenseLog()<CR>
+nn <silent> <leader>jl :call OpenLog()<CR>
+nn <silent> <leader>jj :FZF ~/notes<CR>
 nn <leader>k :q<CR>
 nmap <silent> <leader>ld <Plug>(coc-diagnostic-info)
 nmap <silent> <leader>ln <Plug>(coc-diagnostic-next)
@@ -315,16 +347,15 @@ nn <leader>sl :vsplit<CR><C-W>l
 nn <silent> <leader>t :call OpenOrCreateTerminal()<CR>
 nn <leader>u :BTags<CR>
 nn <leader>vl :e ./.lvimrc<CR>
-nn <leader>vo :e ~/.config/oni/config.tsx<CR>
 nn <leader>vv :e ~/.config/nvim/init.vim<CR>
 nn <leader>w :w<CR>
 nn <leader>x mzgggqG`z
 nn <leader>y :UltiSnipsEdit<CR>
 function! ToggleFold() abort
-  if &foldlevel == 1
-    set foldlevel=99
+  if &foldlevel == 0
+    setlocal foldlevel=99
   else
-    set foldlevel=1
+    setlocal foldlevel=0
   endif
 endfunction
 nn <leader>z :call ToggleFold()<cr>
@@ -364,21 +395,16 @@ tnoremap <C-l> <C-\><C-n><C-w>l
 au TermOpen * setlocal nonumber norelativenumber bufhidden=hide
 
 
-" C-n refreshes autocomplete
-inoremap <silent><expr> <c-n> coc#refresh()
-
-" Use tab completion
-" :help coc-completion
-function! Check_back_space() abort
-  let col = col('.') - 1
-  echom(col)
-  echom(getline('.')[col - 1])
-  return !col || getline('.')[col - 1]  =~ '\s'
-endfunction
-
-inoremap <silent><expr> <TAB>
+inoremap <silent><expr> <Tab>
   \ pumvisible() ? "\<C-n>" :
-  \ Check_back_space() ? "\<TAB>" :
+  \ "\<Tab>"
+
+inoremap <silent><expr> <S-Tab>
+  \ pumvisible() ? "\<C-p>" :
+  \ "\<S-Tab>"
+
+inoremap <silent><expr> <C-n>
+  \ pumvisible() ? "\<C-n>" :
   \ coc#refresh()
 
 " Insert ultisnip snippet on Enter

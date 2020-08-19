@@ -61,6 +61,10 @@ node_modules
 *.pyc
 pyvenv
 
+
+# direnv
+.direnv
+
 # Elm
 #############
 elm-stuff
