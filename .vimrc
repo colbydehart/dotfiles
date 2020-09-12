@@ -97,7 +97,7 @@ let g:gruvbox_material_enable_italic = 1
 let g:gruvbox_material_disable_italic_comment = 1
 
 let g:lightline = {
-      \ 'colorscheme': 'gruvbox_material',
+      \ 'colorscheme': 'snow_dark',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
       \             [ 'gitbranch', 'readonly', 'filename', 'modified', "calendar"] ]
@@ -219,6 +219,7 @@ au! FileType elm nn <buffer> K :ElmShowDocs<CR>
 Plug 'tpope/vim-fireplace', {'for': ['clojure', 'clojurescript']}
 Plug 'tpope/vim-classpath', {'for': ['clojure', 'clojurescript']}
 Plug 'guns/vim-clojure-static', {'for': ['clojure', 'clojurescript']}
+" Plug 'Olical/conjure', {'tag': 'v4.3.1'}
 Plug 'guns/vim-sexp', {'for': ['clojure', 'clojurescript']}
 Plug 'tpope/vim-sexp-mappings-for-regular-people', {'for': ['clojure', 'clojurescript']}
 let g:clojure_align_multiline_strings = 1
@@ -266,7 +267,7 @@ au! FileType qf setlocal wrap
 "=================================PLUG END======================================
 call plug#end()
 set background=dark
-colo gruvbox-material
+colo snow
 filetype plugin indent on
 syntax enable
 
@@ -284,6 +285,7 @@ augroup lsp
   au FileType terraform,cs,vue,json,elixir,eelixir,reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx nn <silent> <buffer> gd :call CocAction("jumpDefinition")<CR>
   au FileType terraform,cs,vue,json,elixir,eelixir,reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx nn <silent> <buffer> gr :call CocAction("jumpReferences")<CR>
   au FileType terraform,cs,vue,json,elixir,eelixir,reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx nn <buffer> <localleader>i :call CocAction("workspaceSymbols")<CR>
+  au FileType terraform,cs,vue,json,elixir,eelixir,reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx nn <silent> <buffer> <localleader>a :CocAction<CR>
   au FileType terraform,cs,vue,json,elixir,eelixir,reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx nn <buffer> <localleader>r :call CocAction("rename")<CR>
   au CursorHoldI,CursorMovedI * call CocActionAsync('showSignatureHelp')
 augroup END
@@ -317,7 +319,7 @@ nn <leader>/ :Ag<CR>
 nn <leader>; :Commands<CR>
 nn <leader><CR> :
 nn <leader><leader> :b#<CR>
-nn <leader>a :Vista finder fzf:coc<CR>
+nn <leader>a :Vista<CR>
 nn <leader>b :Buffers<CR>
 nn <leader>c :Lines<CR>
 nn <leader>d :Vexplore! .<CR>
@@ -329,6 +331,7 @@ nn <leader>i :Tags<CR>
 nn <silent> <leader>jc :call CondenseLog()<CR>
 nn <silent> <leader>jl :call OpenLog()<CR>
 nn <silent> <leader>jj :FZF ~/notes<CR>
+nn <silent> <leader>jt :e ~/notes/todo.txt<CR>
 nn <leader>k :q<CR>
 nmap <silent> <leader>ld <Plug>(coc-diagnostic-info)
 nmap <silent> <leader>ln <Plug>(coc-diagnostic-next)
@@ -345,7 +348,7 @@ nn <leader>sj :split<CR><C-W>j
 nn <leader>sk :split<CR>
 nn <leader>sl :vsplit<CR><C-W>l
 nn <silent> <leader>t :call OpenOrCreateTerminal()<CR>
-nn <leader>u :BTags<CR>
+" nn <leader>u 
 nn <leader>vl :e ./.lvimrc<CR>
 nn <leader>vv :e ~/.config/nvim/init.vim<CR>
 nn <leader>w :w<CR>
