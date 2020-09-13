@@ -150,7 +150,6 @@ au! FileType fugitive nm <buffer> <TAB> =
 "==================================NAVIGATION===================================
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'vim-voom/VOoM'
 command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, {'options': '--delimiter : --nth 4..'}, <bang>0)
 
 "==================================AUTOCOMPLETION===============================
@@ -219,7 +218,6 @@ au! FileType elm nn <buffer> K :ElmShowDocs<CR>
 Plug 'tpope/vim-fireplace', {'for': ['clojure', 'clojurescript']}
 Plug 'tpope/vim-classpath', {'for': ['clojure', 'clojurescript']}
 Plug 'guns/vim-clojure-static', {'for': ['clojure', 'clojurescript']}
-" Plug 'Olical/conjure', {'tag': 'v4.3.1'}
 Plug 'guns/vim-sexp', {'for': ['clojure', 'clojurescript']}
 Plug 'tpope/vim-sexp-mappings-for-regular-people', {'for': ['clojure', 'clojurescript']}
 let g:clojure_align_multiline_strings = 1
@@ -246,6 +244,7 @@ Plug 'tweekmonster/django-plus.vim'
 Plug 'shougo/neco-vim', {'for': ['vim']}
 au! FileType vim setlocal foldmethod=indent keywordprg=:help
 
+
 "===================================ETC.========================================
 Plug 'editorconfig/editorconfig-vim'
 Plug 'freitass/todo.txt-vim' " Todos
@@ -259,7 +258,6 @@ Plug 'hashivim/vim-terraform'
 Plug 'cespare/vim-toml'
 Plug 'baverman/vial'
 Plug 'baverman/vial-http'
-Plug 'freitass/todo.txt-vim'
 let g:ftplugin_sql_omni_key = 0
 au! BufEnter,BufRead someday.txt set ft=todo
 au! BufEnter,BufRead *.md set tw=80 foldmethod=indent cole=0 wrap
@@ -299,7 +297,6 @@ augroup END
 " Buffer jumper
 nn <BS> :b#<CR>
 
-
 " Daily log
 function! OpenLog()
   silent exe ":e ~/notes/log/" . strftime("%Y/%m/%d") . ".md"
@@ -307,14 +304,15 @@ function! OpenLog()
 endfunction
 
 function! CondenseLog()
-  let logfiles = expand('~/notes/log/**/*.md', 0, 1)
-  let journal = expand('~/notes/journal.md')
+  let logfiles = glob('~/notes/log/**/*.md', 0, 1)
+  let journal = glob('~/notes/journal.md')
   silent exec ':e ' . journal
   for f in logfiles
     call append(line('.'), readfile(f))
-    call append(line('.'), '')
+    call append(line('.'), '') " blank line
+    " gives us a date header like '## 2020/10/21'
     call append(line('.'), "## " . split(f, 'log/')[1][:-4])
-    call append(line('.'), '')
+    call append(line('.'), '') " blank line
   endfor
 endfunction
 
