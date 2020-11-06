@@ -86,18 +86,21 @@ endif
 call plug#begin()
 
 "====================================COSMETIC===================================
+Plug 'romainl/flattened'
+Plug 'mhinz/vim-janah'
 Plug 'skbolton/embark'
 Plug 'nightsense/snow'
 Plug 'sainnhe/gruvbox-material'
 Plug 'Yggdroot/indentLine'
 Plug 'itchyny/lightline.vim'
+Plug 'mechatroner/rainbow_csv'
 
 let g:gruvbox_material_background = 'hard'
 let g:gruvbox_material_enable_italic = 1
 let g:gruvbox_material_disable_italic_comment = 1
 
 let g:lightline = {
-      \ 'colorscheme': 'embark',
+      \ 'colorscheme': 'flattened_dark',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
       \             [ 'gitbranch', 'readonly', 'filename', 'modified', "calendar"] ]
@@ -129,7 +132,6 @@ Plug 'tpope/vim-rsi'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-dadbod'
-Plug 'kristijanhusak/vim-dadbod-ui'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-rhubarb'
@@ -258,6 +260,8 @@ Plug 'hashivim/vim-terraform'
 Plug 'cespare/vim-toml'
 Plug 'baverman/vial'
 Plug 'baverman/vial-http'
+Plug 'freitass/todo.txt-vim'
+Plug 'christoomey/vim-tmux-navigator'
 let g:ftplugin_sql_omni_key = 0
 au! BufEnter,BufRead someday.txt set ft=todo
 au! BufEnter,BufRead *.md set tw=80 foldmethod=indent cole=0 wrap
@@ -267,7 +271,7 @@ au! FileType qf setlocal wrap
 "=================================PLUG END======================================
 call plug#end()
 set background=dark
-colo embark
+colo flattened_dark
 filetype plugin indent on
 syntax enable
 
@@ -287,6 +291,7 @@ augroup lsp
   au FileType terraform,cs,vue,json,elixir,eelixir,reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx nn <silent> <buffer> gr :call CocAction("jumpReferences")<CR>
   au FileType terraform,cs,vue,json,elixir,eelixir,reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx nn <buffer> <localleader>i :call CocAction("workspaceSymbols")<CR>
   au FileType terraform,cs,vue,json,elixir,eelixir,reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx nn <silent> <buffer> <localleader>a :CocAction<CR>
+  au FileType terraform,cs,vue,json,elixir,eelixir,reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx vm <silent> <buffer> <localleader>a :CocAction<CR>
   au FileType terraform,cs,vue,json,elixir,eelixir,reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx nn <buffer> <localleader>r :call CocAction("rename")<CR>
   au CursorHoldI,CursorMovedI * call CocActionAsync('showSignatureHelp')
 augroup END
@@ -354,6 +359,8 @@ nn <silent> <leader>t :call OpenOrCreateTerminal()<CR>
 " nn <leader>u 
 nn <leader>vl :e ./.lvimrc<CR>
 nn <leader>vv :e ~/.config/nvim/init.vim<CR>
+nn <leader>vt :e ~/dotfiles/.tmux.conf<CR>
+nn <leader>vz :e ~/dotfiles/.zshrc<CR>
 nn <leader>w :w<CR>
 nn <leader>x mzgggqG`z
 nn <leader>y :UltiSnipsEdit<CR>

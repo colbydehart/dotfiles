@@ -60,6 +60,7 @@ node_modules
 #############
 *.pyc
 pyvenv
+lib_venv
 
 
 # direnv

@@ -63,3 +63,4 @@ alias td="todo"
 alias pipu="pip install -U pip"
 alias pipdev="pip install pynvim flake8 black"
 
+alias tf=terraform
