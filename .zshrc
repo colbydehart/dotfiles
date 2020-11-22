@@ -1,160 +1,86 @@
-# Path to your oh-my-zsh installation.
-export ZSH=/Users/colbydehart/.oh-my-zsh
-# Set config home.
-export XDG_CONFIG_HOME=~/.config
-# If you come from bash you might have to change your $PATH.
-# Local executables
-PATH="/usr/local/bin:$PATH"
-#NVM executables
- export NVM_DIR="$HOME/.nvm"
-  [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
-  [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
-#YARN executables
-YARN_BIN_PATH=$(yarn global bin)
-[ -d $YARN_BIN_PATH ] && export PATH="$PATH:$YARN_BIN_PATH"
-#Rust
-RUST_BIN_PATH="~/.cargo/bin"
-[ -d $RUST_BIN_PATH ] && export PATH="$PATH:$RUST_BIN_PATH"
-[ -f ~/.cargo/env ] && source ~/.cargo/env
-#Python executables
-PYTHON_BIN_PATH="$HOME/Library/Python/2.7/bin"
-[ -d $PYTHON_BIN_PATH ] && export PATH="$PATH:$PYTHON_BIN_PATH"
-PYTHON3_BIN_PATH="$HOME/Library/Python/3.7/bin"
-[ -d $PYTHON3_BIN_PATH ] && export PATH="$PATH:$PYTHON3_BIN_PATH"
-# Bison; needed for wine.
-export PATH="/usr/local/opt/bison/bin:$PATH"
-#Postgres executables
-export PATH="/usr/local/opt/postgresql@10/bin:$PATH"
-#Android executables
-export ANDROID_HOME="$HOME/Library/Android/sdk"
-[ -d $ANDROID_HOME ] && export PATH="$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools"
-#Haskell executables
-[ -d "$HOME/Library/Haskell/bin" ] && export PATH="$HOME/Library/Haskell/bin:$PATH"
-#Go executables
-[ -d "$HOME/go/bin" ] && export PATH="$PATH:$HOME/go/bin"
-#OCAML executables
-. /Users/colbydehart/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
-#Java executables
-export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk-10.0.2.jdk"
-export PATH="$PATH:$JAVA_HOME/Contents/Home/bin"
-# icu4c for node
-export PATH="/usr/local/opt/icu4c/bin:$PATH"
-export PATH="/usr/local/opt/icu4c/sbin:$PATH"
-#Rbenv
-eval "$(rbenv init -)"
-# OCI (oracle drivers)
-export OCI_DIR=$(brew --prefix)/lib
-# Mono homebrew prefix
-export MONO_GAC_PREFIX="/usr/local"
+#     "ZSHRC"
+# BY COLBY DEHART
+#     A NOVEL
 
-# Homebrew completions
-BREW_COMPLETIONS=$(brew --prefix)
-[ -f $BREW_COMPLETIONS/share/zsh-completions ] && fpath=($BREW_COMPLETIONS/share/zsh-completions $fpath)
+# Lines configured by zsh-newuser-install
+HISTFILE=~/.histfile
+HISTSIZE=1000
+SAVEHIST=1000
+bindkey -e
+# End of lines configured by zsh-newuser-install
+# The following lines were added by compinstall
+zstyle :compinstall filename '/Users/colbydehart/.zshrc'
+autoload -Uz compinit
+compinit
+# End of lines added by compinstall
 
-# use nvr to prevent neovim nesting
-if [ -n "$NVIM_LISTEN_ADDRESS" ]; then
-  if [ -x "$(command -v nvr)" ]; then
-    alias nvim=nvr
-  else
-    alias nvim=$(echo "No nesting!")
-  fi
-fi
+# Version control autocomplete
+autoload -Uz vcs_info
+precmd_vcs_info() { vcs_info }
+precmd_functions+=( precmd_vcs_info )
+setopt prompt_subst
+zstyle ':vcs_info:git:*' formats '%b'
 
-# Set name of the theme to load. Optionally, if you set this to "random"
-# it'll load a random theme each time that oh-my-zsh is loaded.
-# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="lambda"
+# The shell, the glorious, glorious shell
+SHELL=/bin/zsh
 
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
-
-# Uncomment the following line to use hyphen-insensitive completion. Case
-# sensitive completion must be off. _ and - will be interchangeable.
-HYPHEN_INSENSITIVE="true"
-
-# Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
-
-# Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# HIST_STAMPS="mm/dd/yyyy"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(git heroku mix-fast npm yarn)
-
-source $ZSH/oh-my-zsh.sh
-
-# User configuration
-
-# export MANPATH="/usr/local/man:$MANPATH"
-
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='vim'
-else
-  export EDITOR='nvim'
-fi
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-# ssh
-# export SSH_KEY_PATH="~/.ssh/rsa_id"
-
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-[ -f ~/.bash_aliases ] && source ~/.bash_aliases
-alias zshconfig="nv ~/.zshrc"
-alias ohmyzsh="nv ~/.oh-my-zsh"
-
-# ---------------- Additional Config ----------------
-
-# fzf
+# Fuzzy Finder
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-#
-# respect gitignore
 export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -g ""'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
-# set erlang flags for iex history
-export ERL_AFLAGS="-kernel shell_history enabled"
+# Neovim
+export EDITOR=/usr/local/bin/nvim
+# Beautiful Prompt
+export PROMPT="%n@%~ "
+export RPROMPT=\$vcs_info_msg_0_
 
-# NVIM COLORS
-export NVIM_TUI_ENABLE_TRUE_COLOR=1 # Neovim colors
+[ -f ~/dotfiles/.bash_aliases ] && source ~/dotfiles/.bash_aliases
 
-# added by travis gem
-[ -f /Users/colbydehart/.travis/travis.sh ] && source /Users/colbydehart/.travis/travis.sh
+# Python startup
+export PYTHONSTARTUP=~/dotfiles/.pythonrc
+# Pyenv python manager
+export PYENV_ROOT=~/.pyenv
+if command -v pyenv 1>/dev/null 2>&1; then
+   eval "$(pyenv init -)"
+fi
+
+# Node Version Manager
+export NVM_DIR="$HOME/.nvm"
+[ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+
+# Automatically do stuff when entering directories
+eval "$(direnv hook zsh)"
+
+# --- --- ---
+# Star development
+function starconfig () {
+  unset AWS_ACCESS_KEY_ID
+  unset AWS_SECRET_ACCESS_KEY
+  export AWS_PROFILE=star
+  export AWS_DEFAULT_REGION=us-east-1
+  aws --region us-east-1 ecr get-login-password | docker login --username AWS --password-stdin https://298433512871.dkr.ecr.us-east-1.amazonaws.com
+}
+# TODO: remove when i work on health
+export AWS_PROFILE=star
+
+# --- --- ---
+
+# America's favorite PATHs-time.
+# Home bin
+PATH=~/bin:${PATH}
+# Pyenv should work yeah?
+PATH=${PYENV_ROOT}/bin:${PATH}
+# Postgres or PostgreSQL? PSQL? Postgres Sequel SQL? 2 Postgres 2 Furious?
+PATH=/Applications/Postgres.app/Contents/Versions/latest/bin:${PATH}
+# Add Visual Studio Code (code) bin
+PATH="/Applications/Visual Studio Code.app/Contents/Resources/app/bin:${PATH}"
+# Always want this as the last path
+export PATH=/usr/local/bin:${PATH}
+
+# added by Snowflake SnowSQL installer v1.2
+export PATH=/Applications/SnowSQL.app/Contents/MacOS:$PATH
+# added by tfenv
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /usr/local/Cellar/tfenv/2.0.0/versions/0.13.2/terraform terraform

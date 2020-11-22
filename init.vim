@@ -86,11 +86,10 @@ endif
 call plug#begin()
 
 "====================================COSMETIC===================================
-Plug 'romainl/flattened'
+Plug 'franbach/miramare'
 Plug 'mhinz/vim-janah'
 Plug 'skbolton/embark'
 Plug 'nightsense/snow'
-Plug 'sainnhe/gruvbox-material'
 Plug 'Yggdroot/indentLine'
 Plug 'itchyny/lightline.vim'
 Plug 'mechatroner/rainbow_csv'
@@ -100,7 +99,7 @@ let g:gruvbox_material_enable_italic = 1
 let g:gruvbox_material_disable_italic_comment = 1
 
 let g:lightline = {
-      \ 'colorscheme': 'flattened_dark',
+      \ 'colorscheme': 'miramare',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
       \             [ 'gitbranch', 'readonly', 'filename', 'modified', "calendar"] ]
@@ -152,7 +151,6 @@ au! FileType fugitive nm <buffer> <TAB> =
 "==================================NAVIGATION===================================
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, {'options': '--delimiter : --nth 4..'}, <bang>0)
 
 "==================================AUTOCOMPLETION===============================
 Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
@@ -239,6 +237,7 @@ Plug 'tpope/vim-rbenv', { 'for': 'ruby' }
 "==================================PYTHON=======================================
 au! FileType python setlocal tabstop=4 shiftwidth=4 softtabstop=4 foldmethod=indent textwidth=120
 Plug 'tweekmonster/django-plus.vim'
+Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'} " better syntax highlighting
 
 "==================================CSHARP=======================================
 
@@ -264,14 +263,14 @@ Plug 'freitass/todo.txt-vim'
 Plug 'christoomey/vim-tmux-navigator'
 let g:ftplugin_sql_omni_key = 0
 au! BufEnter,BufRead someday.txt set ft=todo
-au! BufEnter,BufRead *.md set tw=80 foldmethod=indent cole=0 wrap
+au! FileType markdown setlocal tw=80 foldmethod=indent cole=0 wrap
 au! FileType yaml setlocal foldmethod=indent
 au! FileType qf setlocal wrap
 
 "=================================PLUG END======================================
 call plug#end()
 set background=dark
-colo flattened_dark
+colo miramare
 filetype plugin indent on
 syntax enable
 
@@ -323,7 +322,7 @@ endfunction
 
 " Leader mappings
 nn <leader>' :Marks<CR>
-nn <leader>/ :Ag<CR>
+nn <leader>/ :Rg<CR>
 nn <leader>; :Commands<CR>
 nn <leader><CR> :
 nn <leader><leader> :b#<CR>
