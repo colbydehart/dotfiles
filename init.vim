@@ -153,17 +153,17 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
 "==================================AUTOCOMPLETION===============================
-Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
-let g:coc_global_extensions = ['coc-json', 'coc-tsserver', 'coc-css', 'coc-eslint', 'coc-rls',
-                             \ 'coc-html', 'coc-json', 'coc-prettier', 'coc-python', 'coc-syntax',
-                             \ 'coc-tsserver', 'coc-ultisnips', 'coc-elixir', 'coc-omnisharp',
-                             \ 'coc-db']
+" Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
+" let g:coc_global_extensions = ['coc-json', 'coc-tsserver', 'coc-css', 'coc-eslint', 'coc-rls',
+"                              \ 'coc-html', 'coc-json', 'coc-prettier', 'coc-python', 'coc-syntax',
+"                              \ 'coc-tsserver', 'coc-ultisnips', 'coc-elixir', 'coc-omnisharp',
+"                              \ 'coc-db']
 Plug 'liuchengxu/vista.vim'
 Plug 'Shougo/echodoc.vim'
 Plug 'SirVer/ultisnips'
 let g:UltiSnipsSnippetDirectories = [$HOME.'/dotfiles/snippets']
 let g:UltiSnipsExpandTrigger = "<C-l>"
-let g:vista_default_executive = 'coc'
+" let g:vista_default_executive = 'coc'
 
 "===================================WEB=========================================
 Plug 'stephenway/postcss.vim'
@@ -275,24 +275,24 @@ filetype plugin indent on
 syntax enable
 
 ""===================================FAST=SEARCH=================================
-if executable('ag')
-  set grepprg=ag\ -g\ --nogroup\ --nocolor\ --ignore-case\ --column
+if executable('rg')
+  set grepprg=rg\ --vimgrep\ --no-heading
   set grepformat=%f:%l:%c:%m,%f:%l:%m
-  let $FZF_DEFAULT_COMMAND = 'ag -g ""'
+  let $FZF_DEFAULT_COMMAND = 'rg --files --vimgrep'
 endif
 
 
 "===================================LSP Bindings===================================
 augroup lsp
   au!
-  au FileType terraform,cs,vue,json,elixir,eelixir,reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx nn <silent> <buffer> K :call CocAction("doHover")<CR>
-  au FileType terraform,cs,vue,json,elixir,eelixir,reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx nn <silent> <buffer> gd :call CocAction("jumpDefinition")<CR>
-  au FileType terraform,cs,vue,json,elixir,eelixir,reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx nn <silent> <buffer> gr :call CocAction("jumpReferences")<CR>
-  au FileType terraform,cs,vue,json,elixir,eelixir,reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx nn <buffer> <localleader>i :call CocAction("workspaceSymbols")<CR>
-  au FileType terraform,cs,vue,json,elixir,eelixir,reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx nn <silent> <buffer> <localleader>a :CocAction<CR>
-  au FileType terraform,cs,vue,json,elixir,eelixir,reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx vm <silent> <buffer> <localleader>a :CocAction<CR>
-  au FileType terraform,cs,vue,json,elixir,eelixir,reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx nn <buffer> <localleader>r :call CocAction("rename")<CR>
-  au CursorHoldI,CursorMovedI * call CocActionAsync('showSignatureHelp')
+  " au FileType terraform,cs,vue,json,elixir,eelixir,reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx nn <silent> <buffer> K :call CocAction("doHover")<CR>
+  " au FileType terraform,cs,vue,json,elixir,eelixir,reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx nn <silent> <buffer> gd :call CocAction("jumpDefinition")<CR>
+  " au FileType terraform,cs,vue,json,elixir,eelixir,reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx nn <silent> <buffer> gr :call CocAction("jumpReferences")<CR>
+  " au FileType terraform,cs,vue,json,elixir,eelixir,reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx nn <buffer> <localleader>i :call CocAction("workspaceSymbols")<CR>
+  " au FileType terraform,cs,vue,json,elixir,eelixir,reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx nn <silent> <buffer> <localleader>a :CocAction<CR>
+  " au FileType terraform,cs,vue,json,elixir,eelixir,reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx vm <silent> <buffer> <localleader>a :CocAction<CR>
+  " au FileType terraform,cs,vue,json,elixir,eelixir,reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx nn <buffer> <localleader>r :call CocAction("rename")<CR>
+  " au CursorHoldI,CursorMovedI * call CocActionAsync('showSignatureHelp')
 augroup END
 
 
@@ -340,9 +340,9 @@ nn <silent> <leader>jl :call OpenLog()<CR>
 nn <silent> <leader>jj :FZF ~/notes<CR>
 nn <silent> <leader>jt :e ~/notes/todo.txt<CR>
 nn <leader>k :q<CR>
-nmap <silent> <leader>ld <Plug>(coc-diagnostic-info)
-nmap <silent> <leader>ln <Plug>(coc-diagnostic-next)
-nmap <silent> <leader>lp <Plug>(coc-diagnostic-prev)
+" nmap <silent> <leader>ld <Plug>(coc-diagnostic-info)
+" nmap <silent> <leader>ln <Plug>(coc-diagnostic-next)
+" nmap <silent> <leader>lp <Plug>(coc-diagnostic-prev)
 nn <leader>m :History<CR>
 nn <leader>n :tabe<CR>
 nn <leader>o :Vista<CR>
@@ -415,16 +415,16 @@ inoremap <silent><expr> <S-Tab>
   \ pumvisible() ? "\<C-p>" :
   \ "\<S-Tab>"
 
-inoremap <silent><expr> <C-n>
-  \ pumvisible() ? "\<C-n>" :
-  \ coc#refresh()
+" inoremap <silent><expr> <C-n>
+"   \ pumvisible() ? "\<C-n>" :
+"   \ coc#refresh()
 
 " Insert ultisnip snippet on Enter
 " https://github.com/neoclide/coc.nvim/wiki/Using-snippets
-inoremap <silent><expr> <CR>
-      \ pumvisible() ?
-      \ coc#_select_confirm() : 
-      \ "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+" inoremap <silent><expr> <CR>
+"       \ pumvisible() ?
+"       \ coc#_select_confirm() : 
+"       \ "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
 
 " Local Vimrc
