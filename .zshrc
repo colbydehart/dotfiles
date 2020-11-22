@@ -51,36 +51,14 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
 # Automatically do stuff when entering directories
-eval "$(direnv hook zsh)"
-
-# --- --- ---
-# Star development
-function starconfig () {
-  unset AWS_ACCESS_KEY_ID
-  unset AWS_SECRET_ACCESS_KEY
-  export AWS_PROFILE=star
-  export AWS_DEFAULT_REGION=us-east-1
-  aws --region us-east-1 ecr get-login-password | docker login --username AWS --password-stdin https://298433512871.dkr.ecr.us-east-1.amazonaws.com
-}
-# TODO: remove when i work on health
-export AWS_PROFILE=star
-
-# --- --- ---
+[ -x direnv ] && eval "$(direnv hook zsh)"
 
 # America's favorite PATHs-time.
 # Home bin
 PATH=~/bin:${PATH}
 # Pyenv should work yeah?
 PATH=${PYENV_ROOT}/bin:${PATH}
-# Postgres or PostgreSQL? PSQL? Postgres Sequel SQL? 2 Postgres 2 Furious?
-PATH=/Applications/Postgres.app/Contents/Versions/latest/bin:${PATH}
-# Add Visual Studio Code (code) bin
-PATH="/Applications/Visual Studio Code.app/Contents/Resources/app/bin:${PATH}"
 # Always want this as the last path
 export PATH=/usr/local/bin:${PATH}
 
-# added by Snowflake SnowSQL installer v1.2
-export PATH=/Applications/SnowSQL.app/Contents/MacOS:$PATH
-# added by tfenv
-autoload -U +X bashcompinit && bashcompinit
-complete -o nospace -C /usr/local/Cellar/tfenv/2.0.0/versions/0.13.2/terraform terraform
+[ -f ${HOME}/.zshrc.local ] && source ${HOME}/.zshrc.local
