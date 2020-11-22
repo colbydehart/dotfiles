@@ -47,6 +47,24 @@ let g:netrw_browsex_viewer="open"  "open stuff with open
 au! QuickFixCmdPost [^l]* cwindow  "open quickfix after search
 au! QuickFixCmdPost l* lwindow     "open quickfix after search
 au! InsertLeave * pc               "close preview on insert leave
+""===================================PLATFORMS====================================
+" If we are in WSL...
+if has('wsl')
+  "  Set the clipboard properly
+  "  see: https://superuser.com/questions/1291425/windows-subsystem-linux-make-vim-use-the-clipboard
+  let g:clipboard = {
+        \   'name': 'win32yank-wsl',
+        \   'copy': {
+        \      '+': 'win32yank.exe -i --crlf',
+        \      '*': 'win32yank.exe -i --crlf',
+        \    },
+        \   'paste': {
+        \      '+': 'win32yank.exe -o --lf',
+        \      '*': 'win32yank.exe -o --lf',
+        \   },
+        \   'cache_enabled': 0,
+  }
+endif
 
 ""===================================IGNORE======================================
 set wildignore+=*/_build
@@ -153,14 +171,13 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
 "==================================AUTOCOMPLETION===============================
-" Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
-" let g:coc_global_extensions = ['coc-json', 'coc-tsserver', 'coc-css', 'coc-eslint', 'coc-rls',
-"                              \ 'coc-html', 'coc-json', 'coc-prettier', 'coc-python', 'coc-syntax',
-"                              \ 'coc-tsserver', 'coc-ultisnips', 'coc-elixir', 'coc-omnisharp',
-"                              \ 'coc-db']
 Plug 'liuchengxu/vista.vim'
 Plug 'Shougo/echodoc.vim'
 Plug 'SirVer/ultisnips'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'Shougo/deoplete.nvim'
+Plug 'lighttiger2505/deoplete-vim-lsp'
+Plug 'mattn/vim-lsp-settings'
 let g:UltiSnipsSnippetDirectories = [$HOME.'/dotfiles/snippets']
 let g:UltiSnipsExpandTrigger = "<C-l>"
 " let g:vista_default_executive = 'coc'
