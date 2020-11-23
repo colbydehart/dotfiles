@@ -1,11 +1,6 @@
 {
-  "codeLens.enable": true,
-  "diagnostic.virtualText": true,
   "diagnostic.messageTarget": "echo",
-  "coc.source.around.priority": 9,
-  "coc.source.buffer.priority": 9,
   "eslint.options": {"configFile": "./.eslintrc"},
-  "json.format.enable": false,
   "prettier.requireConfig": true,
   "html.filetypes": ["html", "eelixir"],
   "list.insertMappings": {
@@ -18,24 +13,22 @@
     "javascriptreact",
     "typescript",
     "typescriptreact",
-    "json"
+    "python",
+    "csharp",
+    "json",
+    "jsonc"
   ],
   "eslint.filetypes": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
   "tsserver.formatOnType": false,
   "languageserver": {
     "reason-language-server": {
-      "command": "/Users/colbydehart/.config/nvim/reason-language-server/reason-language-server.exe",
+      "command": "reason-language-server",
       "filetypes": ["reason"]
     },
-    "elixirLS": {
-      "command": "/Users/colbydehart/.config/nvim/elixir-ls/language_server.sh",
-      "filetypes": ["elixir", "eelixir"],
-      "settings": { "dialyzerEnabled": false}
-    },
     "terraform-lsp": {
-      "command": "/Users/colbydehart/.config/nvim/terraform-lsp",
+      "command": "terraform-lsp",
       "filetypes": ["terraform"],
       "initializationOptions": {}
     }
   }
-}
+} // vim: ft=jsonc

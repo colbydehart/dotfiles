@@ -171,16 +171,26 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
 "==================================AUTOCOMPLETION===============================
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'liuchengxu/vista.vim'
 Plug 'Shougo/echodoc.vim'
 Plug 'SirVer/ultisnips'
-Plug 'prabirshrestha/vim-lsp'
-Plug 'Shougo/deoplete.nvim'
-Plug 'lighttiger2505/deoplete-vim-lsp'
-Plug 'mattn/vim-lsp-settings'
 let g:UltiSnipsSnippetDirectories = [$HOME.'/dotfiles/snippets']
 let g:UltiSnipsExpandTrigger = "<C-l>"
-" let g:vista_default_executive = 'coc'
+let g:vista_default_executive = 'coc'
+ let g:coc_global_extensions = [
+\    'coc-json',
+\    'coc-tsserver',
+\    'coc-css',
+\    'coc-eslint',
+\    'coc-html',
+\    'coc-json',
+\    'coc-prettier',
+\    'coc-python',
+\    'coc-syntax',
+\    'coc-ultisnips',
+\    'coc-elixir',
+\    ]
 
 "===================================WEB=========================================
 Plug 'stephenway/postcss.vim'
@@ -193,6 +203,7 @@ let g:user_emmet_settings = {
 \  'slime': {'extends': 'slim'}
 \}
 Plug 'elzr/vim-json' "Better JSON highlighting
+Plug 'kevinoid/vim-jsonc'
 let g:vim_json_syntax_conceal=0
 au! BufEnter .babelrc setlocal ft=json
 au! BufEnter .prettierrc setlocal ft=json
@@ -221,52 +232,21 @@ let g:mix_format_on_save = 1
 au! BufNewFile,BufRead *.slimleex set filetype=slime
 au! BufNewFile,BufRead *.slim set filetype=slime
 
-"===============================OCAML/REASON====================================
-Plug 'reasonml-editor/vim-reason-plus', {'for': ['reason', 'ocaml']}
-
-"===================================ELM=========================================
-Plug 'ElmCast/elm-vim'
-let g:elm_setup_keybindings = 0
-let g:elm_format_autosave=1
-au! FileType elm setlocal tabstop=4 shiftwidth=4 softtabstop=4 foldmethod=indent
-au! FileType elm nn <buffer> K :ElmShowDocs<CR>
-
-"===================================CLOJURE=====================================
-Plug 'tpope/vim-fireplace', {'for': ['clojure', 'clojurescript']}
-Plug 'tpope/vim-classpath', {'for': ['clojure', 'clojurescript']}
-Plug 'guns/vim-clojure-static', {'for': ['clojure', 'clojurescript']}
-Plug 'guns/vim-sexp', {'for': ['clojure', 'clojurescript']}
-Plug 'tpope/vim-sexp-mappings-for-regular-people', {'for': ['clojure', 'clojurescript']}
-let g:clojure_align_multiline_strings = 1
-let g:clojure_align_subforms = 1
-augroup clojure
-  au!
-  au BufEnter build.boot set filetype=clojure
-augroup END
-
 "===================================RUST========================================
 Plug 'rust-lang/rust.vim', {'for': 'rust'}
-
-"===================================RUBY========================================
-Plug 'vim-ruby/vim-ruby', {'for': 'ruby'}
-Plug 'tpope/vim-rbenv', { 'for': 'ruby' }
 
 "==================================PYTHON=======================================
 au! FileType python setlocal tabstop=4 shiftwidth=4 softtabstop=4 foldmethod=indent textwidth=120
 Plug 'tweekmonster/django-plus.vim'
 Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'} " better syntax highlighting
 
-"==================================CSHARP=======================================
-
 "===================================VIML========================================
 Plug 'shougo/neco-vim', {'for': ['vim']}
 au! FileType vim setlocal foldmethod=indent keywordprg=:help
 
-
 "===================================ETC.========================================
 Plug 'editorconfig/editorconfig-vim'
 Plug 'freitass/todo.txt-vim' " Todos
-Plug 'christoomey/vim-tmux-navigator'
 Plug 'neo4j-contrib/cypher-vim-syntax' " neo4j cypher syntax
 Plug 'jparise/vim-graphql' " graphql syntax
 Plug 'godlygeek/tabular' " allows formatting of markdown tables
@@ -274,8 +254,6 @@ Plug 'plasticboy/vim-markdown'
 Plug 'chr4/nginx.vim'
 Plug 'hashivim/vim-terraform'
 Plug 'cespare/vim-toml'
-Plug 'baverman/vial'
-Plug 'baverman/vial-http'
 Plug 'freitass/todo.txt-vim'
 Plug 'christoomey/vim-tmux-navigator'
 let g:ftplugin_sql_omni_key = 0
@@ -300,17 +278,13 @@ endif
 
 
 "===================================LSP Bindings===================================
-augroup lsp
-  au!
-  " au FileType terraform,cs,vue,json,elixir,eelixir,reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx nn <silent> <buffer> K :call CocAction("doHover")<CR>
-  " au FileType terraform,cs,vue,json,elixir,eelixir,reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx nn <silent> <buffer> gd :call CocAction("jumpDefinition")<CR>
-  " au FileType terraform,cs,vue,json,elixir,eelixir,reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx nn <silent> <buffer> gr :call CocAction("jumpReferences")<CR>
-  " au FileType terraform,cs,vue,json,elixir,eelixir,reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx nn <buffer> <localleader>i :call CocAction("workspaceSymbols")<CR>
-  " au FileType terraform,cs,vue,json,elixir,eelixir,reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx nn <silent> <buffer> <localleader>a :CocAction<CR>
-  " au FileType terraform,cs,vue,json,elixir,eelixir,reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx vm <silent> <buffer> <localleader>a :CocAction<CR>
-  " au FileType terraform,cs,vue,json,elixir,eelixir,reason,ocaml,rust,python,javacript,javascript.jsx,typescript,typescript.tsx nn <buffer> <localleader>r :call CocAction("rename")<CR>
-  " au CursorHoldI,CursorMovedI * call CocActionAsync('showSignatureHelp')
-augroup END
+nn <silent>  K :call CocAction("doHover")<CR>
+nn <silent>  gd :call CocAction("jumpDefinition")<CR>
+nn <silent>  gr :call CocAction("jumpReferences")<CR>
+nn <localleader>i :call CocAction("workspaceSymbols")<CR>
+nn <silent> <localleader>a :CocAction<CR>
+vm <silent> <localleader>a :CocAction<CR>
+nn <localleader>r :call CocAction("rename")<CR>
 
 
 
@@ -432,16 +406,16 @@ inoremap <silent><expr> <S-Tab>
   \ pumvisible() ? "\<C-p>" :
   \ "\<S-Tab>"
 
-" inoremap <silent><expr> <C-n>
-"   \ pumvisible() ? "\<C-n>" :
-"   \ coc#refresh()
+inoremap <silent><expr> <C-n>
+  \ pumvisible() ? "\<C-n>" :
+  \ coc#refresh()
 
 " Insert ultisnip snippet on Enter
 " https://github.com/neoclide/coc.nvim/wiki/Using-snippets
-" inoremap <silent><expr> <CR>
-"       \ pumvisible() ?
-"       \ coc#_select_confirm() : 
-"       \ "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+inoremap <silent><expr> <CR>
+      \ pumvisible() ?
+      \ coc#_select_confirm() : 
+      \ "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
 
 " Local Vimrc
