@@ -100,6 +100,25 @@ if executable('nvr')
   let $VISUAL="nvr -cc split --remote-wait +'set bufhidden=wipe'"
 endif
 
+" Daily log
+function! OpenLog()
+  silent exe ":e ~/notes/log/" . strftime("%Y/%m/%d") . ".md"
+  silent exe ":!mkdir -p %:h"
+endfunction
+
+function! CondenseLog()
+  let logfiles = glob('~/notes/log/**/*.md', 0, 1)
+  let journal = glob('~/notes/journal.md')
+  silent exec ':e ' . journal
+  for f in logfiles
+    call append(line('.'), readfile(f))
+    call append(line('.'), '') " blank line
+    " gives us a date header like '## 2020/10/21'
+    call append(line('.'), "## " . split(f, 'log/')[1][:-4])
+    call append(line('.'), '') " blank line
+  endfor
+endfunction
+
 "===================================PLUGINS=====================================
 call plug#begin()
 
@@ -277,40 +296,20 @@ if executable('rg')
 endif
 
 
-"===================================LSP Bindings===================================
-nn <silent>  K :call CocAction("doHover")<CR>
-nn <silent>  gd :call CocAction("jumpDefinition")<CR>
-nn <silent>  gr :call CocAction("jumpReferences")<CR>
-nn <localleader>i :call CocAction("workspaceSymbols")<CR>
-nn <silent> <localleader>a :CocAction<CR>
-vm <silent> <localleader>a :CocAction<CR>
-nn <localleader>r :call CocAction("rename")<CR>
-
-
 
 "===================================KEYBINDINGS=================================
 " Buffer jumper
 nn <BS> :b#<CR>
 
-" Daily log
-function! OpenLog()
-  silent exe ":e ~/notes/log/" . strftime("%Y/%m/%d") . ".md"
-  silent exe ":!mkdir -p %:h"
-endfunction
-
-function! CondenseLog()
-  let logfiles = glob('~/notes/log/**/*.md', 0, 1)
-  let journal = glob('~/notes/journal.md')
-  silent exec ':e ' . journal
-  for f in logfiles
-    call append(line('.'), readfile(f))
-    call append(line('.'), '') " blank line
-    " gives us a date header like '## 2020/10/21'
-    call append(line('.'), "## " . split(f, 'log/')[1][:-4])
-    call append(line('.'), '') " blank line
-  endfor
-endfunction
-
+" LSP Bindings
+nn <silent> K :call CocAction("doHover")<CR>
+nn <silent> gd :call CocAction("jumpDefinition")<CR>
+nn <silent> gr :call CocAction("jumpReferences")<CR>
+nn <silent> <localleader>i :CocAction("getWorkspaceSymbols")<CR>
+nn <silent> <localleader>a :CocAction<CR>
+vm <silent> <localleader>a <Plug>(coc-codeaction-selected)
+xm <silent> <localleader>a <Plug>(coc-codeaction-selected)
+nn <silent> <localleader>r :call CocAction("rename")<CR>
 " Leader mappings
 nn <leader>' :Marks<CR>
 nn <leader>/ :Rg<CR>
@@ -331,9 +330,9 @@ nn <silent> <leader>jl :call OpenLog()<CR>
 nn <silent> <leader>jj :FZF ~/notes<CR>
 nn <silent> <leader>jt :e ~/notes/todo.txt<CR>
 nn <leader>k :q<CR>
-" nmap <silent> <leader>ld <Plug>(coc-diagnostic-info)
-" nmap <silent> <leader>ln <Plug>(coc-diagnostic-next)
-" nmap <silent> <leader>lp <Plug>(coc-diagnostic-prev)
+nmap <silent> <leader>ld <Plug>(coc-diagnostic-info)
+nmap <silent> <leader>ln <Plug>(coc-diagnostic-next)
+nmap <silent> <leader>lp <Plug>(coc-diagnostic-prev)
 nn <leader>m :History<CR>
 nn <leader>n :tabe<CR>
 nn <leader>o :Vista<CR>
@@ -381,7 +380,6 @@ nn - :Vexplore!<CR>
 nnoremap Q @q
 nn / /\v
 nn ? ?\v
-nn gd <C-]>
 nn H gT
 nn L gt
 nn ! :!

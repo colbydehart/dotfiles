@@ -51,7 +51,7 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
 # Automatically do stuff when entering directories
-[ -x direnv ] && eval "$(direnv hook zsh)"
+[ -x "$(command -v direnv)" ] && eval "$(direnv hook zsh)"
 
 # America's favorite PATHs-time.
 # Home bin
