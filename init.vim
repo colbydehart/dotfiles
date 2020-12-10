@@ -116,6 +116,7 @@ function! CondenseLog()
     " gives us a date header like '## 2020/10/21'
     call append(line('.'), "## " . split(f, 'log/')[1][:-4])
     call append(line('.'), '') " blank line
+    silent exec ':!rm ' . f
   endfor
 endfunction
 
@@ -136,7 +137,6 @@ let g:gruvbox_material_enable_italic = 1
 let g:gruvbox_material_disable_italic_comment = 1
 
 let g:lightline = {
-      \ 'colorscheme': 'miramare',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
       \             [ 'gitbranch', 'readonly', 'filename', 'modified', "calendar"] ]
@@ -205,10 +205,11 @@ let g:vista_default_executive = 'coc'
 \    'coc-html',
 \    'coc-json',
 \    'coc-prettier',
-\    'coc-python',
 \    'coc-syntax',
 \    'coc-ultisnips',
 \    'coc-elixir',
+\    'coc-pyright',
+\    'coc-jedi'
 \    ]
 
 "===================================WEB=========================================
@@ -284,7 +285,7 @@ au! FileType qf setlocal wrap
 "=================================PLUG END======================================
 call plug#end()
 set background=dark
-colo miramare
+colo janah
 filetype plugin indent on
 syntax enable
 
@@ -292,7 +293,6 @@ syntax enable
 if executable('rg')
   set grepprg=rg\ --vimgrep\ --no-heading
   set grepformat=%f:%l:%c:%m,%f:%l:%m
-  let $FZF_DEFAULT_COMMAND = 'rg --files --vimgrep'
 endif
 
 
@@ -326,7 +326,7 @@ nn <leader>g :Gstatus<CR>
 nn <leader>h :Helptags<CR>
 nn <leader>i :Tags<CR>
 nn <silent> <leader>jc :call CondenseLog()<CR>
-nn <silent> <leader>jl :call OpenLog()<CR>
+nn <silent> <leader>jl :e ~/notes/journal.md<CR>
 nn <silent> <leader>jj :FZF ~/notes<CR>
 nn <silent> <leader>jt :e ~/notes/todo.txt<CR>
 nn <leader>k :q<CR>
