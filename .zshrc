@@ -21,16 +21,13 @@ precmd_functions+=( precmd_vcs_info )
 setopt prompt_subst
 zstyle ':vcs_info:git:*' formats '%b'
 
-# The shell, the glorious, glorious shell
-SHELL=/bin/zsh
-
 # Fuzzy Finder
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-export FZF_DEFAULT_COMMAND='rg  --files'
+export FZF_DEFAULT_COMMAND='rg --files'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 # Neovim
-export EDITOR=/usr/local/bin/nvim
+export EDITOR=nvim
 # Beautiful Prompt
 export PROMPT="%n@%~ "
 export RPROMPT=\$vcs_info_msg_0_
@@ -40,9 +37,11 @@ export RPROMPT=\$vcs_info_msg_0_
 # Python startup
 export PYTHONSTARTUP=~/dotfiles/.pythonrc
 # Pyenv python manager
-export PYENV_ROOT=~/.pyenv
+export PATH="$HOME/.pyenv/bin:$PATH"
+export PYENV_ROOT=$HOME/.pyenv
 if command -v pyenv 1>/dev/null 2>&1; then
-   eval "$(pyenv init -)"
+  eval "$(pyenv init -)"
+  eval "$(pyenv virtualenv-init -)"
 fi
 
 # Node Version Manager
@@ -52,13 +51,16 @@ export NVM_DIR="$HOME/.nvm"
 
 # Automatically do stuff when entering directories
 [ -x "$(command -v direnv)" ] && eval "$(direnv hook zsh)"
+# Rustup stuff
+[ -f ${HOME}/.cargo/env ] && source ${HOME}/.cargo/env
 
 # America's favorite PATHs-time.
 # Home bin
 PATH=~/bin:${PATH}
-# Pyenv should work yeah?
-PATH=${PYENV_ROOT}/bin:${PATH}
+# Local bin
+PATH=~/.local/bin:${PATH}
 # Always want this as the last path
 export PATH=/usr/local/bin:${PATH}
 
+# Local (nonmanaged) zsh config
 [ -f ${HOME}/.zshrc.local ] && source ${HOME}/.zshrc.local

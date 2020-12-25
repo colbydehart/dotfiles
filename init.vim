@@ -177,6 +177,7 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-speeddating'
 Plug 'tpope/vim-eunuch'
+Plug 'tpope/vim-endwise'
 " Disable netrw gx mapping.
 let g:netrw_nogx = get(g:, 'netrw_nogx', 1)
 " tpope trying to take over my dang <CR>
