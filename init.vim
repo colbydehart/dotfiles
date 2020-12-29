@@ -209,8 +209,7 @@ let g:vista_default_executive = 'coc'
 \    'coc-syntax',
 \    'coc-ultisnips',
 \    'coc-elixir',
-\    'coc-pyright',
-\    'coc-jedi'
+\    'coc-python'
 \    ]
 
 "===================================WEB=========================================
@@ -255,6 +254,12 @@ au! BufNewFile,BufRead *.slim set filetype=slime
 
 "===================================RUST========================================
 Plug 'rust-lang/rust.vim', {'for': 'rust'}
+
+"=================================CLOJURE=======================================
+Plug 'tpope/vim-fireplace'
+Plug 'guns/vim-clojure-static'
+Plug 'guns/vim-sexp'
+Plug 'tpope/vim-sexp-mappings-for-regular-people'
 
 "==================================PYTHON=======================================
 au! FileType python setlocal tabstop=4 shiftwidth=4 softtabstop=4 foldmethod=indent textwidth=120
