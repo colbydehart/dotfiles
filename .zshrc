@@ -27,7 +27,7 @@ export FZF_DEFAULT_COMMAND='rg --files'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 # Neovim
-export EDITOR=nvim
+export EDITOR=nvr
 # Beautiful Prompt
 export PROMPT="%n@%~ "
 export RPROMPT=\$vcs_info_msg_0_
@@ -53,6 +53,9 @@ export NVM_DIR="$HOME/.nvm"
 [ -x "$(command -v direnv)" ] && eval "$(direnv hook zsh)"
 # Rustup stuff
 [ -f ${HOME}/.cargo/env ] && source ${HOME}/.cargo/env
+
+# Doom
+export DOOMDIR=$HOME/.doom.d
 
 # America's favorite PATHs-time.
 # Home bin

@@ -148,7 +148,7 @@ let g:lightline = {
       \   'gitbranch': 'fugitive#head'
       \ },
       \ }
-
+let g:indentLine_fileTypeExclude = ['help', 'terminal', 'calendar']
 "====================================UTILITY====================================
 Plug 'Raimondi/delimitMate'
 Plug 'powerman/vim-plugin-AnsiEsc'
@@ -281,7 +281,6 @@ Plug 'chr4/nginx.vim'
 Plug 'hashivim/vim-terraform'
 Plug 'cespare/vim-toml'
 Plug 'freitass/todo.txt-vim'
-Plug 'christoomey/vim-tmux-navigator'
 let g:ftplugin_sql_omni_key = 0
 au! BufEnter,BufRead someday.txt set ft=todo
 au! FileType markdown setlocal tw=80 foldmethod=indent cole=0 wrap
@@ -388,6 +387,8 @@ nn / /\v
 nn ? ?\v
 nn H gT
 nn L gt
+au! FileType calendar nn H gT
+au! FileType calendar nn L gt
 nn ! :!
 nn q: :q
 nn Z zA
