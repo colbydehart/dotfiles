@@ -8,6 +8,7 @@ set autoread                       "auto relaod
 set cindent                        "auto indent
 set clipboard=unnamedplus          "use system clipboard
 set diffopt=vertical               "vertical diff splits
+set completeopt=menuone,noinsert,noselect
 set expandtab                      "no tabs
 set foldlevel=20                   "start with a big fold
 set foldmethod=syntax              "code folding
@@ -88,12 +89,6 @@ func! OpenOrCreateTerminal()
     :terminal
   endif
 endfunc
-
-" Conditionally load vim plugins.
-function! Cond(cond, ...)
-  let opts = get(a:000, 0, {})
-  return a:cond ? opts : extend(opts, {'on': [], 'for': [] })
-endfunction
 
 " override $VISUAL to use nvr inside neovim
 if executable('nvr')
@@ -191,26 +186,17 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
 "==================================AUTOCOMPLETION===============================
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'liuchengxu/vista.vim'
 Plug 'Shougo/echodoc.vim'
 Plug 'SirVer/ultisnips'
+Plug 'neovim/nvim-lspconfig'
+Plug 'nvim-lua/completion-nvim'
 let g:UltiSnipsSnippetDirectories = [$HOME.'/dotfiles/snippets']
 let g:UltiSnipsExpandTrigger = "<C-l>"
-let g:vista_default_executive = 'coc'
- let g:coc_global_extensions = [
-\    'coc-json',
-\    'coc-tsserver',
-\    'coc-css',
-\    'coc-eslint',
-\    'coc-html',
-\    'coc-json',
-\    'coc-prettier',
-\    'coc-syntax',
-\    'coc-ultisnips',
-\    'coc-elixir',
-\    'coc-python'
-\    ]
+" Use completion-nvim in every buffer
+autocmd BufEnter * lua require'completion'.on_attach()
+let g:completion_enable_snippet = "UltiSnips"
+let g:completion_enable_auto_hover = 0
+let g:completion_matching_smart_case = 1
 
 "===================================WEB=========================================
 Plug 'stephenway/postcss.vim'
@@ -246,11 +232,8 @@ au! FileType typescript.tsx set foldmethod=indent
 "==================================ELIXIR=======================================
 Plug 'elixir-lang/vim-elixir'
 Plug 'mhinz/vim-mix-format'
-Plug 'slime-lang/vim-slime-syntax'
 au BufEnter *.leex set filetype=eelixir
 let g:mix_format_on_save = 1
-au! BufNewFile,BufRead *.slimleex set filetype=slime
-au! BufNewFile,BufRead *.slim set filetype=slime
 
 "===================================RUST========================================
 Plug 'rust-lang/rust.vim', {'for': 'rust'}
@@ -264,7 +247,6 @@ Plug 'tpope/vim-sexp-mappings-for-regular-people'
 "==================================PYTHON=======================================
 au! FileType python setlocal tabstop=4 shiftwidth=4 softtabstop=4 foldmethod=indent textwidth=120
 Plug 'tweekmonster/django-plus.vim'
-Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'} " better syntax highlighting
 
 "===================================VIML========================================
 Plug 'shougo/neco-vim', {'for': ['vim']}
@@ -294,28 +276,38 @@ colo janah
 filetype plugin indent on
 syntax enable
 
+packloadall
+lua << EOF
+  vim.cmd('packadd nvim-lspconfig')
+  require'lspconfig'.clojure_lsp.setup{}
+  require'lspconfig'.elixirls.setup{}
+  require'lspconfig'.pyls_ms.setup{}
+  require'lspconfig'.terraformls.setup{}
+  require'lspconfig'.tsserver.setup{}
+EOF
+autocmd FileType clojure,elixir,eelixir,python,terraform,typescript,javascript set omnifunc=v:lua.vim.lsp.omnifunc
+
+
+
+
 ""===================================FAST=SEARCH=================================
 if executable('rg')
   set grepprg=rg\ --vimgrep\ --no-heading
   set grepformat=%f:%l:%c:%m,%f:%l:%m
 endif
 
-
-
 "===================================KEYBINDINGS=================================
 " Buffer jumper
 nn <BS> :b#<CR>
 
 " LSP Bindings
-nn <silent> K :call CocAction("doHover")<CR>
-nn <silent> gd :call CocAction("jumpDefinition")<CR>
-nn <silent> gr :call CocAction("jumpReferences")<CR>
-nn <silent> <localleader>i :CocAction("getWorkspaceSymbols")<CR>
-nn <silent> <localleader>a :CocAction<CR>
-vm <silent> <localleader>a <Plug>(coc-codeaction-selected)
-xm <silent> <localleader>a <Plug>(coc-codeaction-selected)
-nn <silent> <localleader>r :call CocAction("rename")<CR>
-" Leader mappings
+nn <silent> K <cmd>lua vim.lsp.buf.hover()<CR>
+nn <silent> gd <cmd>lua vim.lsp.buf.definition()<CR>
+nn <silent> gr <cmd>lua vim.lsp.buf.references()<CR>
+nn <silent> <localleader>a <cmd>lua vim.lsp.buf.code_action()<CR>
+nn <silent> <localleader>i <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
+nn <silent> <localleader>r <cmd>lua vim.lsp.buf.rename()<CR>" Leader mappings
+" Leader stuff
 nn <leader>' :Marks<CR>
 nn <leader>/ :Rg<CR>
 nn <leader>; :Commands<CR>
@@ -335,9 +327,9 @@ nn <silent> <leader>jl :e ~/notes/journal.md<CR>
 nn <silent> <leader>jj :FZF ~/notes<CR>
 nn <silent> <leader>jt :e ~/notes/todo.txt<CR>
 nn <leader>k :q<CR>
-nmap <silent> <leader>ld <Plug>(coc-diagnostic-info)
-nmap <silent> <leader>ln <Plug>(coc-diagnostic-next)
-nmap <silent> <leader>lp <Plug>(coc-diagnostic-prev)
+" nmap <silent> <leader>ld <Plug>(coc-diagnostic-info)
+" nmap <silent> <leader>ln <Plug>(coc-diagnostic-next)
+" nmap <silent> <leader>lp <Plug>(coc-diagnostic-prev)
 nn <leader>m :History<CR>
 nn <leader>n :tabe<CR>
 nn <leader>o :Vista<CR>
@@ -402,18 +394,8 @@ tnoremap <C-k> <C-\><C-n><C-w>k
 tnoremap <C-l> <C-\><C-n><C-w>l
 au TermOpen * setlocal nonumber norelativenumber bufhidden=hide
 
-
-inoremap <silent><expr> <Tab>
-  \ pumvisible() ? "\<C-n>" :
-  \ "\<Tab>"
-
-inoremap <silent><expr> <S-Tab>
-  \ pumvisible() ? "\<C-p>" :
-  \ "\<S-Tab>"
-
-inoremap <silent><expr> <C-n>
-  \ pumvisible() ? "\<C-n>" :
-  \ coc#refresh()
+imap <tab> <Plug>(completion_smart_tab)
+imap <s-tab> <Plug>(completion_smart_s_tab)
 
 " Insert ultisnip snippet on Enter
 " https://github.com/neoclide/coc.nvim/wiki/Using-snippets
@@ -431,3 +413,4 @@ endif
 " Autoreload .vimrc
 au! bufwritepost init.vim source %
 au! bufwritepost .lvimrc source %
+
