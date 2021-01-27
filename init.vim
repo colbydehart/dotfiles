@@ -145,38 +145,21 @@ let g:lightline = {
       \ }
 let g:indentLine_fileTypeExclude = ['help', 'terminal', 'calendar']
 "====================================UTILITY====================================
-Plug 'Raimondi/delimitMate'
+Plug 'jiangmiao/auto-pairs'
 Plug 'powerman/vim-plugin-AnsiEsc'
-Plug 'AndrewRadev/splitjoin.vim'
 Plug 'tyru/open-browser.vim'
-Plug 'justinmk/vim-sneak'
-" ai and ii indent level text objects
-Plug 'michaeljsmith/vim-indent-object'
-let delimitMate_expand_cr=1
-let delimitMate_jump_expansion=1
-let delimitMate_balance_matchpairs=1
-let g:sneak#use_ic_scs = 1
-let g:sneak#map_netrw = 0
-let g:sneak#label = 1
-" tpope shrine.
-Plug 'tpope/vim-rsi'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-abolish'
-Plug 'tpope/vim-dadbod'
-Plug 'tpope/vim-dispatch'
-Plug 'tpope/vim-vinegar'
-Plug 'tpope/vim-rhubarb'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-unimpaired'
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-speeddating'
-Plug 'tpope/vim-eunuch'
-Plug 'tpope/vim-endwise'
+Plug 'tpope/vim-rsi' " emacs readline bindings
+Plug 'tpope/vim-fugitive' " git
+Plug 'tpope/vim-rhubarb' " github
+Plug 'tpope/vim-abolish' " substitution
+Plug 'tpope/vim-dadbod' " databases
+Plug 'tpope/vim-dispatch' " used by other plugins
+Plug 'tpope/vim-vinegar' " netrw+
+Plug 'tpope/vim-surround' " ysiw
+Plug 'tpope/vim-commentary' " comments
+Plug 'tpope/vim-repeat' " better .
 " Disable netrw gx mapping.
 let g:netrw_nogx = get(g:, 'netrw_nogx', 1)
-" tpope trying to take over my dang <CR>
-let g:endwise_no_mappings = 1
 nmap gx <Plug>(openbrowser-open)
 vmap gx <Plug>(openbrowser-open)
 au! FileType fugitive nm <buffer> <TAB> =
@@ -186,7 +169,6 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
 "==================================AUTOCOMPLETION===============================
-Plug 'Shougo/echodoc.vim'
 Plug 'SirVer/ultisnips'
 Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-lua/completion-nvim'
@@ -195,21 +177,30 @@ let g:UltiSnipsExpandTrigger = "<C-l>"
 " Use completion-nvim in every buffer
 autocmd BufEnter * lua require'completion'.on_attach()
 let g:completion_enable_snippet = "UltiSnips"
-let g:completion_enable_auto_hover = 0
+" let g:completion_enable_auto_hover = 0
 let g:completion_matching_smart_case = 1
+let g:completion_chain_complete_list = {
+      \'default' : [
+      \    {'complete_items': ['lsp', 'snippet']},
+      \    {'mode': '<c-p>'},
+      \    {'mode': '<c-n>'},
+      \    {'mode': 'omni'},
+      \]
+      \}
 
 "===================================WEB=========================================
 Plug 'stephenway/postcss.vim'
 Plug 'mattn/emmet-vim'
 let g:user_emmet_settings = {
 \  'javascript' : {'extends' : 'jsx'},
+\  'javascriptreact' : {'extends' : 'jsx'},
 \  'javascript.jsx' : {'extends' : 'jsx'},
 \  'typescript' : {'extends' : 'jsx'},
+\  'typescriptreact' : {'extends' : 'jsx'},
 \  'typescript.tsx' : {'extends' : 'jsx'},
-\  'slime': {'extends': 'slim'}
 \}
 Plug 'elzr/vim-json' "Better JSON highlighting
-Plug 'kevinoid/vim-jsonc'
+Plug 'kevinoid/vim-jsonc' " json with comments
 let g:vim_json_syntax_conceal=0
 au! BufEnter .babelrc setlocal ft=json
 au! BufEnter .prettierrc setlocal ft=json
@@ -217,11 +208,9 @@ au! BufEnter .eslintrc setlocal ft=json
 au! BufEnter *.postcss,*.pcss setlocal ft=postcss
 
 "==================================JAVASCRIPT===================================
-Plug 'pangloss/vim-javascript', {'for': ['javascript', 'javascript.jsx']}
-Plug 'mxw/vim-jsx', {'for': ['javascript', 'javascript.jsx']}
-Plug 'posva/vim-vue'
+Plug 'pangloss/vim-javascript'
+Plug 'mxw/vim-jsx'
 let g:jsx_ext_required = 0  "Always use jsx syntax
-let g:vue_disable_pre_processors=1
 
 "==================================TYPESCRIPT===================================
 Plug 'leafgarland/typescript-vim'
@@ -236,7 +225,7 @@ au BufEnter *.leex set filetype=eelixir
 let g:mix_format_on_save = 1
 
 "===================================RUST========================================
-Plug 'rust-lang/rust.vim', {'for': 'rust'}
+Plug 'rust-lang/rust.vim'
 
 "=================================CLOJURE=======================================
 Plug 'tpope/vim-fireplace'
@@ -262,7 +251,6 @@ Plug 'plasticboy/vim-markdown'
 Plug 'chr4/nginx.vim'
 Plug 'hashivim/vim-terraform'
 Plug 'cespare/vim-toml'
-Plug 'freitass/todo.txt-vim'
 let g:ftplugin_sql_omni_key = 0
 au! BufEnter,BufRead someday.txt set ft=todo
 au! FileType markdown setlocal tw=80 foldmethod=indent cole=0 wrap
@@ -272,23 +260,21 @@ au! FileType qf setlocal wrap
 "=================================PLUG END======================================
 call plug#end()
 set background=dark
-colo janah
+colo miramare
 filetype plugin indent on
 syntax enable
 
 packloadall
 lua << EOF
+  local on_attach = function(client)
+    vim.api.nvim_buf_set_option(0, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+  end
   vim.cmd('packadd nvim-lspconfig')
-  require'lspconfig'.clojure_lsp.setup{}
-  require'lspconfig'.elixirls.setup{}
-  require'lspconfig'.pyls_ms.setup{}
-  require'lspconfig'.terraformls.setup{}
-  require'lspconfig'.tsserver.setup{}
+  require'lspconfig'.elixirls.setup{ on_attach = on_attach}
+  require'lspconfig'.pyls.setup{ on_attach = on_attach}
+  require'lspconfig'.terraformls.setup{ on_attach = on_attach}
+  require'lspconfig'.tsserver.setup{ on_attach = on_attach}
 EOF
-autocmd FileType clojure,elixir,eelixir,python,terraform,typescript,javascript set omnifunc=v:lua.vim.lsp.omnifunc
-
-
-
 
 ""===================================FAST=SEARCH=================================
 if executable('rg')
@@ -327,9 +313,9 @@ nn <silent> <leader>jl :e ~/notes/journal.md<CR>
 nn <silent> <leader>jj :FZF ~/notes<CR>
 nn <silent> <leader>jt :e ~/notes/todo.txt<CR>
 nn <leader>k :q<CR>
-" nmap <silent> <leader>ld <Plug>(coc-diagnostic-info)
-" nmap <silent> <leader>ln <Plug>(coc-diagnostic-next)
-" nmap <silent> <leader>lp <Plug>(coc-diagnostic-prev)
+nn <leader>ln <cmd>lua vim.lsp.diagnostic.get_next()<CR>
+nn <leader>ll <cmd>lua vim.lsp.diagnostic.get()<CR>
+nn <leader>lp <cmd>lua vim.lsp.diagnostic.get_prev()<CR>
 nn <leader>m :History<CR>
 nn <leader>n :tabe<CR>
 nn <leader>o :Vista<CR>
