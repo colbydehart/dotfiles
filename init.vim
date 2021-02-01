@@ -132,6 +132,7 @@ let g:gruvbox_material_enable_italic = 1
 let g:gruvbox_material_disable_italic_comment = 1
 
 let g:lightline = {
+      \ 'theme': 'embark',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
       \             [ 'gitbranch', 'readonly', 'filename', 'modified', "calendar"] ]
@@ -206,6 +207,7 @@ au! BufEnter .babelrc setlocal ft=json
 au! BufEnter .prettierrc setlocal ft=json
 au! BufEnter .eslintrc setlocal ft=json
 au! BufEnter *.postcss,*.pcss setlocal ft=postcss
+au! BufEnter *.tsx,*.ts set ft=typescript.tsx
 
 "==================================JAVASCRIPT===================================
 Plug 'pangloss/vim-javascript'
@@ -260,7 +262,7 @@ au! FileType qf setlocal wrap
 "=================================PLUG END======================================
 call plug#end()
 set background=dark
-colo miramare
+colo embark
 filetype plugin indent on
 syntax enable
 
