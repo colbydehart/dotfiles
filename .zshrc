@@ -2,17 +2,14 @@
 # BY COLBY DEHART
 #     A NOVEL
 
-# Lines configured by zsh-newuser-install
 HISTFILE=~/.histfile
 HISTSIZE=1000
 SAVEHIST=1000
 bindkey -e
-# End of lines configured by zsh-newuser-install
-# The following lines were added by compinstall
-zstyle :compinstall filename '/Users/colbydehart/.zshrc'
-autoload -Uz compinit
+autoload -U compinit promptinit bashcompinit
 compinit
-# End of lines added by compinstall
+promptinit
+bashcompinit
 
 # Version control autocomplete
 autoload -Uz vcs_info
@@ -41,7 +38,6 @@ export PATH="$HOME/.pyenv/bin:$PATH"
 export PYENV_ROOT=$HOME/.pyenv
 if command -v pyenv 1>/dev/null 2>&1; then
   eval "$(pyenv init -)"
-  eval "$(pyenv virtualenv-init -)"
 fi
 
 # Node Version Manager
@@ -52,8 +48,9 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || pr
 # Rustup stuff
 [ -f ${HOME}/.cargo/env ] && source ${HOME}/.cargo/env
 
-# Doom
-export DOOMDIR=$HOME/.doom.d
+# asdf version manager
+[ -f ${HOME}/.asdf/asdf.sh ] && source $HOME/.asdf/asdf.sh
+[ -f ${HOME}/.asdf/completions/asdf.bash ] && source $HOME/.asdf/completions/asdf.bash
 
 # America's favorite PATHs-time.
 # Home bin

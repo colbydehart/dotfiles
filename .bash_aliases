@@ -40,12 +40,8 @@ alias myip="ifconfig | grep en0 -A 3 | grep \"inet \" | cut -d \" \" -f 2"
 alias dc="docker-compose"
 alias dm="docker-machine"
 alias dcl="docker container ls"
-# react native
-alias rn="react-native"
 # tmux in color mode with unicode
 alias tmux="tmux -u2"
-# arduino CLI tool
-alias arduino='/Applications/Arduino.app/Contents/MacOS/Arduino'
 # iex with mix
 alias ism="iex -S mix"
 # open phoenix server
@@ -58,8 +54,6 @@ alias killzsh="ps ax -o pid,command,ppid | grep 'zsh' | awk '{print $1}' | xargs
 olh () {
     open http://localhost:$1;
 }
-# Todo.txt
-alias td="todo"
 alias pipu="pip install -U pip"
 alias pipdev="pip install pynvim flake8 black"
 
