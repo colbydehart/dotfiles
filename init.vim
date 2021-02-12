@@ -185,7 +185,7 @@ let g:coc_global_extensions = [
 \    'coc-syntax',
 \    'coc-ultisnips',
 \    'coc-elixir',
-\    'coc-python'
+\    'coc-pyright'
 \    ]
 
 "===================================WEB=========================================
@@ -283,6 +283,7 @@ nmap <silent> gr <Plug>(coc-references)
 nmap <localleader>f <Plug>(coc-format)
 nmap <localleader>r <Plug>(coc-rename)
 nmap <localleader>a <Plug>(coc-codeaction)
+vmap <localleader>a <Plug>(coc-codeaction)
 
 nnoremap <silent> K :call CocAction('doHover')<CR>
 
