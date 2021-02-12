@@ -36,6 +36,7 @@ set updatetime=2000                "a bit faster updatetime
 set visualbell                     "no sounds!
 set wildignorecase                 "case insensitive file search
 set conceallevel=0                 "no concealing, confusing
+set signcolumn=number              "replace number with diagnostic
 let g:netrw_banner = 0             "no banner
 let g:netrw_browse_split = 4       "open netrw files in other window
 let g:netrw_winsize = 35           "25 column width for netrw
@@ -132,7 +133,7 @@ let g:gruvbox_material_enable_italic = 1
 let g:gruvbox_material_disable_italic_comment = 1
 
 let g:lightline = {
-      \ 'theme': 'embark',
+      \ 'colorscheme': 'embark',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
       \             [ 'gitbranch', 'readonly', 'filename', 'modified', "calendar"] ]
@@ -168,36 +169,32 @@ au! FileType fugitive nm <buffer> <TAB> =
 "==================================NAVIGATION===================================
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+let g:fzf_preview_window = []
 
 "==================================AUTOCOMPLETION===============================
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'SirVer/ultisnips'
-Plug 'neovim/nvim-lspconfig'
-Plug 'nvim-lua/completion-nvim'
 let g:UltiSnipsSnippetDirectories = [$HOME.'/dotfiles/snippets']
 let g:UltiSnipsExpandTrigger = "<C-l>"
-" Use completion-nvim in every buffer
-autocmd BufEnter * lua require'completion'.on_attach()
-let g:completion_enable_snippet = "UltiSnips"
-" let g:completion_enable_auto_hover = 0
-let g:completion_matching_smart_case = 1
-let g:completion_chain_complete_list = {
-      \'default' : [
-      \    {'complete_items': ['lsp', 'snippet']},
-      \    {'mode': '<c-p>'},
-      \    {'mode': '<c-n>'},
-      \    {'mode': 'omni'},
-      \]
-      \}
+let g:coc_global_extensions = [
+\    'coc-json',
+\    'coc-tsserver',
+\    'coc-css',
+\    'coc-html',
+\    'coc-prettier',
+\    'coc-syntax',
+\    'coc-ultisnips',
+\    'coc-elixir',
+\    'coc-python'
+\    ]
 
 "===================================WEB=========================================
 Plug 'stephenway/postcss.vim'
 Plug 'mattn/emmet-vim'
 let g:user_emmet_settings = {
 \  'javascript' : {'extends' : 'jsx'},
-\  'javascriptreact' : {'extends' : 'jsx'},
 \  'javascript.jsx' : {'extends' : 'jsx'},
 \  'typescript' : {'extends' : 'jsx'},
-\  'typescriptreact' : {'extends' : 'jsx'},
 \  'typescript.tsx' : {'extends' : 'jsx'},
 \}
 Plug 'elzr/vim-json' "Better JSON highlighting
@@ -207,7 +204,7 @@ au! BufEnter .babelrc setlocal ft=json
 au! BufEnter .prettierrc setlocal ft=json
 au! BufEnter .eslintrc setlocal ft=json
 au! BufEnter *.postcss,*.pcss setlocal ft=postcss
-au! BufEnter *.tsx,*.ts set ft=typescript.tsx
+au! BufEnter *.tsx,*.ts setlocal ft=typescript.tsx
 
 "==================================JAVASCRIPT===================================
 Plug 'pangloss/vim-javascript'
@@ -266,18 +263,6 @@ colo embark
 filetype plugin indent on
 syntax enable
 
-packloadall
-lua << EOF
-  local on_attach = function(client)
-    vim.api.nvim_buf_set_option(0, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-  end
-  vim.cmd('packadd nvim-lspconfig')
-  require'lspconfig'.elixirls.setup{ on_attach = on_attach}
-  require'lspconfig'.pyls.setup{ on_attach = on_attach}
-  require'lspconfig'.terraformls.setup{ on_attach = on_attach}
-  require'lspconfig'.tsserver.setup{ on_attach = on_attach}
-EOF
-
 ""===================================FAST=SEARCH=================================
 if executable('rg')
   set grepprg=rg\ --vimgrep\ --no-heading
@@ -288,13 +273,19 @@ endif
 " Buffer jumper
 nn <BS> :b#<CR>
 
-" LSP Bindings
-nn <silent> K <cmd>lua vim.lsp.buf.hover()<CR>
-nn <silent> gd <cmd>lua vim.lsp.buf.definition()<CR>
-nn <silent> gr <cmd>lua vim.lsp.buf.references()<CR>
-nn <silent> <localleader>a <cmd>lua vim.lsp.buf.code_action()<CR>
-nn <silent> <localleader>i <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
-nn <silent> <localleader>r <cmd>lua vim.lsp.buf.rename()<CR>" Leader mappings
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" More LSP mappings
+nmap <localleader>f <Plug>(coc-format)
+nmap <localleader>r <Plug>(coc-rename)
+nmap <localleader>a <Plug>(coc-codeaction)
+
+nnoremap <silent> K :call CocAction('doHover')<CR>
+
 " Leader stuff
 nn <leader>' :Marks<CR>
 nn <leader>/ :Rg<CR>
@@ -315,9 +306,9 @@ nn <silent> <leader>jl :e ~/notes/journal.md<CR>
 nn <silent> <leader>jj :FZF ~/notes<CR>
 nn <silent> <leader>jt :e ~/notes/todo.txt<CR>
 nn <leader>k :q<CR>
-nn <leader>ln <cmd>lua vim.lsp.diagnostic.get_next()<CR>
-nn <leader>ll <cmd>lua vim.lsp.diagnostic.get()<CR>
-nn <leader>lp <cmd>lua vim.lsp.diagnostic.get_prev()<CR>
+nmap <silent> <leader>ll :CocDiagnostics<CR>
+nmap <silent> <leader>ln <Plug>(coc-diagnostic-next)
+nmap <silent> <leader>lp <Plug>(coc-diagnostic-prev)
 nn <leader>m :History<CR>
 nn <leader>n :tabe<CR>
 nn <leader>o :Vista<CR>
@@ -359,6 +350,22 @@ nn <Right> :vertical res +5<CR>
 nn <Up> :res +5<CR>
 nn <Down> :res -5<CR>
 
+" Autocomplete mappings
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
 " Etc. keymappings
 nn - :Vexplore!<CR>
@@ -381,17 +388,6 @@ tnoremap <C-j> <C-\><C-n><C-w>j
 tnoremap <C-k> <C-\><C-n><C-w>k
 tnoremap <C-l> <C-\><C-n><C-w>l
 au TermOpen * setlocal nonumber norelativenumber bufhidden=hide
-
-imap <tab> <Plug>(completion_smart_tab)
-imap <s-tab> <Plug>(completion_smart_s_tab)
-
-" Insert ultisnip snippet on Enter
-" https://github.com/neoclide/coc.nvim/wiki/Using-snippets
-inoremap <silent><expr> <CR>
-      \ pumvisible() ?
-      \ coc#_select_confirm() : 
-      \ "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-
 
 " Local Vimrc
 if filereadable('./.lvimrc')

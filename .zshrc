@@ -41,8 +41,9 @@ if command -v pyenv 1>/dev/null 2>&1; then
 fi
 
 # Node Version Manager
-export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 # Automatically do stuff when entering directories
 [ -x "$(command -v direnv)" ] && eval "$(direnv hook zsh)"
 # Rustup stuff
@@ -62,4 +63,3 @@ export PATH=/usr/local/bin:${PATH}
 
 # Local (nonmanaged) zsh config
 [ -f ${HOME}/.zshrc.local ] && source ${HOME}/.zshrc.local
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
