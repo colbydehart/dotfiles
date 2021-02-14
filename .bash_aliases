@@ -7,7 +7,7 @@ alias ......=' cd ../../../../..'
 # git stuff
 alias gs='git status'
 alias gl='git log --oneline --graph --decorate $argv'
-alias gro='git rebase origin/`git branch --show-current`'
+alias gro='git rebase FETCH_HEAD'
 alias grc='git rebase --continue'
 alias gri='git rebase -i'
 alias ga='git add -p'
