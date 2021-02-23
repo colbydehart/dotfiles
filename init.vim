@@ -302,7 +302,7 @@ nn <leader>g :Gstatus<CR>
 nn <leader>h :Helptags<CR>
 nn <leader>i :Tags<CR>
 nn <silent> <leader>jc :call CondenseLog()<CR>
-nn <silent> <leader>jl :e ~/notes/journal.md<CR>
+nn <silent> <leader>jl :call OpenLog()<CR>
 nn <silent> <leader>jj :FZF ~/notes<CR>
 nn <silent> <leader>jt :e ~/notes/todo.txt<CR>
 nn <leader>k :q<CR>
