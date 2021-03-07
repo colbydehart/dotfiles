@@ -120,6 +120,7 @@ endfunction
 call plug#begin()
 
 "====================================COSMETIC===================================
+Plug 'sainnhe/gruvbox-material'
 Plug 'franbach/miramare'
 Plug 'mhinz/vim-janah'
 Plug 'skbolton/embark'
@@ -127,6 +128,7 @@ Plug 'nightsense/snow'
 Plug 'Yggdroot/indentLine'
 Plug 'itchyny/lightline.vim'
 Plug 'mechatroner/rainbow_csv'
+
 
 let g:lightline = {
       \ 'colorscheme': 'embark',
@@ -177,6 +179,10 @@ Plug 'prabirshrestha/asyncomplete-lsp.vim'
 set omnifunc=lsp#complete
 set signcolumn=yes
 set tagfunc=lsp#tagfunc
+set foldmethod=expr
+set foldexpr=lsp#ui#vim#folding#foldexpr()
+set foldtext=lsp#ui#vim#folding#foldtext()
+let g:lsp_diagnostics_float_cursor = 1
 let g:UltiSnipsSnippetDirectories = [$HOME.'/dotfiles/snippets']
 let g:UltiSnipsExpandTrigger = "<C-l>"
 
@@ -251,7 +257,7 @@ au! FileType qf setlocal wrap
 "=================================PLUG END======================================
 call plug#end()
 set background=dark
-colo embark
+colo gruvbox-material
 filetype plugin indent on
 syntax enable
 
