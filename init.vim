@@ -165,6 +165,7 @@ au! FileType fugitive nm <buffer> <TAB> =
 "==================================NAVIGATION===================================
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+Plug 'justinmk/vim-sneak'
 let g:fzf_preview_window = []
 
 "==================================AUTOCOMPLETION===============================
