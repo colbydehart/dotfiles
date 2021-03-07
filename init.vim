@@ -183,6 +183,10 @@ set foldmethod=expr
 set foldexpr=lsp#ui#vim#folding#foldexpr()
 set foldtext=lsp#ui#vim#folding#foldtext()
 let g:lsp_diagnostics_float_cursor = 1
+let g:asyncomplete_auto_completeopt = 0
+let g:asyncomplete_auto_popup = 1
+
+set completeopt=menuone,noinsert,noselect,preview
 let g:UltiSnipsSnippetDirectories = [$HOME.'/dotfiles/snippets']
 let g:UltiSnipsExpandTrigger = "<C-l>"
 
@@ -285,8 +289,8 @@ vmap <localleader>a <plug>(lsp-code-action)
 vmap <localleader>f <plug>(lsp-document-format)
 nmap <localleader>r <plug>(lsp-rename)
 nmap K <plug>(lsp-hover)
-inoremap <expr><c-f> lsp#scroll(+4)
-inoremap <expr><c-d> lsp#scroll(-4)
+ino <expr><c-f> lsp#scroll(+4)
+ino <expr><c-d> lsp#scroll(-4)
 
 let g:lsp_format_sync_timeout = 1000
 autocmd! BufWritePre *.rs,*.go,*.py,*.tsx?,*.jsx? call execute('LspDocumentFormatSync')
@@ -357,14 +361,23 @@ nn <Up> :res +5<CR>
 nn <Down> :res -5<CR>
 
 " Autocomplete mappings
-inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
-imap <c-space> <Plug>(asyncomplete_force_refresh)
+function! s:check_back_space() abort
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+
+ino <silent><expr> <TAB>
+  \ pumvisible() ? "\<C-n>" :
+  \ <SID>check_back_space() ? "\<TAB>" :
+  \ asyncomplete#force_refresh()
+ino <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+ino <expr><cr>  pumvisible() ? asyncomplete#close_popup() : "\<cr>"
+ino <c-space> <Plug>(asyncomplete_force_refresh)
+ino <expr><c-n> pumvisible() ? "\<C-n>" : "\<C-x><C-o>"
 
 " Etc. keymappings
 nn - :Vexplore!<CR>
-nnoremap Q @q
+nn Q @q
 nn / /\v
 nn ? ?\v
 nn H gT
