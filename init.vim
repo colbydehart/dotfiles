@@ -323,6 +323,7 @@ nn <leader>sk :split<CR>
 nn <leader>sl :vsplit<CR><C-W>l
 nn <silent> <leader>t :call OpenOrCreateTerminal()<CR>
 " nn <leader>u 
+nn <leader>vc :CocConfig<CR>
 nn <leader>vl :e ./.lvimrc<CR>
 nn <leader>vv :e ~/.config/nvim/init.vim<CR>
 nn <leader>vt :e ~/dotfiles/.tmux.conf<CR>
