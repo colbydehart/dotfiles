@@ -128,10 +128,6 @@ Plug 'Yggdroot/indentLine'
 Plug 'itchyny/lightline.vim'
 Plug 'mechatroner/rainbow_csv'
 
-let g:gruvbox_material_background = 'hard'
-let g:gruvbox_material_enable_italic = 1
-let g:gruvbox_material_disable_italic_comment = 1
-
 let g:lightline = {
       \ 'colorscheme': 'embark',
       \ 'active': {
@@ -172,21 +168,16 @@ Plug 'junegunn/fzf.vim'
 let g:fzf_preview_window = []
 
 "==================================AUTOCOMPLETION===============================
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'prabirshrestha/vim-lsp'
 Plug 'SirVer/ultisnips'
+Plug 'mattn/vim-lsp-settings'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+set omnifunc=lsp#complete
+set signcolumn=yes
+set tagfunc=lsp#tagfunc
 let g:UltiSnipsSnippetDirectories = [$HOME.'/dotfiles/snippets']
 let g:UltiSnipsExpandTrigger = "<C-l>"
-let g:coc_global_extensions = [
-\    'coc-json',
-\    'coc-tsserver',
-\    'coc-css',
-\    'coc-html',
-\    'coc-prettier',
-\    'coc-syntax',
-\    'coc-ultisnips',
-\    'coc-elixir',
-\    'coc-pyright'
-\    ]
 
 "===================================WEB=========================================
 Plug 'stephenway/postcss.vim'
@@ -274,18 +265,25 @@ endif
 nn <BS> :b#<CR>
 
 " GoTo code navigation.
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
+nmap gd <plug>(lsp-definition)
+nmap gs <plug>(lsp-document-symbol-search)
+nmap gS <plug>(lsp-workspace-symbol-search)
+nmap gr <plug>(lsp-references)
+nmap gi <plug>(lsp-implementation)
+nmap gt <plug>(lsp-type-definition)
 
 " More LSP mappings
-nmap <localleader>f <Plug>(coc-format)
-nmap <localleader>r <Plug>(coc-rename)
-nmap <localleader>a <Plug>(coc-codeaction)
-vmap <localleader>a <Plug>(coc-codeaction)
+nmap <localleader>a <plug>(lsp-code-action)
+vmap <localleader>a <plug>(lsp-code-action)
+vmap <localleader>f <plug>(lsp-document-format)
+nmap <localleader>r <plug>(lsp-rename)
+nmap K <plug>(lsp-hover)
+inoremap <expr><c-f> lsp#scroll(+4)
+inoremap <expr><c-d> lsp#scroll(-4)
 
-nnoremap <silent> K :call CocAction('doHover')<CR>
+let g:lsp_format_sync_timeout = 1000
+autocmd! BufWritePre *.rs,*.go,*.py,*.tsx?,*.jsx? call execute('LspDocumentFormatSync')
+
 
 " Leader stuff
 nn <leader>' :Marks<CR>
@@ -307,9 +305,9 @@ nn <silent> <leader>jl :call OpenLog()<CR>
 nn <silent> <leader>jj :FZF ~/notes<CR>
 nn <silent> <leader>jt :e ~/notes/todo.txt<CR>
 nn <leader>k :q<CR>
-nmap <silent> <leader>ll :CocDiagnostics<CR>
-nmap <silent> <leader>ln <Plug>(coc-diagnostic-next)
-nmap <silent> <leader>lp <Plug>(coc-diagnostic-prev)
+nn <leader>ll <plug>(lsp-document-diagnostics)
+nn <leader>lp <plug>(lsp-previous-diagnostic)
+nn <leader>ln <plug>(lsp-next-diagnostic)
 nn <leader>m :History<CR>
 nn <leader>n :tabe<CR>
 nn <leader>o :Vista<CR>
@@ -323,7 +321,6 @@ nn <leader>sk :split<CR>
 nn <leader>sl :vsplit<CR><C-W>l
 nn <silent> <leader>t :call OpenOrCreateTerminal()<CR>
 " nn <leader>u 
-nn <leader>vc :CocConfig<CR>
 nn <leader>vl :e ./.lvimrc<CR>
 nn <leader>vv :e ~/.config/nvim/init.vim<CR>
 nn <leader>vt :e ~/dotfiles/.tmux.conf<CR>
@@ -353,21 +350,10 @@ nn <Up> :res +5<CR>
 nn <Down> :res -5<CR>
 
 " Autocomplete mappings
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-" Use <c-space> to trigger completion.
-inoremap <silent><expr> <c-space> coc#refresh()
-inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
-                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
+imap <c-space> <Plug>(asyncomplete_force_refresh)
 
 " Etc. keymappings
 nn - :Vexplore!<CR>
