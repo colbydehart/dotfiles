@@ -54,7 +54,5 @@ alias killzsh="ps ax -o pid,command,ppid | grep 'zsh' | awk '{print $1}' | xargs
 olh () {
     open http://localhost:$1;
 }
-alias pipu="pip install -U pip"
-alias pipdev="pip install pynvim flake8 black"
-
+alias pipip="pip install -U pip"
 alias tf=terraform

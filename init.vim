@@ -8,7 +8,7 @@ set autoread                       "auto relaod
 set cindent                        "auto indent
 set clipboard=unnamedplus          "use system clipboard
 set diffopt=vertical               "vertical diff splits
-set completeopt=menuone,noinsert,noselect
+set completeopt=menuone,noselect
 set expandtab                      "no tabs
 set foldlevel=20                   "start with a big fold
 set foldmethod=syntax              "code folding
@@ -121,10 +121,7 @@ call plug#begin()
 
 "====================================COSMETIC===================================
 Plug 'sainnhe/gruvbox-material'
-Plug 'franbach/miramare'
-Plug 'mhinz/vim-janah'
 Plug 'skbolton/embark'
-Plug 'nightsense/snow'
 Plug 'Yggdroot/indentLine'
 Plug 'itchyny/lightline.vim'
 Plug 'mechatroner/rainbow_csv'
@@ -172,20 +169,16 @@ Plug 'justinmk/vim-sneak'
 let g:fzf_preview_window = []
 
 "==================================AUTOCOMPLETION===============================
-Plug 'prabirshrestha/vim-lsp'
 Plug 'SirVer/ultisnips'
-Plug 'mattn/vim-lsp-settings'
-Plug 'Shougo/deoplete.nvim'
-Plug 'lighttiger2505/deoplete-vim-lsp'
-set omnifunc=lsp#complete
-set signcolumn=yes
-set tagfunc=lsp#tagfunc
-set foldmethod=expr
-set foldexpr=lsp#ui#vim#folding#foldexpr()
-set foldtext=lsp#ui#vim#folding#foldtext()
-let g:lsp_diagnostics_float_cursor = 1
-let g:deoplete#enable_at_startup = 1
-set completeopt=menuone,noinsert,noselect,preview
+Plug 'neovim/nvim-lspconfig'
+Plug 'kristijanhusak/vim-dadbod-completion'
+Plug 'nvim-lua/completion-nvim'
+au! BufEnter * lua require'completion'.on_attach()
+let g:completion_enable_snippet = "UltiSnips"
+let g:completion_enable_auto_hover = 1
+let g:completion_matching_smart_case = 1
+let g:completion_matching_strategy_list = ['fuzzy']
+let g:completion_enable_auto_paren = 1
 let g:UltiSnipsSnippetDirectories = [$HOME.'/dotfiles/snippets']
 let g:UltiSnipsExpandTrigger = "<C-l>"
 
@@ -194,9 +187,9 @@ Plug 'stephenway/postcss.vim'
 Plug 'mattn/emmet-vim'
 let g:user_emmet_settings = {
 \  'javascript' : {'extends' : 'jsx'},
-\  'javascript.jsx' : {'extends' : 'jsx'},
+\  'javascriptreact' : {'extends' : 'jsx'},
 \  'typescript' : {'extends' : 'jsx'},
-\  'typescript.tsx' : {'extends' : 'jsx'},
+\  'typescriptreact' : {'extends' : 'jsx'},
 \}
 Plug 'elzr/vim-json' "Better JSON highlighting
 Plug 'kevinoid/vim-jsonc' " json with comments
@@ -205,7 +198,6 @@ au! BufEnter .babelrc setlocal ft=json
 au! BufEnter .prettierrc setlocal ft=json
 au! BufEnter .eslintrc setlocal ft=json
 au! BufEnter *.postcss,*.pcss setlocal ft=postcss
-au! BufEnter *.tsx,*.ts setlocal ft=typescript.tsx
 
 "==================================JAVASCRIPT===================================
 Plug 'pangloss/vim-javascript'
@@ -216,7 +208,7 @@ let g:jsx_ext_required = 0  "Always use jsx syntax
 Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
 au! FileType typescript set foldmethod=indent
-au! FileType typescript.tsx set foldmethod=indent
+au! FileType typescriptreact set foldmethod=indent
 
 "==================================ELIXIR=======================================
 Plug 'elixir-lang/vim-elixir'
@@ -238,12 +230,10 @@ au! FileType python setlocal tabstop=4 shiftwidth=4 softtabstop=4 foldmethod=ind
 Plug 'tweekmonster/django-plus.vim'
 
 "===================================VIML========================================
-Plug 'shougo/neco-vim', {'for': ['vim']}
 au! FileType vim setlocal foldmethod=indent keywordprg=:help
 
 "===================================ETC.========================================
 Plug 'editorconfig/editorconfig-vim'
-Plug 'freitass/todo.txt-vim' " Todos
 Plug 'neo4j-contrib/cypher-vim-syntax' " neo4j cypher syntax
 Plug 'jparise/vim-graphql' " graphql syntax
 Plug 'godlygeek/tabular' " allows formatting of markdown tables
@@ -264,6 +254,23 @@ colo gruvbox-material
 filetype plugin indent on
 syntax enable
 
+"=================================LUA======================================
+packloadall
+lua << EOF
+  local on_attach = function(client)
+    vim.api.nvim_buf_set_option(0, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+  end
+  vim.cmd('packadd nvim-lspconfig')
+  require'lspconfig'.elixirls.setup{ 
+    on_attach = on_attach,
+    cmd = { "elixir-ls" }  
+  }
+  require'lspconfig'.pyright.setup{ on_attach = on_attach}
+  require'lspconfig'.terraformls.setup{ on_attach = on_attach}
+  require'lspconfig'.tsserver.setup{ on_attach = on_attach}
+EOF
+
+
 ""===================================FAST=SEARCH=================================
 if executable('rg')
   set grepprg=rg\ --vimgrep\ --no-heading
@@ -275,25 +282,12 @@ endif
 nn <BS> :b#<CR>
 
 " GoTo code navigation.
-nmap gd <plug>(lsp-definition)
-nmap gs <plug>(lsp-document-symbol-search)
-nmap gS <plug>(lsp-workspace-symbol-search)
-nmap gr <plug>(lsp-references)
-nmap gi <plug>(lsp-implementation)
-nmap gt <plug>(lsp-type-definition)
-
-" More LSP mappings
-nmap <localleader>a <plug>(lsp-code-action)
-vmap <localleader>a <plug>(lsp-code-action)
-vmap <localleader>f <plug>(lsp-document-format)
-nmap <localleader>r <plug>(lsp-rename)
-nmap K <plug>(lsp-hover)
-ino <expr><c-f> lsp#scroll(+4)
-ino <expr><c-d> lsp#scroll(-4)
-
-let g:lsp_format_sync_timeout = 1000
-autocmd! BufWritePre *.rs,*.go,*.py,*.tsx?,*.jsx? call execute('LspDocumentFormatSync')
-
+nn <silent> K <cmd>lua vim.lsp.buf.hover()<CR>
+nn <silent> gd <cmd>lua vim.lsp.buf.definition()<CR>
+nn <silent> gr <cmd>lua vim.lsp.buf.references()<CR>
+nn <silent> <localleader>a <cmd>lua vim.lsp.buf.code_action()<CR>
+nn <silent> <localleader>i <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
+nn <silent> <localleader>r <cmd>lua vim.lsp.buf.rename()<CR>" Leader mappings
 
 " Leader stuff
 nn <leader>' :Marks<CR>
@@ -315,9 +309,9 @@ nn <silent> <leader>jl :call OpenLog()<CR>
 nn <silent> <leader>jj :FZF ~/notes<CR>
 nn <silent> <leader>jt :e ~/notes/todo.txt<CR>
 nn <leader>k :q<CR>
-nn <leader>ll <plug>(lsp-document-diagnostics)
-nn <leader>lp <plug>(lsp-previous-diagnostic)
-nn <leader>ln <plug>(lsp-next-diagnostic)
+nn <leader>ln <cmd>lua vim.lsp.diagnostic.get_next()<CR>
+nn <leader>ll <cmd>lua vim.lsp.diagnostic.get()<CR>
+nn <leader>lp <cmd>lua vim.lsp.diagnostic.get_prev()<CR>
 nn <leader>m :History<CR>
 nn <leader>n :tabe<CR>
 nn <leader>o :Vista<CR>
@@ -331,6 +325,7 @@ nn <leader>sk :split<CR>
 nn <leader>sl :vsplit<CR><C-W>l
 nn <silent> <leader>t :call OpenOrCreateTerminal()<CR>
 " nn <leader>u 
+nn <leader>va :e ~/dotfiles/.bash_aliases<CR>
 nn <leader>vl :e ./.lvimrc<CR>
 nn <leader>vv :e ~/.config/nvim/init.vim<CR>
 nn <leader>vt :e ~/dotfiles/.tmux.conf<CR>
@@ -360,9 +355,8 @@ nn <Up> :res +5<CR>
 nn <Down> :res -5<CR>
 
 " Autocomplete mappings
-call deoplete#custom#source('_', 'matchers', ['matcher_full_fuzzy'])
-ino <silent><expr> <TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
-ino <silent><expr> <S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
+imap <tab> <Plug>(completion_smart_tab)
+imap <s-tab> <Plug>(completion_smart_s_tab)
 
 
 " Etc. keymappings
