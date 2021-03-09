@@ -55,4 +55,5 @@ olh () {
     open http://localhost:$1;
 }
 alias pipip="pip install -U pip"
+alias pipdev="pip install 'python-language-server[all]' pyls-mypy pyls-isort pyls-black"
 alias tf=terraform
