@@ -158,6 +158,7 @@ Plug 'tpope/vim-vinegar' " netrw+
 Plug 'tpope/vim-surround' " ysiw
 Plug 'tpope/vim-commentary' " comments
 Plug 'tpope/vim-repeat' " better .
+let g:AutoPairsMapCR = 0
 " Disable netrw gx mapping.
 let g:netrw_nogx = get(g:, 'netrw_nogx', 1)
 nmap gx <Plug>(openbrowser-open)
@@ -359,6 +360,10 @@ nn <Up> :res +5<CR>
 nn <Down> :res -5<CR>
 
 " Autocomplete mappings
+call deoplete#custom#source('_', 'matchers', ['matcher_full_fuzzy'])
+ino <silent><expr> <TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+ino <silent><expr> <S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
+
 
 " Etc. keymappings
 nn - :Vexplore!<CR>
