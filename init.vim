@@ -174,8 +174,8 @@ let g:fzf_preview_window = []
 Plug 'prabirshrestha/vim-lsp'
 Plug 'SirVer/ultisnips'
 Plug 'mattn/vim-lsp-settings'
-Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'prabirshrestha/asyncomplete-lsp.vim'
+Plug 'Shougo/deoplete.nvim'
+Plug 'lighttiger2505/deoplete-vim-lsp'
 set omnifunc=lsp#complete
 set signcolumn=yes
 set tagfunc=lsp#tagfunc
@@ -183,9 +183,7 @@ set foldmethod=expr
 set foldexpr=lsp#ui#vim#folding#foldexpr()
 set foldtext=lsp#ui#vim#folding#foldtext()
 let g:lsp_diagnostics_float_cursor = 1
-let g:asyncomplete_auto_completeopt = 0
-let g:asyncomplete_auto_popup = 1
-
+let g:deoplete#enable_at_startup = 1
 set completeopt=menuone,noinsert,noselect,preview
 let g:UltiSnipsSnippetDirectories = [$HOME.'/dotfiles/snippets']
 let g:UltiSnipsExpandTrigger = "<C-l>"
@@ -361,19 +359,6 @@ nn <Up> :res +5<CR>
 nn <Down> :res -5<CR>
 
 " Autocomplete mappings
-function! s:check_back_space() abort
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1]  =~ '\s'
-endfunction
-
-ino <silent><expr> <TAB>
-  \ pumvisible() ? "\<C-n>" :
-  \ <SID>check_back_space() ? "\<TAB>" :
-  \ asyncomplete#force_refresh()
-ino <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-ino <expr><cr>  pumvisible() ? asyncomplete#close_popup() : "\<cr>"
-ino <c-space> <Plug>(asyncomplete_force_refresh)
-ino <expr><c-n> pumvisible() ? "\<C-n>" : "\<C-x><C-o>"
 
 " Etc. keymappings
 nn - :Vexplore!<CR>
