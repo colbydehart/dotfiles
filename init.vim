@@ -325,9 +325,11 @@ nn <Up> :res +5<CR>
 nn <Down> :res -5<CR>
 
 " Autocomplete mappings
-" imap <tab> <Plug>(completion_smart_tab)
-" imap <s-tab> <Plug>(completion_smart_s_tab)
-
+inoremap <silent><expr> <C-Space> compe#complete()
+inoremap <silent><expr> <CR>      compe#confirm('<CR>')
+inoremap <silent><expr> <C-e>     compe#close('<C-e>')
+inoremap <silent><expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <silent><expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 " Etc. keymappings
 nn - :Vexplore!<CR>
@@ -360,3 +362,5 @@ endif
 au! bufwritepost init.vim source %
 au! bufwritepost .lvimrc source %
 
+" Load lua file
+lua require('colby')

@@ -59,3 +59,12 @@ require'lspconfig'.tsserver.setup{ on_attach = on_attach}
 
 
 -- Compe 
+require'compe'.setup({
+  source = {
+    path = true,
+    buffer = true,
+    nvim_lsp = true,
+    nvim_lua = true,
+    ultisnips = true
+  },
+})
