@@ -26,7 +26,7 @@ local on_attach = function(client, bufnr)
   set_key('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
   set_key('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
   set_key('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  set_key('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+  set_key('n', '<localleader>a', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
   set_key('n', '<localleader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
   set_key('n', '<localleader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
   set_key('n', '<localleader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
@@ -34,9 +34,9 @@ local on_attach = function(client, bufnr)
   set_key('n', '<localleader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
   set_key('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
   set_key('n', '<localleader>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
-  set_key('n', '<localleader>lp', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-  set_key('n', '<localleader>ln', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-  set_key('n', '<localleader>ll', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+  set_key('n', '<leader>lp', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+  set_key('n', '<leader>ln', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+  set_key('n', '<leader>ll', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
 
   -- Set some keybinds conditional on server capabilities
   if client.resolved_capabilities.document_formatting then
@@ -67,3 +67,5 @@ require'lspconfig'.elixirls.setup{
 require'lspconfig'.pyls.setup{ on_attach = on_attach }
 require'lspconfig'.terraformls.setup{ on_attach = on_attach}
 require'lspconfig'.tsserver.setup{ on_attach = on_attach}
+require'lspconfig'.cssls.setup{ on_attach = on_attach}
+

@@ -46,9 +46,11 @@ let g:netrw_localrmdir="rm -rf"
 let mapleader = ' '                "leader is space
 let maplocalleader = ','           "localleader is comma
 let g:netrw_browsex_viewer="open"  "open stuff with open
+let g:python3_host_prog = "~/.config/nvim/venv/bin/python"
 au! QuickFixCmdPost [^l]* cwindow  "open quickfix after search
 au! QuickFixCmdPost l* lwindow     "open quickfix after search
 au! InsertLeave * pc               "close preview on insert leave
+
 ""===================================PLATFORMS====================================
 " If we are in WSL...
 if has('wsl')
@@ -235,7 +237,9 @@ Plug 'plasticboy/vim-markdown'
 Plug 'chr4/nginx.vim'
 Plug 'hashivim/vim-terraform'
 Plug 'cespare/vim-toml'
+Plug 'n0v1c3/vira', { 'do': './install.sh', 'branch': 'dev' }
 let g:ftplugin_sql_omni_key = 0
+let vira_config_servers = $HOME . '/.config/vira/vira_servers.json'
 au! BufEnter,BufRead someday.txt set ft=todo
 au! FileType markdown setlocal tw=80 foldmethod=indent cole=0 wrap
 au! FileType yaml setlocal foldmethod=indent
