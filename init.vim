@@ -297,8 +297,9 @@ nn <silent> <leader>t :call OpenOrCreateTerminal()<CR>
 " nn <leader>u 
 nn <leader>va :e ~/dotfiles/.bash_aliases<CR>
 nn <leader>vl :e ./.lvimrc<CR>
-nn <leader>vv :e ~/.config/nvim/init.vim<CR>
+nn <leader>vv :e ~/dotfiles/init.vim<CR>
 nn <leader>vt :e ~/dotfiles/.tmux.conf<CR>
+nn <leader>vu :e ~/dotfiles/init.lua<CR>
 nn <leader>vz :e ~/dotfiles/.zshrc<CR>
 nn <leader>w :w<CR>
 nn <leader>x mzgggqG`z
@@ -363,4 +364,4 @@ au! bufwritepost init.vim source %
 au! bufwritepost .lvimrc source %
 
 " Load lua file
-lua require('colby')
+lua require('init')

@@ -1,4 +1,15 @@
--- LSP Config
+-- Compe autocomplete
+require'compe'.setup({
+  source = {
+    path = true,
+    buffer = true,
+    nvim_lsp = true,
+    nvim_lua = true,
+    ultisnips = true
+  },
+})
+
+-- Lsp Config
 vim.cmd('packadd nvim-lspconfig')
 local util = require("lspconfig/util")
 local on_attach = function(client, bufnr)
@@ -56,15 +67,3 @@ require'lspconfig'.elixirls.setup{
 require'lspconfig'.pyls.setup{ on_attach = on_attach }
 require'lspconfig'.terraformls.setup{ on_attach = on_attach}
 require'lspconfig'.tsserver.setup{ on_attach = on_attach}
-
-
--- Compe 
-require'compe'.setup({
-  source = {
-    path = true,
-    buffer = true,
-    nvim_lsp = true,
-    nvim_lua = true,
-    ultisnips = true
-  },
-})
