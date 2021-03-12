@@ -68,4 +68,4 @@ require'lspconfig'.pyls.setup{ on_attach = on_attach }
 require'lspconfig'.terraformls.setup{ on_attach = on_attach}
 require'lspconfig'.tsserver.setup{ on_attach = on_attach}
 require'lspconfig'.cssls.setup{ on_attach = on_attach}
-
+require'lspconfig'.rust_analyzer.setup{ on_attach = on_attach}
