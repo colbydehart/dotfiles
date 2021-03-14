@@ -260,8 +260,6 @@ if executable('rg')
 endif
 
 "===================================KEYBINDINGS=================================
-" Buffer jumper
-nn <BS> :b#<CR>
 
 " Leader stuff
 nn <leader>' :Marks<CR>
@@ -349,6 +347,7 @@ nn ! :!
 nn q: :q
 nn Z zA
 im <C-c> <ESC>
+nn <BS> :b#<CR>
 
 " Terminal stuff
 tnoremap <Esc> <C-\><C-n>

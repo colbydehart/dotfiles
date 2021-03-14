@@ -60,12 +60,41 @@ local on_attach = function(client, bufnr)
   end
 end
 
+-- Until a better way to auto-install these comes around i'll just document here
+-- what needs to be installed for this to work
+-- ```
+-- npm install -g
+-- \   vscode-json-languageserver
+-- \   vscode-css-languageserver-bintypescript 
+-- \   typescript-language-server
+-- \   vim-language-server
+-- \   pyright
+--
+-- These are manual for now, sorry
+-- https://github.com/elixir-lsp/elixir-ls#building-and-running
+-- https://rust-analyzer.github.io/manual.html#installation
+-- https://github.com/hashicorp/terraform-ls ;;download from releases
+--
+-- ```
+
 require'lspconfig'.elixirls.setup{ 
   on_attach = on_attach,
   cmd = { "elixir-ls" }
 }
-require'lspconfig'.pyls.setup{ on_attach = on_attach }
+require'lspconfig'.pyright.setup{ on_attach = on_attach }
 require'lspconfig'.terraformls.setup{ on_attach = on_attach}
 require'lspconfig'.tsserver.setup{ on_attach = on_attach}
 require'lspconfig'.cssls.setup{ on_attach = on_attach}
 require'lspconfig'.rust_analyzer.setup{ on_attach = on_attach}
+require'lspconfig'.vimls.setup{ on_attach = on_attach}
+require'lspconfig'.jsonls.setup {
+  on_attach = on_attach,
+  -- document formatting
+  commands = {
+    Format = {
+      function()
+        vim.lsp.buf.range_formatting({},{0,0},{vim.fn.line("$"),0})
+      end
+    }
+  }
+}
