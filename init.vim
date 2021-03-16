@@ -189,6 +189,9 @@ let g:user_emmet_settings = {
 \}
 Plug 'elzr/vim-json' "Better JSON highlighting
 Plug 'kevinoid/vim-jsonc' " json with comments
+Plug 'prettier/vim-prettier', { 'do': 'npm install' }
+let g:prettier#quickfix_enabled  = 0
+autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
 let g:vim_json_syntax_conceal=0
 au! BufEnter .babelrc setlocal ft=json
 au! BufEnter .prettierrc setlocal ft=json
