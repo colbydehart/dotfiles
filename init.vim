@@ -191,7 +191,7 @@ Plug 'elzr/vim-json' "Better JSON highlighting
 Plug 'kevinoid/vim-jsonc' " json with comments
 Plug 'prettier/vim-prettier', { 'do': 'npm install' }
 let g:prettier#quickfix_enabled  = 0
-autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
+autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.json,*.graphql PrettierAsync
 let g:vim_json_syntax_conceal=0
 au! BufEnter .babelrc setlocal ft=json
 au! BufEnter .prettierrc setlocal ft=json
@@ -225,8 +225,11 @@ Plug 'guns/vim-sexp'
 Plug 'tpope/vim-sexp-mappings-for-regular-people'
 
 "==================================PYTHON=======================================
-au! FileType python setlocal tabstop=4 shiftwidth=4 softtabstop=4 foldmethod=indent textwidth=120
+" au! FileType python setlocal tabstop=4 shiftwidth=4 softtabstop=4 foldmethod=indent textwidth=120
+Plug 'psf/black', { 'branch': 'stable' }
 Plug 'tweekmonster/django-plus.vim'
+let g:black_fast=1
+" autocmd BufWritePre *.py execute ':Black'
 
 "===================================VIML========================================
 au! FileType vim setlocal foldmethod=indent keywordprg=:help

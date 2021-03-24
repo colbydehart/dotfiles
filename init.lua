@@ -63,12 +63,13 @@ end
 -- Until a better way to auto-install these comes around i'll just document here
 -- what needs to be installed for this to work
 -- ```
--- npm install -g
--- \   vscode-json-languageserver
--- \   vscode-css-languageserver-bintypescript 
--- \   typescript-language-server
--- \   vim-language-server
--- \   pyright
+-- npm install -g \
+--   vscode-json-languageserver \
+--   vscode-css-languageserver-bin \
+--   typescript  \
+--   typescript-language-server \
+--   vim-language-server \
+--   pyright
 --
 -- These are manual for now, sorry
 -- https://github.com/elixir-lsp/elixir-ls#building-and-running
