@@ -244,6 +244,7 @@ Plug 'chr4/nginx.vim'
 Plug 'hashivim/vim-terraform'
 Plug 'cespare/vim-toml'
 Plug 'n0v1c3/vira', { 'do': './install.sh', 'branch': 'dev' }
+Plug 'sotte/presenting.vim'
 let g:ftplugin_sql_omni_key = 0
 let vira_config_servers = $HOME . '/.config/vira/vira_servers.json'
 au! BufEnter,BufRead someday.txt set ft=todo
