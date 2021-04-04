@@ -6,6 +6,7 @@
 "===================================GENERAL====================================
 set autoread                       "auto relaod
 set cindent                        "auto indent
+set cmdheight=2                    "big echo area
 set clipboard=unnamedplus          "use system clipboard
 set diffopt=vertical               "vertical diff splits
 set completeopt=menuone,noselect
@@ -31,12 +32,11 @@ set softtabstop=2                  "2 spaces for tab
 set tabstop=2                      "2 spaces for tab
 set termguicolors                  "true color
 set textwidth=80                   "format at 80 lines
-set timeoutlen=1000 ttimeoutlen=-1 "better timeouts
-set updatetime=2000                "a bit faster updatetime
+set timeoutlen=300 ttimeoutlen=-1  "better timeouts
+set updatetime=300                 "a bit faster updatetime
 set visualbell                     "no sounds!
 set wildignorecase                 "case insensitive file search
 set conceallevel=0                 "no concealing, confusing
-set signcolumn=number              "replace number with diagnostic
 let g:netrw_banner = 0             "no banner
 let g:netrw_browse_split = 4       "open netrw files in other window
 let g:netrw_winsize = 35           "25 column width for netrw
@@ -152,6 +152,7 @@ Plug 'tpope/vim-rhubarb' " github
 Plug 'tpope/vim-abolish' " substitution
 Plug 'tpope/vim-dadbod' " databases
 Plug 'tpope/vim-dispatch' " used by other plugins
+Plug 'radenling/vim-dispatch-neovim'
 Plug 'tpope/vim-vinegar' " netrw+
 Plug 'tpope/vim-surround' " ysiw
 Plug 'tpope/vim-commentary' " comments
@@ -174,10 +175,18 @@ let g:fzf_preview_window = []
 Plug 'SirVer/ultisnips'
 let g:UltiSnipsSnippetDirectories = [$HOME.'/dotfiles/snippets']
 let g:UltiSnipsExpandTrigger = "<C-l>"
-Plug 'hrsh7th/nvim-compe'
 Plug 'kristijanhusak/vim-dadbod-completion'
-Plug 'neovim/nvim-lspconfig'
+Plug 'neoclide/coc.nvim'
 
+let g:coc_global_extensions = [
+      \ 'coc-json',
+      \ 'coc-git',
+      \ 'coc-pyright',
+      \ 'coc-elixir',
+      \ 'coc-json',
+      \ 'coc-tsserver',
+      \ 'coc-prettier',
+      \ ]
 "===================================WEB=========================================
 Plug 'stephenway/postcss.vim'
 Plug 'mattn/emmet-vim'
@@ -189,9 +198,6 @@ let g:user_emmet_settings = {
 \}
 Plug 'elzr/vim-json' "Better JSON highlighting
 Plug 'kevinoid/vim-jsonc' " json with comments
-Plug 'prettier/vim-prettier', { 'do': 'npm install' }
-let g:prettier#quickfix_enabled  = 0
-autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.json,*.graphql PrettierAsync
 let g:vim_json_syntax_conceal=0
 au! BufEnter .babelrc setlocal ft=json
 au! BufEnter .prettierrc setlocal ft=json
@@ -219,17 +225,19 @@ let g:mix_format_on_save = 1
 Plug 'rust-lang/rust.vim'
 
 "=================================CLOJURE=======================================
-Plug 'tpope/vim-fireplace'
-Plug 'guns/vim-clojure-static'
+Plug 'liquidz/vim-iced'
+Plug 'liquidz/vim-iced-coc-source'
 Plug 'guns/vim-sexp'
 Plug 'tpope/vim-sexp-mappings-for-regular-people'
+let g:iced_enable_default_key_mappings = v:true
+  let g:iced_default_key_mapping_leader = '<localleader>'
+augroup clojure
+  au! FileType clojure,clojurescript nn gd :IcedDefJump<CR>
+  au! FileType clojure,clojurescript nn gr :IcedBrowseReferences<CR>
+augroup END
 
 "==================================PYTHON=======================================
-" au! FileType python setlocal tabstop=4 shiftwidth=4 softtabstop=4 foldmethod=indent textwidth=120
-Plug 'psf/black', { 'branch': 'stable' }
 Plug 'tweekmonster/django-plus.vim'
-let g:black_fast=1
-" autocmd BufWritePre *.py execute ':Black'
 
 "===================================VIML========================================
 au! FileType vim setlocal foldmethod=indent keywordprg=:help
@@ -255,7 +263,7 @@ au! FileType qf setlocal wrap
 "=================================PLUG END======================================
 call plug#end()
 set background=dark
-colo gruvbox-material
+colo embark
 filetype plugin indent on
 syntax enable
 packloadall
@@ -267,6 +275,17 @@ if executable('rg')
 endif
 
 "===================================KEYBINDINGS=================================
+
+" COC LSP bindings
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+nmap <silent> K :call CocActionAsync('doHover')<CR>
+nmap <silent> <localleader>f <Plug>(coc-format)
+nmap <silent> <localleader>r <Plug>(coc-rename)
+nmap <silent> <localleader>a  <Plug>(coc-codeaction)
+nmap <silent> <localleader>e  :call CocActionAsync('diagnosticInfo')<CR>
 
 " Leader stuff
 nn <leader>' :Marks<CR>
@@ -288,9 +307,9 @@ nn <silent> <leader>jl :call OpenLog()<CR>
 nn <silent> <leader>jj :FZF ~/notes<CR>
 nn <silent> <leader>jt :e ~/notes/todo.txt<CR>
 nn <leader>k :q<CR>
-nn <leader>ln <cmd>lua vim.lsp.diagnostic.get_next()<CR>
-nn <leader>ll <cmd>lua vim.lsp.diagnostic.get()<CR>
-nn <leader>lp <cmd>lua vim.lsp.diagnostic.get_prev()<CR>
+nn <leader>ln <Plug>(coc-diagnostic-next-error)
+nn <leader>ll :<C-u>CocList diagnostics<cr>
+nn <leader>lp <Plug>(coc-diagnostic-prev-error)
 nn <leader>m :History<CR>
 nn <leader>n :tabe<CR>
 nn <leader>o :Vista<CR>
@@ -335,11 +354,20 @@ nn <Up> :res +5<CR>
 nn <Down> :res -5<CR>
 
 " Autocomplete mappings
-inoremap <silent><expr> <C-Space> compe#complete()
-inoremap <silent><expr> <CR>      compe#confirm('<CR>')
-inoremap <silent><expr> <C-e>     compe#close('<C-e>')
-inoremap <silent><expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <silent><expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+" Use tab for trigger completion with characters ahead and navigate.  NOTE: Use
+" command ':verbose imap <tab>' to make sure tab is not mapped by other plugin
+" before putting this into your config.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+inoremap <silent><expr> <c-l> coc#refresh()
 
 " Etc. keymappings
 nn - :Vexplore!<CR>
@@ -372,6 +400,3 @@ endif
 " Autoreload .vimrc
 au! bufwritepost init.vim source %
 au! bufwritepost .lvimrc source %
-
-" Load lua file
-lua require('init')

@@ -60,6 +60,8 @@ export NVM_DIR="$HOME/.nvm"
 PATH=~/bin:${PATH}
 # Local bin
 PATH=~/.local/bin:${PATH}
+# Vim iced clojure support
+PATH=~/.config/nvim/plugged/vim-iced/bin:${PATH}
 # Always want this as the last path
 export PATH=/usr/local/bin:${PATH}
 
