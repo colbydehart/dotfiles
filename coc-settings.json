@@ -1,0 +1,15 @@
+{
+  "diagnostic.virtualText": true,
+  "coc.preferences.useQuickfixForLocations": true,
+  "codeLens.enable": true,
+  "coc.source.iced.enable": true,
+  "python.formatting.provider": "black",
+  "coc.preferences.formatOnSaveFiletypes": [
+    "python",
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "elixir"
+  ]
+}
