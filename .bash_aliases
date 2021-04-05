@@ -55,5 +55,8 @@ olh () {
     open http://localhost:$1;
 }
 alias pipip="pip install -U pip"
-alias pipdev="pip install 'python-language-server[all]' pyls-mypy pyls-isort pyls-black"
+alias pipdev="pip install 'python-language-server[all]' pyls-mypy pyls-isort pyls-black pynvim"
 alias tf=terraform
+
+# Jira stuff
+alias lsprint="jira list -p AP -q \"project = AP AND sprint in openSprints()\""
