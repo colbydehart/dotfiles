@@ -2,6 +2,7 @@
   "diagnostic.virtualText": true,
   "coc.preferences.useQuickfixForLocations": true,
   "codeLens.enable": true,
+  "signature.target": "echo",
   "coc.source.iced.enable": true,
   "python.formatting.provider": "black",
   "coc.preferences.formatOnSaveFiletypes": [
@@ -11,6 +12,8 @@
     "typescript",
     "typescriptreact",
     "json",
-    "elixir"
+    "elixir",
+    "css",
+    "scss"
   ]
 }

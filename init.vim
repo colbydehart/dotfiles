@@ -183,6 +183,7 @@ let g:UltiSnipsSnippetDirectories = [$HOME.'/dotfiles/snippets']
 let g:UltiSnipsExpandTrigger = "<C-l>"
 Plug 'kristijanhusak/vim-dadbod-completion'
 Plug 'neoclide/coc.nvim'
+let g:coc_disable_transparent_cursor=1
 
 let g:coc_global_extensions = [
       \ 'coc-json',
@@ -313,9 +314,9 @@ nn <silent> <leader>jl :call OpenLog()<CR>
 nn <silent> <leader>jj :FZF ~/notes<CR>
 nn <silent> <leader>jt :e ~/notes/todo.txt<CR>
 nn <leader>k :q<CR>
-nn <leader>ln <Plug>(coc-diagnostic-next-error)
+nn <leader>ln <Plug>(coc-diagnostic-next)
 nn <leader>ll :<C-u>CocList diagnostics<cr>
-nn <leader>lp <Plug>(coc-diagnostic-prev-error)
+nn <leader>lp <Plug>(coc-diagnostic-prev)
 nn <leader>m :History<CR>
 nn <leader>n :tabe<CR>
 nn <leader>o :Vista<CR>
@@ -330,6 +331,7 @@ nn <leader>sl :vsplit<CR><C-W>l
 nn <silent> <leader>t :call OpenOrCreateTerminal()<CR>
 " nn <leader>u 
 nn <leader>va :e ~/dotfiles/.bash_aliases<CR>
+nn <leader>vc :e ~/dotfiles/coc-settings.json<CR>
 nn <leader>vl :e ./.lvimrc<CR>
 nn <leader>vv :e ~/dotfiles/init.vim<CR>
 nn <leader>vt :e ~/dotfiles/.tmux.conf<CR>
@@ -388,8 +390,7 @@ nn ! :!
 nn q: :q
 nn Z zA
 im <C-c> <ESC>
-nn <BS> :b#<CR>
-
+nn <BS> :bn<CR>
 " Terminal stuff
 tnoremap <Esc> <C-\><C-n>
 tnoremap <C-h> <C-\><C-n><C-w>h
