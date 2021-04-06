@@ -127,6 +127,9 @@ Plug 'skbolton/embark'
 Plug 'Yggdroot/indentLine'
 Plug 'itchyny/lightline.vim'
 Plug 'mechatroner/rainbow_csv'
+Plug 'liuchengxu/vim-which-key'
+nnoremap <silent> <leader>      :<c-u>WhichKey '<Space>'<CR>
+nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
 
 let g:lightline = {
       \ 'colorscheme': 'embark',
