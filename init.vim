@@ -174,7 +174,15 @@ au! FileType fugitive nm <buffer> <TAB> =
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'justinmk/vim-sneak'
+Plug 'sunaku/vim-dasht'
+let g:dasht_filetype_docsets = {
+      \ 'typescript': ['JavaScript'],
+      \ 'typescriptreact': ['JavaScript', 'React'],
+      \ 'elixir': ['erlang'],
+      \ 'html': ['css']
+      \ }
 let g:sneak#use_ic_scs = 1
+let g:sneak#label = 1
 let g:fzf_preview_window = []
 
 "==================================AUTOCOMPLETION===============================
@@ -258,10 +266,8 @@ Plug 'plasticboy/vim-markdown'
 Plug 'chr4/nginx.vim'
 Plug 'hashivim/vim-terraform'
 Plug 'cespare/vim-toml'
-Plug 'n0v1c3/vira', { 'do': './install.sh', 'branch': 'dev' }
 Plug 'sotte/presenting.vim'
 let g:ftplugin_sql_omni_key = 0
-let vira_config_servers = $HOME . '/.config/vira/vira_servers.json'
 au! BufEnter,BufRead someday.txt set ft=todo
 au! FileType markdown setlocal tw=80 foldmethod=indent cole=0 wrap
 au! FileType yaml setlocal foldmethod=indent
@@ -315,7 +321,7 @@ nn <silent> <leader>jj :FZF ~/notes<CR>
 nn <silent> <leader>jt :e ~/notes/todo.txt<CR>
 nn <leader>k :q<CR>
 nn <leader>ln <Plug>(coc-diagnostic-next)
-nn <leader>ll :<C-u>CocList diagnostics<cr>
+nn <leader>ll :CocDiagnostics<CR>
 nn <leader>lp <Plug>(coc-diagnostic-prev)
 nn <leader>m :History<CR>
 nn <leader>n :tabe<CR>
@@ -329,7 +335,7 @@ nn <leader>sj :split<CR><C-W>j
 nn <leader>sk :split<CR>
 nn <leader>sl :vsplit<CR><C-W>l
 nn <silent> <leader>t :call OpenOrCreateTerminal()<CR>
-" nn <leader>u 
+nn <silent> <leader>u  :call Dasht(dasht#cursor_search_terms())<Return>
 nn <leader>va :e ~/dotfiles/.bash_aliases<CR>
 nn <leader>vc :e ~/dotfiles/coc-settings.json<CR>
 nn <leader>vl :e ./.lvimrc<CR>
@@ -375,7 +381,7 @@ function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
-inoremap <silent><expr> <c-l> coc#refresh()
+inoremap <silent><expr> <C-Space> coc#refresh()
 
 " Etc. keymappings
 nn - :Vexplore!<CR>
