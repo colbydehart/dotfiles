@@ -149,6 +149,9 @@ let g:indentLine_fileTypeExclude = ['help', 'terminal', 'calendar']
 Plug 'jiangmiao/auto-pairs'
 Plug 'powerman/vim-plugin-AnsiEsc'
 Plug 'tyru/open-browser.vim'
+Plug 'jpalardy/vim-slime' " better repls
+let g:slime_target = "neovim"
+let g:slime_python_ipython = 1
 Plug 'tpope/vim-rsi' " emacs readline bindings
 Plug 'tpope/vim-fugitive' " git
 Plug 'tpope/vim-rhubarb' " github
@@ -241,7 +244,6 @@ augroup END
 
 "==================================PYTHON=======================================
 Plug 'tweekmonster/django-plus.vim'
-Plug 'szymonmaszke/vimpyter'
 
 "===================================VIML========================================
 au! FileType vim setlocal foldmethod=indent keywordprg=:help
