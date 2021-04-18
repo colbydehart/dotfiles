@@ -65,5 +65,5 @@ PATH=~/.config/nvim/plugged/vim-iced/bin:${PATH}
 # Always want this as the last path
 export PATH=/usr/local/bin:${PATH}
 
-# Local (nonmanaged) zsh config
+# Local (nonmanaged) zsh config ~/.zshrc.local
 [ -f ${HOME}/.zshrc.local ] && source ${HOME}/.zshrc.local

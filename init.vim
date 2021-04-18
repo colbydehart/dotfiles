@@ -241,6 +241,7 @@ augroup END
 
 "==================================PYTHON=======================================
 Plug 'tweekmonster/django-plus.vim'
+Plug 'szymonmaszke/vimpyter'
 
 "===================================VIML========================================
 au! FileType vim setlocal foldmethod=indent keywordprg=:help
