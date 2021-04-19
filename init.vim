@@ -350,7 +350,7 @@ function! ToggleFold() abort
   if &foldlevel < 99
     set foldlevel=99
   else
-    setlocal foldlevel=0
+    setlocal foldlevel=1
   endif
 endfunction
 nn <leader>z :call ToggleFold()<cr>
@@ -396,7 +396,7 @@ nn ! :!
 nn q: :q
 nn Z zA
 im <C-c> <ESC>
-nn <BS> :bn<CR>
+nn <BS> :bp<CR>
 " Terminal stuff
 tnoremap <Esc> <C-\><C-n>
 tnoremap <C-h> <C-\><C-n><C-w>h
