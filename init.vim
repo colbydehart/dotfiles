@@ -6,6 +6,7 @@
 "===================================GENERAL====================================
 set autoread                       "auto relaod
 set cindent                        "auto indent
+set cmdheight=2                    "big echo area
 set clipboard=unnamedplus          "use system clipboard
 set diffopt=vertical               "vertical diff splits
 set completeopt=menuone,noselect
@@ -31,12 +32,11 @@ set softtabstop=2                  "2 spaces for tab
 set tabstop=2                      "2 spaces for tab
 set termguicolors                  "true color
 set textwidth=80                   "format at 80 lines
-set timeoutlen=1000 ttimeoutlen=-1 "better timeouts
-set updatetime=2000                "a bit faster updatetime
+set timeoutlen=300 ttimeoutlen=-1  "better timeouts
+set updatetime=300                 "a bit faster updatetime
 set visualbell                     "no sounds!
 set wildignorecase                 "case insensitive file search
 set conceallevel=0                 "no concealing, confusing
-set signcolumn=number              "replace number with diagnostic
 let g:netrw_banner = 0             "no banner
 let g:netrw_browse_split = 4       "open netrw files in other window
 let g:netrw_winsize = 35           "25 column width for netrw
@@ -127,6 +127,9 @@ Plug 'skbolton/embark'
 Plug 'Yggdroot/indentLine'
 Plug 'itchyny/lightline.vim'
 Plug 'mechatroner/rainbow_csv'
+Plug 'liuchengxu/vim-which-key'
+nnoremap <silent> <leader>      :<c-u>WhichKey '<Space>'<CR>
+nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
 
 let g:lightline = {
       \ 'colorscheme': 'embark',
@@ -146,12 +149,16 @@ let g:indentLine_fileTypeExclude = ['help', 'terminal', 'calendar']
 Plug 'jiangmiao/auto-pairs'
 Plug 'powerman/vim-plugin-AnsiEsc'
 Plug 'tyru/open-browser.vim'
+Plug 'jpalardy/vim-slime' " better repls
+let g:slime_target = "neovim"
+let g:slime_python_ipython = 1
 Plug 'tpope/vim-rsi' " emacs readline bindings
 Plug 'tpope/vim-fugitive' " git
 Plug 'tpope/vim-rhubarb' " github
 Plug 'tpope/vim-abolish' " substitution
 Plug 'tpope/vim-dadbod' " databases
 Plug 'tpope/vim-dispatch' " used by other plugins
+Plug 'radenling/vim-dispatch-neovim'
 Plug 'tpope/vim-vinegar' " netrw+
 Plug 'tpope/vim-surround' " ysiw
 Plug 'tpope/vim-commentary' " comments
@@ -167,17 +174,34 @@ au! FileType fugitive nm <buffer> <TAB> =
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'justinmk/vim-sneak'
+Plug 'sunaku/vim-dasht'
+let g:dasht_filetype_docsets = {
+      \ 'typescript': ['JavaScript'],
+      \ 'typescriptreact': ['JavaScript', 'React'],
+      \ 'elixir': ['erlang'],
+      \ 'html': ['css']
+      \ }
 let g:sneak#use_ic_scs = 1
+let g:sneak#label = 1
 let g:fzf_preview_window = []
 
 "==================================AUTOCOMPLETION===============================
 Plug 'SirVer/ultisnips'
 let g:UltiSnipsSnippetDirectories = [$HOME.'/dotfiles/snippets']
 let g:UltiSnipsExpandTrigger = "<C-l>"
-Plug 'hrsh7th/nvim-compe'
 Plug 'kristijanhusak/vim-dadbod-completion'
-Plug 'neovim/nvim-lspconfig'
+Plug 'neoclide/coc.nvim'
+let g:coc_disable_transparent_cursor=1
 
+let g:coc_global_extensions = [
+      \ 'coc-json',
+      \ 'coc-git',
+      \ 'coc-pyright',
+      \ 'coc-elixir',
+      \ 'coc-json',
+      \ 'coc-tsserver',
+      \ 'coc-prettier',
+      \ ]
 "===================================WEB=========================================
 Plug 'stephenway/postcss.vim'
 Plug 'mattn/emmet-vim'
@@ -189,9 +213,6 @@ let g:user_emmet_settings = {
 \}
 Plug 'elzr/vim-json' "Better JSON highlighting
 Plug 'kevinoid/vim-jsonc' " json with comments
-Plug 'prettier/vim-prettier', { 'do': 'npm install' }
-let g:prettier#quickfix_enabled  = 0
-autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.json,*.graphql PrettierAsync
 let g:vim_json_syntax_conceal=0
 au! BufEnter .babelrc setlocal ft=json
 au! BufEnter .prettierrc setlocal ft=json
@@ -219,17 +240,19 @@ let g:mix_format_on_save = 1
 Plug 'rust-lang/rust.vim'
 
 "=================================CLOJURE=======================================
-Plug 'tpope/vim-fireplace'
-Plug 'guns/vim-clojure-static'
+Plug 'liquidz/vim-iced'
+Plug 'liquidz/vim-iced-coc-source'
 Plug 'guns/vim-sexp'
 Plug 'tpope/vim-sexp-mappings-for-regular-people'
+let g:iced_enable_default_key_mappings = v:true
+  let g:iced_default_key_mapping_leader = '<localleader>'
+augroup clojure
+  au! FileType clojure,clojurescript nn gd :IcedDefJump<CR>
+  au! FileType clojure,clojurescript nn gr :IcedBrowseReferences<CR>
+augroup END
 
 "==================================PYTHON=======================================
-" au! FileType python setlocal tabstop=4 shiftwidth=4 softtabstop=4 foldmethod=indent textwidth=120
-Plug 'psf/black', { 'branch': 'stable' }
 Plug 'tweekmonster/django-plus.vim'
-let g:black_fast=1
-" autocmd BufWritePre *.py execute ':Black'
 
 "===================================VIML========================================
 au! FileType vim setlocal foldmethod=indent keywordprg=:help
@@ -243,10 +266,8 @@ Plug 'plasticboy/vim-markdown'
 Plug 'chr4/nginx.vim'
 Plug 'hashivim/vim-terraform'
 Plug 'cespare/vim-toml'
-Plug 'n0v1c3/vira', { 'do': './install.sh', 'branch': 'dev' }
 Plug 'sotte/presenting.vim'
 let g:ftplugin_sql_omni_key = 0
-let vira_config_servers = $HOME . '/.config/vira/vira_servers.json'
 au! BufEnter,BufRead someday.txt set ft=todo
 au! FileType markdown setlocal tw=80 foldmethod=indent cole=0 wrap
 au! FileType yaml setlocal foldmethod=indent
@@ -255,7 +276,7 @@ au! FileType qf setlocal wrap
 "=================================PLUG END======================================
 call plug#end()
 set background=dark
-colo gruvbox-material
+colo embark
 filetype plugin indent on
 syntax enable
 packloadall
@@ -267,6 +288,17 @@ if executable('rg')
 endif
 
 "===================================KEYBINDINGS=================================
+
+" COC LSP bindings
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+nmap <silent> K :call CocActionAsync('doHover')<CR>
+nmap <silent> <localleader>f <Plug>(coc-format)
+nmap <silent> <localleader>r <Plug>(coc-rename)
+nmap <silent> <localleader>a  <Plug>(coc-codeaction)
+nmap <silent> <localleader>e  :call CocActionAsync('diagnosticInfo')<CR>
 
 " Leader stuff
 nn <leader>' :Marks<CR>
@@ -288,9 +320,9 @@ nn <silent> <leader>jl :call OpenLog()<CR>
 nn <silent> <leader>jj :FZF ~/notes<CR>
 nn <silent> <leader>jt :e ~/notes/todo.txt<CR>
 nn <leader>k :q<CR>
-nn <leader>ln <cmd>lua vim.lsp.diagnostic.get_next()<CR>
-nn <leader>ll <cmd>lua vim.lsp.diagnostic.get()<CR>
-nn <leader>lp <cmd>lua vim.lsp.diagnostic.get_prev()<CR>
+nn <leader>ln <Plug>(coc-diagnostic-next)
+nn <leader>ll :CocDiagnostics<CR>
+nn <leader>lp <Plug>(coc-diagnostic-prev)
 nn <leader>m :History<CR>
 nn <leader>n :tabe<CR>
 nn <leader>o :Vista<CR>
@@ -303,8 +335,9 @@ nn <leader>sj :split<CR><C-W>j
 nn <leader>sk :split<CR>
 nn <leader>sl :vsplit<CR><C-W>l
 nn <silent> <leader>t :call OpenOrCreateTerminal()<CR>
-" nn <leader>u 
+nn <silent> <leader>u  :call Dasht(dasht#cursor_search_terms())<Return>
 nn <leader>va :e ~/dotfiles/.bash_aliases<CR>
+nn <leader>vc :e ~/dotfiles/coc-settings.json<CR>
 nn <leader>vl :e ./.lvimrc<CR>
 nn <leader>vv :e ~/dotfiles/init.vim<CR>
 nn <leader>vt :e ~/dotfiles/.tmux.conf<CR>
@@ -317,7 +350,7 @@ function! ToggleFold() abort
   if &foldlevel < 99
     set foldlevel=99
   else
-    setlocal foldlevel=0
+    setlocal foldlevel=1
   endif
 endfunction
 nn <leader>z :call ToggleFold()<cr>
@@ -335,11 +368,20 @@ nn <Up> :res +5<CR>
 nn <Down> :res -5<CR>
 
 " Autocomplete mappings
-inoremap <silent><expr> <C-Space> compe#complete()
-inoremap <silent><expr> <CR>      compe#confirm('<CR>')
-inoremap <silent><expr> <C-e>     compe#close('<C-e>')
-inoremap <silent><expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <silent><expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+" Use tab for trigger completion with characters ahead and navigate.  NOTE: Use
+" command ':verbose imap <tab>' to make sure tab is not mapped by other plugin
+" before putting this into your config.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+inoremap <silent><expr> <C-Space> coc#refresh()
 
 " Etc. keymappings
 nn - :Vexplore!<CR>
@@ -354,8 +396,7 @@ nn ! :!
 nn q: :q
 nn Z zA
 im <C-c> <ESC>
-nn <BS> :b#<CR>
-
+nn <BS> :bp<CR>
 " Terminal stuff
 tnoremap <Esc> <C-\><C-n>
 tnoremap <C-h> <C-\><C-n><C-w>h
@@ -372,6 +413,3 @@ endif
 " Autoreload .vimrc
 au! bufwritepost init.vim source %
 au! bufwritepost .lvimrc source %
-
-" Load lua file
-lua require('init')

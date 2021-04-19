@@ -7,7 +7,8 @@ alias ......=' cd ../../../../..'
 # git stuff
 alias gs='git status'
 alias gl='git log --oneline --graph --decorate $argv'
-alias gro='git rebase FETCH_HEAD'
+alias gr='git rebase'
+alias grom='git rebase origin/master'
 alias grc='git rebase --continue'
 alias gri='git rebase -i'
 alias ga='git add -p'
@@ -55,7 +56,6 @@ olh () {
     open http://localhost:$1;
 }
 alias pipip="pip install -U pip"
-alias pipdev="pip install 'python-language-server[all]' pyls-mypy pyls-isort pyls-black pynvim"
 alias tf=terraform
 
 # Jira stuff

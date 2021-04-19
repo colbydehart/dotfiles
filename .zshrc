@@ -24,7 +24,7 @@ export FZF_DEFAULT_COMMAND='rg --files'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 # Neovim
-export EDITOR=nvr
+export EDITOR="nvr -s"
 # Beautiful Prompt
 export PROMPT="%n@%~ "
 export RPROMPT=\$vcs_info_msg_0_
@@ -60,8 +60,10 @@ export NVM_DIR="$HOME/.nvm"
 PATH=~/bin:${PATH}
 # Local bin
 PATH=~/.local/bin:${PATH}
+# Vim iced clojure support
+PATH=~/.config/nvim/plugged/vim-iced/bin:${PATH}
 # Always want this as the last path
 export PATH=/usr/local/bin:${PATH}
 
-# Local (nonmanaged) zsh config
+# Local (nonmanaged) zsh config ~/.zshrc.local
 [ -f ${HOME}/.zshrc.local ] && source ${HOME}/.zshrc.local
