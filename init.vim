@@ -122,6 +122,7 @@ endfunction
 call plug#begin()
 
 "====================================COSMETIC===================================
+Plug 'victorze/foo'
 Plug 'sainnhe/gruvbox-material'
 Plug 'skbolton/embark'
 Plug 'Yggdroot/indentLine'
@@ -132,7 +133,6 @@ nnoremap <silent> <leader>      :<c-u>WhichKey '<Space>'<CR>
 nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
 
 let g:lightline = {
-      \ 'colorscheme': 'embark',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
       \             [ 'gitbranch', 'readonly', 'filename', 'modified', "calendar"] ]
@@ -276,7 +276,7 @@ au! FileType qf setlocal wrap
 "=================================PLUG END======================================
 call plug#end()
 set background=dark
-colo embark
+colo hyper
 filetype plugin indent on
 syntax enable
 packloadall
@@ -320,9 +320,9 @@ nn <silent> <leader>jl :call OpenLog()<CR>
 nn <silent> <leader>jj :FZF ~/notes<CR>
 nn <silent> <leader>jt :e ~/notes/todo.txt<CR>
 nn <leader>k :q<CR>
-nn <leader>ln <Plug>(coc-diagnostic-next)
+nmap <leader>ln <Plug>(coc-diagnostic-next)
 nn <leader>ll :CocDiagnostics<CR>
-nn <leader>lp <Plug>(coc-diagnostic-prev)
+nmap <leader>lp <Plug>(coc-diagnostic-prev)
 nn <leader>m :History<CR>
 nn <leader>n :tabe<CR>
 nn <leader>o :Vista<CR>
