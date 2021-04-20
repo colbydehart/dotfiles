@@ -298,7 +298,6 @@ nmap <silent> K :call CocActionAsync('doHover')<CR>
 nmap <silent> <localleader>f <Plug>(coc-format)
 nmap <silent> <localleader>r <Plug>(coc-rename)
 nmap <silent> <localleader>a  <Plug>(coc-codeaction)
-nmap <silent> <localleader>e  :call CocActionAsync('diagnosticInfo')<CR>
 
 " Leader stuff
 nn <leader>' :Marks<CR>
