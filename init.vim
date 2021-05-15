@@ -6,7 +6,7 @@
 "===================================GENERAL====================================
 set autoread                       "auto relaod
 set cindent                        "auto indent
-set cmdheight=2                    "big echo area
+set cmdheight=1                    "big echo area
 set clipboard=unnamedplus          "use system clipboard
 set diffopt=vertical               "vertical diff splits
 set completeopt=menuone,noselect
@@ -200,6 +200,7 @@ let g:coc_global_extensions = [
       \ 'coc-elixir',
       \ 'coc-json',
       \ 'coc-tsserver',
+      \ 'coc-eslint',
       \ 'coc-prettier',
       \ ]
 "===================================WEB=========================================
@@ -312,17 +313,18 @@ nn <leader>c :Lines<CR>
 nn <leader>d :Vexplore! .<CR>
 nn <leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
 nn <leader>f :Files<CR>
-nn <leader>g :Gstatus<CR>
+nn <leader>g :Git<CR>
 nn <leader>h :Helptags<CR>
 nn <leader>i :Tags<CR>
 nn <silent> <leader>jc :call CondenseLog()<CR>
 nn <silent> <leader>jl :call OpenLog()<CR>
 nn <silent> <leader>jj :FZF ~/notes<CR>
+nn <silent> <leader>js :e ~/notes/scratch.md<CR>
 nn <silent> <leader>jt :e ~/notes/todo.txt<CR>
 nn <leader>k :q<CR>
-nmap <leader>ln <Plug>(coc-diagnostic-next)
+nmap <leader>ln <Plug>(coc-diagnostic-next-error)
 nn <leader>ll :CocDiagnostics<CR>
-nmap <leader>lp <Plug>(coc-diagnostic-prev)
+nmap <leader>lp <Plug>(coc-diagnostic-prev-error)
 nn <leader>m :History<CR>
 nn <leader>n :tabe<CR>
 nn <leader>o :Vista<CR>
