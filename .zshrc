@@ -24,7 +24,7 @@ export FZF_DEFAULT_COMMAND='rg --files'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 # Neovim
-export EDITOR="nvr -s"
+export EDITOR="nvim"
 # Beautiful Prompt
 export PROMPT="%n@%~ "
 export RPROMPT=\$vcs_info_msg_0_

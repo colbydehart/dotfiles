@@ -38,8 +38,7 @@ alias haz="curl -4 icanhazip.com"
 # copy local ip
 alias myip="ifconfig | grep en0 -A 3 | grep \"inet \" | cut -d \" \" -f 2"
 # Docker stuff
-alias dc="docker-compose"
-alias dm="docker-machine"
+alias dc="docker compose"
 alias dcl="docker container ls"
 # tmux in color mode with unicode
 alias tmux="tmux -u2"

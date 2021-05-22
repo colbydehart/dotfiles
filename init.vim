@@ -196,10 +196,11 @@ let g:coc_disable_transparent_cursor=1
 let g:coc_global_extensions = [
       \ 'coc-json',
       \ 'coc-git',
-      \ 'coc-pyright',
+      \ 'coc-python',
       \ 'coc-elixir',
       \ 'coc-json',
       \ 'coc-tsserver',
+      \ 'coc-svelte',
       \ 'coc-eslint',
       \ 'coc-prettier',
       \ ]
@@ -214,6 +215,7 @@ let g:user_emmet_settings = {
 \}
 Plug 'elzr/vim-json' "Better JSON highlighting
 Plug 'kevinoid/vim-jsonc' " json with comments
+Plug 'evanleck/vim-svelte'
 let g:vim_json_syntax_conceal=0
 au! BufEnter .babelrc setlocal ft=json
 au! BufEnter .prettierrc setlocal ft=json
@@ -277,7 +279,7 @@ au! FileType qf setlocal wrap
 "=================================PLUG END======================================
 call plug#end()
 set background=dark
-colo hyper
+colo hacker
 filetype plugin indent on
 syntax enable
 packloadall
