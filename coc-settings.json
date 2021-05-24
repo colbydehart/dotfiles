@@ -1,10 +1,10 @@
 {
   "diagnostic.virtualText": true,
   "coc.preferences.useQuickfixForLocations": true,
+  "suggest.triggerCompletionWait": 30,
   "codeLens.enable": true,
   "signature.target": "echo",
   "coc.source.iced.enable": true,
-  "python.formatting.provider": "black",
   "coc.preferences.formatOnSaveFiletypes": [
     "python",
     "javascript",
