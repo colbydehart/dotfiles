@@ -4,84 +4,28 @@
 "====================================VIMRC=====================================
 "==============================================================================
 "===================================GENERAL====================================
-set autoread                       "auto relaod
-set cindent                        "auto indent
-set cmdheight=1                    "big echo area
 set clipboard=unnamedplus          "use system clipboard
-set diffopt=vertical               "vertical diff splits
-set completeopt=menuone,noselect
-set expandtab                      "no tabs
-set foldlevel=20                   "start with a big fold
-set foldmethod=syntax              "code folding
 set hidden                         "allow jumping back and forth between multiple unsaved buffers
 set ignorecase                     "ignore case when searching
-set inccommand=nosplit             "show replaces while typing
-set list                           "show tab characters
-set ls=2                           "better status line
-set mouse=a                        "use the mouse
-set nohlsearch                     "no highlight search after
-set noshowmode                     "don't show insert in echo area
-set noswapfile                     "no swap files
-set nowrap                         "no softwrap
-set number                         "line numbers
-set relativenumber                 "line numbers
-set shiftwidth=2                   "2 spaces for tab
-set shortmess+=c                   "make that mess shorter?
-set smartcase                      "don't ignore when i specify
-set softtabstop=2                  "2 spaces for tab
-set tabstop=2                      "2 spaces for tab
-set termguicolors                  "true color
-set textwidth=80                   "format at 80 lines
-set timeoutlen=300 ttimeoutlen=-1  "better timeouts
-set updatetime=300                 "a bit faster updatetime
-set visualbell                     "no sounds!
 set wildignorecase                 "case insensitive file search
-set conceallevel=0                 "no concealing, confusing
+let mapleader = ' '                "leader is space
+let maplocalleader = ','           "localleader is comma
+let g:python3_host_prog = "~/.config/nvim/venv/bin/python"
+"" -- NetRW
 let g:netrw_banner = 0             "no banner
 let g:netrw_browse_split = 4       "open netrw files in other window
 let g:netrw_winsize = 35           "25 column width for netrw
 let g:netrw_altv = 1               "Vertical split on right side
-let g:netrw_rmf_cmd="rm -rf"       "Remove nonempty directories
-let g:netrw_localrmdir="rm -rf"
-let mapleader = ' '                "leader is space
-let maplocalleader = ','           "localleader is comma
 let g:netrw_browsex_viewer="open"  "open stuff with open
-let g:python3_host_prog = "~/.config/nvim/venv/bin/python"
-au! QuickFixCmdPost [^l]* cwindow  "open quickfix after search
-au! QuickFixCmdPost l* lwindow     "open quickfix after search
-au! InsertLeave * pc               "close preview on insert leave
-
-""===================================PLATFORMS====================================
-" If we are in WSL...
-if has('wsl')
-  "  Set the clipboard properly
-  "  see: https://superuser.com/questions/1291425/windows-subsystem-linux-make-vim-use-the-clipboard
-  let g:clipboard = {
-        \   'name': 'win32yank-wsl',
-        \   'copy': {
-        \      '+': 'win32yank.exe -i --crlf',
-        \      '*': 'win32yank.exe -i --crlf',
-        \    },
-        \   'paste': {
-        \      '+': 'win32yank.exe -o --lf',
-        \      '*': 'win32yank.exe -o --lf',
-        \   },
-        \   'cache_enabled': 0,
-        \ }
-endif
 
 ""===================================IGNORE======================================
 set wildignore+=*/_build
-set wildignore+=*/.cljs_rhino_repl
 set wildignore+=*.pyc
 set wildignore+=*/node_modules/*
-set wildignore+=*/bower_components/*
 set wildignore+=.git
 set wildignore+=.venv
-set wildignore+=*/dist
 set wildignore+=*.bs.js
 set wildignore+=.DS_Store
-set wildignore+=.rts2_*
 
 "===================================FUNCTIONS===================================
 func! OpenOrCreateTerminal()
@@ -122,33 +66,15 @@ endfunction
 call plug#begin()
 
 "====================================COSMETIC===================================
-Plug 'victorze/foo'
-Plug 'sainnhe/gruvbox-material'
-Plug 'skbolton/embark'
-Plug 'Yggdroot/indentLine'
+Plug 'cormacrelf/vim-colors-github'
 Plug 'itchyny/lightline.vim'
 Plug 'mechatroner/rainbow_csv'
-Plug 'liuchengxu/vim-which-key'
-nnoremap <silent> <leader>      :<c-u>WhichKey '<Space>'<CR>
-nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
+Plug 'liuchengxu/vim-which-key' 
 
-let g:lightline = {
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'gitbranch', 'readonly', 'filename', 'modified', "calendar"] ]
-      \ },
-      \ 'component': {
-      \   'calendar': "%{strftime('%H:%M')}"
-      \ },
-      \ 'component_function': {
-      \   'gitbranch': 'fugitive#head'
-      \ },
-      \ }
-let g:indentLine_fileTypeExclude = ['help', 'terminal', 'calendar']
+let g:lightline = {'theme': 'github'}
+
 "====================================UTILITY====================================
 Plug 'jiangmiao/auto-pairs'
-Plug 'powerman/vim-plugin-AnsiEsc'
-Plug 'tyru/open-browser.vim'
 Plug 'jpalardy/vim-slime' " better repls
 let g:slime_target = "neovim"
 let g:slime_python_ipython = 1
@@ -163,47 +89,28 @@ Plug 'tpope/vim-vinegar' " netrw+
 Plug 'tpope/vim-surround' " ysiw
 Plug 'tpope/vim-commentary' " comments
 Plug 'tpope/vim-repeat' " better .
+Plug 'tpope/vim-sensible' " good defaults
+Plug 'sheerun/vim-polyglot'
 let g:AutoPairsMapCR = 0
-" Disable netrw gx mapping.
-let g:netrw_nogx = get(g:, 'netrw_nogx', 1)
-nmap gx <Plug>(openbrowser-open)
-vmap gx <Plug>(openbrowser-open)
 au! FileType fugitive nm <buffer> <TAB> =
 
 "==================================NAVIGATION===================================
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'justinmk/vim-sneak'
-Plug 'sunaku/vim-dasht'
-let g:dasht_filetype_docsets = {
-      \ 'typescript': ['JavaScript'],
-      \ 'typescriptreact': ['JavaScript', 'React'],
-      \ 'elixir': ['erlang'],
-      \ 'html': ['css']
-      \ }
 let g:sneak#use_ic_scs = 1
 let g:sneak#label = 1
 let g:fzf_preview_window = []
 
 "==================================AUTOCOMPLETION===============================
+Plug 'neovim/nvim-lspconfig'
+Plug 'kabouzeid/nvim-lspinstall'
+Plug 'hrsh7th/nvim-compe'
+Plug 'kristijanhusak/vim-dadbod-completion'
 Plug 'SirVer/ultisnips'
 let g:UltiSnipsSnippetDirectories = [$HOME.'/dotfiles/snippets']
 let g:UltiSnipsExpandTrigger = "<C-l>"
-Plug 'kristijanhusak/vim-dadbod-completion'
-Plug 'neoclide/coc.nvim'
-let g:coc_disable_transparent_cursor=1
 
-let g:coc_global_extensions = [
-      \ 'coc-json',
-      \ 'coc-git',
-      \ 'coc-python',
-      \ 'coc-elixir',
-      \ 'coc-json',
-      \ 'coc-tsserver',
-      \ 'coc-svelte',
-      \ 'coc-eslint',
-      \ 'coc-prettier',
-      \ ]
 "===================================WEB=========================================
 Plug 'stephenway/postcss.vim'
 Plug 'mattn/emmet-vim'
@@ -213,38 +120,13 @@ let g:user_emmet_settings = {
 \  'typescript' : {'extends' : 'jsx'},
 \  'typescriptreact' : {'extends' : 'jsx'},
 \}
-Plug 'elzr/vim-json' "Better JSON highlighting
-Plug 'kevinoid/vim-jsonc' " json with comments
-Plug 'evanleck/vim-svelte'
-let g:vim_json_syntax_conceal=0
 au! BufEnter .babelrc setlocal ft=json
 au! BufEnter .prettierrc setlocal ft=json
 au! BufEnter .eslintrc setlocal ft=json
 au! BufEnter *.postcss,*.pcss setlocal ft=postcss
 
-"==================================JAVASCRIPT===================================
-Plug 'pangloss/vim-javascript'
-Plug 'mxw/vim-jsx'
-let g:jsx_ext_required = 0  "Always use jsx syntax
-
-"==================================TYPESCRIPT===================================
-Plug 'leafgarland/typescript-vim'
-Plug 'peitalin/vim-jsx-typescript'
-au! FileType typescript set foldmethod=indent
-au! FileType typescriptreact set foldmethod=indent
-
-"==================================ELIXIR=======================================
-Plug 'elixir-lang/vim-elixir'
-Plug 'mhinz/vim-mix-format'
-au BufEnter *.leex set filetype=eelixir
-let g:mix_format_on_save = 1
-
-"===================================RUST========================================
-Plug 'rust-lang/rust.vim'
-
 "=================================CLOJURE=======================================
 Plug 'liquidz/vim-iced'
-Plug 'liquidz/vim-iced-coc-source'
 Plug 'guns/vim-sexp'
 Plug 'tpope/vim-sexp-mappings-for-regular-people'
 let g:iced_enable_default_key_mappings = v:true
@@ -254,35 +136,91 @@ augroup clojure
   au! FileType clojure,clojurescript nn gr :IcedBrowseReferences<CR>
 augroup END
 
-"==================================PYTHON=======================================
-Plug 'tweekmonster/django-plus.vim'
-
-"===================================VIML========================================
-au! FileType vim setlocal foldmethod=indent keywordprg=:help
 
 "===================================ETC.========================================
 Plug 'editorconfig/editorconfig-vim'
 Plug 'neo4j-contrib/cypher-vim-syntax' " neo4j cypher syntax
-Plug 'jparise/vim-graphql' " graphql syntax
-Plug 'godlygeek/tabular' " allows formatting of markdown tables
-Plug 'plasticboy/vim-markdown'
-Plug 'chr4/nginx.vim'
-Plug 'hashivim/vim-terraform'
-Plug 'cespare/vim-toml'
 Plug 'sotte/presenting.vim'
-let g:ftplugin_sql_omni_key = 0
-au! BufEnter,BufRead someday.txt set ft=todo
-au! FileType markdown setlocal tw=80 foldmethod=indent cole=0 wrap
-au! FileType yaml setlocal foldmethod=indent
-au! FileType qf setlocal wrap
 
 "=================================PLUG END======================================
 call plug#end()
-set background=dark
-colo hacker
+set background=light
+colo github
 filetype plugin indent on
 syntax enable
 packloadall
+
+"====================================LSP========================================
+
+lua <<EOF
+-- Stolen from https://github.com/neovim/nvim-lspconfig/wiki/Autocompletion
+-- Compe setup
+require'compe'.setup {
+  enabled = true;
+  autocomplete = true;
+  debug = false;
+  min_length = 1;
+  preselect = 'enable';
+  throttle_time = 80;
+  source_timeout = 200;
+  incomplete_delay = 400;
+  max_abbr_width = 100;
+  max_kind_width = 100;
+  max_menu_width = 100;
+  documentation = true;
+
+  source = {
+    path = true;
+    nvim_lsp = true;
+    ultisnips = true;
+  };
+}
+
+local t = function(str)
+  return vim.api.nvim_replace_termcodes(str, true, true, true)
+end
+
+local check_back_space = function()
+    local col = vim.fn.col('.') - 1
+    if col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') then
+        return true
+    else
+        return false
+    end
+end
+
+-- Use (s-)tab to:
+--- move to prev/next item in completion menuone
+--- jump to prev/next snippet's placeholder
+_G.tab_complete = function()
+  if vim.fn.pumvisible() == 1 then
+    return t "<C-n>"
+  elseif check_back_space() then
+    return t "<Tab>"
+  else
+    return vim.fn['compe#complete']()
+  end
+end
+_G.s_tab_complete = function()
+  if vim.fn.pumvisible() == 1 then
+    return t "<C-p>"
+  else
+    return t "<S-Tab>"
+  end
+end
+
+vim.api.nvim_set_keymap("i", "<Tab>", "v:lua.tab_complete()", {expr = true})
+vim.api.nvim_set_keymap("s", "<Tab>", "v:lua.tab_complete()", {expr = true})
+vim.api.nvim_set_keymap("i", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
+vim.api.nvim_set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
+
+require'lspinstall'.setup() -- important
+
+local servers = require'lspinstall'.installed_servers()
+for _, server in pairs(servers) do
+  require'lspconfig'[server].setup{}
+end
+EOF
 
 ""===================================FAST=SEARCH=================================
 if executable('rg')
@@ -292,24 +230,25 @@ endif
 
 "===================================KEYBINDINGS=================================
 
-" COC LSP bindings
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-nmap <silent> K :call CocActionAsync('doHover')<CR>
-nmap <silent> <localleader>f <Plug>(coc-format)
-nmap <silent> <localleader>r <Plug>(coc-rename)
-nmap <silent> <localleader>a  <Plug>(coc-codeaction)
-nmap <silent> <localleader>e  :call CocActionAsync('diagnosticInfo')<CR>
+" LSP bindings
+nmap <silent> gd <cmd>lua vim.lsp.buf.definition()<CR>
+nmap <silent> gi <cmd>lua vim.lsp.buf.implementation()<CR>
+nmap <silent> gr <cmd>lua vim.lsp.buf.references()<CR>
+nmap <silent> K <cmd>lua vim.lsp.buf.hover()<CR>
+nmap <silent> <localleader>f <cmd>lua vim.lsp.buf.formatting()<CR>
+nmap <silent> <localleader>r <cmd>lua vim.lsp.buf.rename()<CR>
+nmap <silent> <localleader>a  <cmd>lua vim.lsp.buf.code_action()<CR>
+nmap <silent> <localleader>e  <cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>
 
 " Leader stuff
+nnoremap <silent> <leader>      :<c-u>WhichKey '<Space>'<CR>
+nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
 nn <leader>' :Marks<CR>
 nn <leader>/ :Rg<CR>
 nn <leader>; :Commands<CR>
 nn <leader><CR> :
 nn <leader><leader> :b#<CR>
-nn <leader>a :Vista<CR>
+" nn <leader>a TODO
 nn <leader>b :Buffers<CR>
 nn <leader>c :Lines<CR>
 nn <leader>d :Vexplore! .<CR>
@@ -324,12 +263,12 @@ nn <silent> <leader>jj :FZF ~/notes<CR>
 nn <silent> <leader>js :e ~/notes/scratch.md<CR>
 nn <silent> <leader>jt :e ~/notes/todo.txt<CR>
 nn <leader>k :q<CR>
-nmap <leader>ln <Plug>(coc-diagnostic-next-error)
-nn <leader>ll :CocDiagnostics<CR>
-nmap <leader>lp <Plug>(coc-diagnostic-prev-error)
+nmap <leader>ln <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
+nn <leader>ll <cmd>lua vim.lsp.diagnostic.set_loclist()<CR>
+nmap <leader>lp <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
 nn <leader>m :History<CR>
 nn <leader>n :tabe<CR>
-nn <leader>o :Vista<CR>
+" nn <leader>o TODO
 nn <leader>p :cw<CR>
 nn <leader>q :qa<CR>
 nn <leader>ra :%s/
@@ -339,9 +278,8 @@ nn <leader>sj :split<CR><C-W>j
 nn <leader>sk :split<CR>
 nn <leader>sl :vsplit<CR><C-W>l
 nn <silent> <leader>t :call OpenOrCreateTerminal()<CR>
-nn <silent> <leader>u  :call Dasht(dasht#cursor_search_terms())<Return>
+" nn <silent> <leader>u  TODO
 nn <leader>va :e ~/dotfiles/.bash_aliases<CR>
-nn <leader>vc :e ~/dotfiles/coc-settings.json<CR>
 nn <leader>vl :e ./.lvimrc<CR>
 nn <leader>vv :e ~/dotfiles/init.vim<CR>
 nn <leader>vt :e ~/dotfiles/.tmux.conf<CR>
@@ -365,28 +303,6 @@ nn <C-k> <C-W>k
 nn <C-h> <C-W>h
 nn <C-l> <C-W>l
 
-" Arrows navigate buffers
-nn <Left> :vertical res -5<CR>
-nn <Right> :vertical res +5<CR>
-nn <Up> :res +5<CR>
-nn <Down> :res -5<CR>
-
-" Autocomplete mappings
-" Use tab for trigger completion with characters ahead and navigate.  NOTE: Use
-" command ':verbose imap <tab>' to make sure tab is not mapped by other plugin
-" before putting this into your config.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-inoremap <silent><expr> <C-Space> coc#refresh()
-
 " Etc. keymappings
 nn - :Vexplore!<CR>
 nn Q @q
@@ -394,13 +310,12 @@ nn / /\v
 nn ? ?\v
 nn H gT
 nn L gt
-au! FileType calendar nn H gT
-au! FileType calendar nn L gt
 nn ! :!
 nn q: :q
 nn Z zA
 im <C-c> <ESC>
 nn <BS> :bp<CR>
+
 " Terminal stuff
 tnoremap <Esc> <C-\><C-n>
 tnoremap <C-h> <C-\><C-n><C-w>h
