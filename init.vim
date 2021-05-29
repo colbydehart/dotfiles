@@ -94,6 +94,11 @@ Plug 'sheerun/vim-polyglot'
 let g:AutoPairsMapCR = 0
 au! FileType fugitive nm <buffer> <TAB> =
 
+"==================================FORMATTING===================================
+Plug 'sbdchd/neoformat'
+autocmd BufWritePre *.js,*.jsx,*.json,*.ts,*.tsx,*.ex,*.exs,*.py Neoformat
+let g:neoformat_basic_format_trim = 1
+
 "==================================NAVIGATION===================================
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'

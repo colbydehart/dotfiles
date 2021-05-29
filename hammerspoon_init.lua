@@ -1,5 +1,5 @@
 hs.loadSpoon("Cherry")
-Mash = {"cmd", "shift"}
+Mash = {"ctrl", "shift"}
 fn = hs.fnutils 
 
 -- hs.grid.HINTS = {
