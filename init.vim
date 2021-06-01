@@ -8,6 +8,9 @@ set clipboard=unnamedplus          "use system clipboard
 set hidden                         "allow jumping back and forth between multiple unsaved buffers
 set ignorecase                     "ignore case when searching
 set wildignorecase                 "case insensitive file search
+set number
+set relativenumber
+set foldmethod=syntax
 let mapleader = ' '                "leader is space
 let maplocalleader = ','           "localleader is comma
 let g:python3_host_prog = "~/.config/nvim/venv/bin/python"
@@ -66,12 +69,11 @@ endfunction
 call plug#begin()
 
 "====================================COSMETIC===================================
-Plug 'cormacrelf/vim-colors-github'
+Plug 'NLKNguyen/papercolor-theme'
 Plug 'itchyny/lightline.vim'
 Plug 'mechatroner/rainbow_csv'
 Plug 'liuchengxu/vim-which-key' 
 
-let g:lightline = {'theme': 'github'}
 
 "====================================UTILITY====================================
 Plug 'jiangmiao/auto-pairs'
@@ -150,7 +152,8 @@ Plug 'sotte/presenting.vim'
 "=================================PLUG END======================================
 call plug#end()
 set background=light
-colo github
+let g:lightline = {'colorscheme': 'PaperColor'}
+colo PaperColor
 filetype plugin indent on
 syntax enable
 packloadall
@@ -176,6 +179,7 @@ require'compe'.setup {
 
   source = {
     path = true;
+    buffer = true;
     nvim_lsp = true;
     ultisnips = true;
   };
@@ -268,9 +272,9 @@ nn <silent> <leader>jj :FZF ~/notes<CR>
 nn <silent> <leader>js :e ~/notes/scratch.md<CR>
 nn <silent> <leader>jt :e ~/notes/todo.txt<CR>
 nn <leader>k :q<CR>
-nmap <leader>ln <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
+nmap <leader>ln <cmd>lua vim.lsp.diagnostic.goto_next({severity_limit = "Error"})<CR>
 nn <leader>ll <cmd>lua vim.lsp.diagnostic.set_loclist()<CR>
-nmap <leader>lp <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
+nmap <leader>lp <cmd>lua vim.lsp.diagnostic.goto_prev({severity_limit = "Error"})<CR>
 nn <leader>m :History<CR>
 nn <leader>n :tabe<CR>
 " nn <leader>o TODO
