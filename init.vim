@@ -11,6 +11,7 @@ set wildignorecase                 "case insensitive file search
 set number
 set relativenumber
 set foldmethod=syntax
+set foldlevel=99
 let mapleader = ' '                "leader is space
 let maplocalleader = ','           "localleader is comma
 let g:python3_host_prog = "~/.config/nvim/venv/bin/python"
@@ -96,11 +97,6 @@ Plug 'sheerun/vim-polyglot'
 let g:AutoPairsMapCR = 0
 au! FileType fugitive nm <buffer> <TAB> =
 
-"==================================FORMATTING===================================
-Plug 'sbdchd/neoformat'
-autocmd BufWritePre *.js,*.jsx,*.json,*.ts,*.tsx,*.ex,*.exs,*.py Neoformat
-let g:neoformat_basic_format_trim = 1
-
 "==================================NAVIGATION===================================
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
@@ -110,13 +106,23 @@ let g:sneak#label = 1
 let g:fzf_preview_window = []
 
 "==================================AUTOCOMPLETION===============================
-Plug 'neovim/nvim-lspconfig'
-Plug 'kabouzeid/nvim-lspinstall'
-Plug 'hrsh7th/nvim-compe'
+Plug 'neoclide/coc.nvim'
 Plug 'kristijanhusak/vim-dadbod-completion'
 Plug 'SirVer/ultisnips'
 let g:UltiSnipsSnippetDirectories = [$HOME.'/dotfiles/snippets']
 let g:UltiSnipsExpandTrigger = "<C-l>"
+let g:coc_disable_transparent_cursor=1
+
+let g:coc_global_extensions = [
+      \ 'coc-json',
+      \ 'coc-git',
+      \ 'coc-pyright',
+      \ 'coc-elixir',
+      \ 'coc-json',
+      \ 'coc-tsserver',
+      \ 'coc-eslint',
+      \ 'coc-prettier',
+      \ ]
 
 "===================================WEB=========================================
 Plug 'stephenway/postcss.vim'
@@ -151,85 +157,11 @@ Plug 'sotte/presenting.vim'
 
 "=================================PLUG END======================================
 call plug#end()
-set background=light
+set background=dark
 let g:lightline = {'colorscheme': 'PaperColor'}
 colo PaperColor
 filetype plugin indent on
 syntax enable
-packloadall
-
-"====================================LSP========================================
-
-lua <<EOF
--- Stolen from https://github.com/neovim/nvim-lspconfig/wiki/Autocompletion
--- Compe setup
-require'compe'.setup {
-  enabled = true;
-  autocomplete = true;
-  debug = false;
-  min_length = 1;
-  preselect = 'enable';
-  throttle_time = 80;
-  source_timeout = 200;
-  incomplete_delay = 400;
-  max_abbr_width = 100;
-  max_kind_width = 100;
-  max_menu_width = 100;
-  documentation = true;
-
-  source = {
-    path = true;
-    buffer = true;
-    nvim_lsp = true;
-    ultisnips = true;
-  };
-}
-
-local t = function(str)
-  return vim.api.nvim_replace_termcodes(str, true, true, true)
-end
-
-local check_back_space = function()
-    local col = vim.fn.col('.') - 1
-    if col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') then
-        return true
-    else
-        return false
-    end
-end
-
--- Use (s-)tab to:
---- move to prev/next item in completion menuone
---- jump to prev/next snippet's placeholder
-_G.tab_complete = function()
-  if vim.fn.pumvisible() == 1 then
-    return t "<C-n>"
-  elseif check_back_space() then
-    return t "<Tab>"
-  else
-    return vim.fn['compe#complete']()
-  end
-end
-_G.s_tab_complete = function()
-  if vim.fn.pumvisible() == 1 then
-    return t "<C-p>"
-  else
-    return t "<S-Tab>"
-  end
-end
-
-vim.api.nvim_set_keymap("i", "<Tab>", "v:lua.tab_complete()", {expr = true})
-vim.api.nvim_set_keymap("s", "<Tab>", "v:lua.tab_complete()", {expr = true})
-vim.api.nvim_set_keymap("i", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
-vim.api.nvim_set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
-
-require'lspinstall'.setup() -- important
-
-local servers = require'lspinstall'.installed_servers()
-for _, server in pairs(servers) do
-  require'lspconfig'[server].setup{}
-end
-EOF
 
 ""===================================FAST=SEARCH=================================
 if executable('rg')
@@ -239,15 +171,16 @@ endif
 
 "===================================KEYBINDINGS=================================
 
-" LSP bindings
-nmap <silent> gd <cmd>lua vim.lsp.buf.definition()<CR>
-nmap <silent> gi <cmd>lua vim.lsp.buf.implementation()<CR>
-nmap <silent> gr <cmd>lua vim.lsp.buf.references()<CR>
-nmap <silent> K <cmd>lua vim.lsp.buf.hover()<CR>
-nmap <silent> <localleader>f <cmd>lua vim.lsp.buf.formatting()<CR>
-nmap <silent> <localleader>r <cmd>lua vim.lsp.buf.rename()<CR>
-nmap <silent> <localleader>a  <cmd>lua vim.lsp.buf.code_action()<CR>
-nmap <silent> <localleader>e  <cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>
+" COC LSP bindings
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+nmap <silent> K :call CocActionAsync('doHover')<CR>
+nmap <silent> <localleader>f <Plug>(coc-format)
+nmap <silent> <localleader>r <Plug>(coc-rename)
+nmap <silent> <localleader>a  <Plug>(coc-codeaction)
+nmap <silent> <localleader>e  :call CocActionAsync('diagnosticInfo')<CR>
 
 " Leader stuff
 nnoremap <silent> <leader>      :<c-u>WhichKey '<Space>'<CR>
@@ -272,9 +205,9 @@ nn <silent> <leader>jj :FZF ~/notes<CR>
 nn <silent> <leader>js :e ~/notes/scratch.md<CR>
 nn <silent> <leader>jt :e ~/notes/todo.txt<CR>
 nn <leader>k :q<CR>
-nmap <leader>ln <cmd>lua vim.lsp.diagnostic.goto_next({severity_limit = "Error"})<CR>
-nn <leader>ll <cmd>lua vim.lsp.diagnostic.set_loclist()<CR>
-nmap <leader>lp <cmd>lua vim.lsp.diagnostic.goto_prev({severity_limit = "Error"})<CR>
+nmap <leader>ln <Plug>(coc-diagnostic-next-error)
+nn <leader>ll :CocDiagnostics<CR>
+nmap <leader>lp <Plug>(coc-diagnostic-prev-error)
 nn <leader>m :History<CR>
 nn <leader>n :tabe<CR>
 " nn <leader>o TODO
@@ -312,6 +245,13 @@ nn <C-k> <C-W>k
 nn <C-h> <C-W>h
 nn <C-l> <C-W>l
 
+
+" Arrows resize
+nn <Left> :vertical res -5<CR>
+nn <Right> :vertical res +5<CR>
+nn <Up> :res +5<CR>
+nn <Down> :res -5<CR>
+
 " Etc. keymappings
 nn - :Vexplore!<CR>
 nn Q @q
@@ -332,6 +272,22 @@ tnoremap <C-j> <C-\><C-n><C-w>j
 tnoremap <C-k> <C-\><C-n><C-w>k
 tnoremap <C-l> <C-\><C-n><C-w>l
 au TermOpen * setlocal nonumber norelativenumber bufhidden=hide
+
+" Autocomplete mappings
+" Use tab for trigger completion with characters ahead and navigate.  NOTE: Use
+" command ':verbose imap <tab>' to make sure tab is not mapped by other plugin
+" before putting this into your config.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+inoremap <silent><expr> <C-Space> coc#refresh()
 
 " Local Vimrc
 if filereadable('./.lvimrc')
